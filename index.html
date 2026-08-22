@@ -104,12 +104,16 @@ input{font:inherit;color:inherit}
 .burger svg{width:18px;height:18px}
 .wordmark{display:flex;align-items:center;gap:10px;font-size:15.5px;font-weight:600;letter-spacing:.005em;
   color:#e8edf6;min-width:0}
-/* Der Schriftzug weicht erst, wenn die Knoepfe sonst keinen Platz mehr haetten. */
+/* Der Schriftzug kuerzt notfalls und weicht erst ganz zum Schluss —
+   dann bleibt das Summenzeichen als Logo stehen. */
 .wordmark span:not(.sig){white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media (max-width:470px){ .wordmark span:not(.sig){display:none} }
+@media (max-width:400px){ .wordmark span:not(.sig){display:none} }
 .wordmark .sig{width:25px;height:25px;border-radius:var(--r);background:rgba(20,117,225,.16);color:#5aa2f0;
   display:grid;place-items:center;font-family:var(--math);font-size:15px;font-weight:600}
 .hdr-r{margin-left:auto;display:flex;align-items:center;gap:8px}
+/* Wird der Platz knapp, weicht der Modus-Knopf — er steht auch in der Leiste.
+   Sobald wieder Platz ist, kommt er zurueck. */
+@media (max-width:640px){ #modeBtn{display:none} }
 .menu{position:fixed;right:14px;top:calc(var(--hdr) + 8px);background:var(--panel);
   border:1px solid var(--sur3);border-radius:var(--rp);padding:5px;min-width:220px;z-index:80;
   display:none;box-shadow:0 14px 38px rgba(0,0,0,.55)}
@@ -545,19 +549,17 @@ td.name .ico{display:inline-grid;place-items:center;width:24px;height:24px;borde
 
 }
 @media (max-width:760px){
-  .rail{width:254px;transform:translateX(-100%);top:0;padding-top:calc(var(--hdr) + 8px);z-index:55}
-  .rail.open{transform:none;box-shadow:0 0 40px rgba(0,0,0,.6)}
-  .page,.page.wide{left:0}
-  .typebar,.typebar.wide{left:0;padding:0 12px}
-  :root{--tb:66px}
+  /* Die schmale Leiste bleibt immer sichtbar; aufgeklappt legt sie sich ueber den
+     Inhalt, statt ihn zur Seite zu schieben. */
+  :root{--rail:52px;--tb:66px;--pad:14px}
+  .rail{z-index:55}
+  .rail.open{box-shadow:0 0 40px rgba(0,0,0,.6)}
+  .page,.page.wide{left:var(--rail)}
+  .typebar,.typebar.wide{left:var(--rail);padding:0 12px}
   .typehint{display:none}
-  .burger{flex:0 0 52px;width:52px}
   .page{padding:0 12px 60px}
-  :root{--pad:14px}
-  .hdr-in{padding:0 12px 0 0}
+  .hdr-in{padding:0 12px}
   .hdr.wide .hdr-in{margin-left:0}
-  .hdr:before,.hdr.wide:before{width:52px}   /* so breit wie der Balken-Knopf */
-  .hdr.railopen:before{width:254px}
   .wordmark{font-size:15px}
   .hdr-r .btn{padding:9px 11px;font-size:12.5px}
   .pfoot .mid small{display:none}
@@ -6566,10 +6568,8 @@ document.addEventListener('click', e => {
   if (!$('modeMenu').contains(e.target) && e.target !== $('modeBtn')) $('modeMenu').classList.remove('show');
 });
 function closeDrawer() {
-  if (window.innerWidth <= 760) {
-    $('rail').classList.remove('open');
-    $('scrim').classList.remove('show');
-  }
+  /* ueber setDrawer, damit auch der dunkle Streifen und die Klassen mitziehen */
+  if (window.innerWidth <= 760 && $('rail').classList.contains('open')) setDrawer(false);
 }
 $('scrim').onclick = closeDrawer;
 
