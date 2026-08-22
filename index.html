@@ -169,6 +169,10 @@ input{font:inherit;color:inherit}
 .rail:not(.open) .railcard{background:transparent;padding:0;margin:0 8px}
 .raildiv{height:1px;background:var(--sur3);margin:7px 10px}
 .rail:not(.open) .raildiv{margin:8px 6px}
+/* Eingeklappt trennt ein Strich die Ansichten von den Themen — gleiche
+   Gliederung wie unten vor Zufallsmodus & Co. Aufgeklappt uebernimmt das die Suche. */
+.topdiv{display:none}
+.rail:not(.open) .topdiv{display:block;margin:2px 14px 0}   /* gleiche Breite wie der untere Strich */
 .railsec,.railgrp{display:block}
 .railgroup{margin:0}
 .railgroup-b{margin-bottom:2px}
@@ -282,7 +286,7 @@ input{font:inherit;color:inherit}
   transition:left .3s var(--e),background-color .3s var(--e),box-shadow var(--t1) var(--e)}
 .track.drag .fill,.track.drag .knob{transition:background-color .3s var(--e)}
 .track:hover .knob{box-shadow:0 0 0 5px var(--lvlsoft)}
-.slidewrap input[type=range]{position:absolute;left:0;top:0;width:100%;height:20px;margin:0;
+.track input[type=range]{position:absolute;left:0;top:0;width:100%;height:20px;margin:0;
   -webkit-appearance:none;appearance:none;background:transparent;outline:none;opacity:0;cursor:pointer}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;
   background:var(--blue);cursor:pointer;border:2px solid var(--panel)}
@@ -317,6 +321,11 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .setrow .inp{flex:1 1 118px}
 .fb .tries{flex:0 0 auto;align-self:center;font-weight:700;font-size:11.5px;opacity:.75;
   background:rgba(255,255,255,.08);border-radius:20px;padding:3px 10px;margin-left:14px;white-space:nowrap}
+/* Sehr schmal rutscht der Zaehler unter den Text — aber weiter nach rechts. */
+@media (max-width:430px){
+  .fb{flex-direction:column;align-items:stretch;gap:8px}
+  .fb .tries{align-self:flex-end;margin-left:0}
+}
 .fb .msg{flex:1 1 auto;min-width:0}
 .qtext{margin-top:14px;font-size:14px;color:var(--mut);font-weight:600;line-height:1.5;max-width:640px}
 .qtext b{color:#fff}
@@ -349,7 +358,15 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .joinl{font-size:10px;letter-spacing:.13em;color:var(--mut2);font-weight:700;padding:4px 0 0}
 .flag{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mut);cursor:pointer;
   user-select:none;font-weight:600}
-.flag input{accent-color:var(--blue);width:14px;height:14px;cursor:pointer}
+.flag input{position:absolute;opacity:0;width:0;height:0}
+.flag .box2{width:17px;height:17px;flex:0 0 17px;border-radius:5px;border:1.8px solid var(--sur3);
+  background:var(--bg);display:grid;place-items:center;transition:background var(--t1) var(--e),border-color var(--t1) var(--e)}
+.flag .box2 svg{width:11px;height:11px;color:#fff;opacity:0;transform:scale(.6);
+  transition:opacity var(--t1) var(--e),transform var(--t1) var(--e)}
+.flag:hover .box2{border-color:var(--mut2)}
+.flag input:checked + .box2{background:var(--blue);border-color:var(--blue)}
+.flag input:checked + .box2 svg{opacity:1;transform:none}
+.flag input:focus-visible + .box2{box-shadow:0 0 0 3px rgba(20,117,225,.35)}
 
 .keys{display:flex;flex-wrap:wrap;gap:4px;max-width:none;align-items:center}
 .key{min-width:34px;height:32px;padding:0 8px;border-radius:var(--r);background:var(--sur3);
@@ -395,7 +412,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 i{font-style:italic}
 .rel{margin:0 .34em;color:#79b6ff}
 .op{margin:0 .24em;color:#79b6ff}
-.op:first-child{margin-left:0}   /* fuehrendes Vorzeichen bleibt eng am Term */
+.op.lead{margin-left:0}   /* fuehrendes Vorzeichen bleibt eng am Term */
 .neg{margin:0 .04em 0 0}
 .op2{margin:0 .3em;color:#79b6ff}
 .conj{color:var(--mut2);font-size:.8em;margin:0 .45em;font-style:normal}
@@ -415,6 +432,28 @@ sub{font-size:.6em;vertical-align:-.26em}
 .lim2 .up,.lim2 .lo{font-size:.34em;line-height:1.15}
 .muted{color:var(--mut2);font-size:.85em}
 .fnm{font-style:normal;padding-right:.06em}
+/* ============ MATRIZEN ============ */
+/* Klammern werden aus Raendern gezeichnet — so wachsen sie mit der Hoehe mit. */
+.mat{display:inline-flex;align-items:stretch;gap:0;vertical-align:middle;margin:0 .14em}
+.mat .mbr{flex:0 0 .3em;border:.075em solid var(--mut2)}
+.mat .mbr:first-child{border-right:0;border-radius:.7em 0 0 .7em}
+.mat .mbr:last-child{border-left:0;border-radius:0 .7em .7em 0}
+.mat .mgrid{display:grid;gap:.18em .8em;padding:.22em .5em;align-items:center;justify-items:center}
+.mat .mc{white-space:nowrap}
+/* Eingabefeld fuer Matrizen */
+.matin{display:inline-flex;align-items:stretch;gap:0}
+.matin .mbr{flex:0 0 9px;border:2px solid var(--sur3)}
+.matin .mbr:first-child{border-right:0;border-radius:10px 0 0 10px}
+.matin .mbr:last-child{border-left:0;border-radius:0 10px 10px 0}
+.matin .mgrid{display:grid;gap:8px;padding:6px 10px}
+.matin .inp{width:78px;text-align:center;padding:9px 6px}
+@media (max-width:520px){ .matin .inp{width:60px;padding:8px 4px} }
+/* Summen- und Produktzeichen: Grenzen stehen ueber und unter dem Zeichen */
+.bigop{display:inline-grid;justify-items:center;align-content:center;vertical-align:middle;
+  line-height:1;margin:0 .12em}
+.bigop .bo{font-size:1.55em;line-height:.92;font-weight:400}
+.bigop .bt,.bigop .bb{font-size:.44em;color:var(--mut);white-space:nowrap;line-height:1.2}
+.bopb{vertical-align:middle}
 .bars{border-left:1.2px solid currentColor;border-right:1.2px solid currentColor;padding:0 .22em;margin:0 .06em}
 
 /* Formel-Vorschau */
@@ -459,8 +498,15 @@ canvas{width:100%;height:250px;display:block;border-radius:var(--r);background:v
 canvas.drag{cursor:grabbing}
 .leg{display:flex;gap:13px;flex-wrap:wrap;font-size:11.5px;color:var(--mut);margin-top:9px;font-weight:600}
 .leg i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;font-style:normal}
-.zrow{display:flex;align-items:center;gap:9px;margin-top:9px;font-size:11.5px;color:var(--mut2);font-weight:600}
-.zrow input[type=range]{width:120px}
+.zrow{display:flex;align-items:center;gap:11px;margin-top:11px;font-size:11.5px;color:var(--mut2);font-weight:600}
+.zrow .ztrack{width:150px;flex:0 0 150px}
+.zrow .ztrack .fill,.zrow .ztrack .knob{background:var(--blue)}
+.zrow .ztrack:hover .knob{box-shadow:0 0 0 5px rgba(20,117,225,.22)}
+.zrow .rowbtn{padding:5px 11px;border-radius:20px;border:1px solid var(--sur3);color:var(--mut);
+  font-size:11.5px;font-weight:700;transition:background var(--t1) var(--e),color var(--t1) var(--e),border-color var(--t1) var(--e)}
+.zrow .rowbtn:hover{background:var(--sur2);color:#fff;border-color:var(--mut2)}
+.zhint{margin-left:auto}
+@media (max-width:520px){ .zhint{display:none} .zrow .ztrack{flex:1 1 auto;width:auto} }
 .fml{padding:10px 0;border-bottom:1px solid var(--sur3);animation:fadeUp var(--t2) var(--e) both}
 .fml:last-child{border-bottom:none;padding-bottom:0}
 .fml .t{font-size:10.5px;color:var(--mut2);text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px;font-weight:700}
@@ -468,13 +514,15 @@ canvas.drag{cursor:grabbing}
 
 /* Info-Karte */
 .info{padding:var(--pad)}
-.info-head{display:flex;align-items:center;gap:14px}
+.info-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .tile{width:56px;height:56px;flex:0 0 56px;border-radius:var(--rp);background:var(--sur2);
   display:grid;place-items:center;font-family:var(--math);font-size:22px;color:#fff}
+.info-t{min-width:0}
 .info-t b{display:block;font-size:16px;font-weight:800;letter-spacing:-.01em}
 .info-t span{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--mut);margin-top:3px;font-weight:600}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);flex:0 0 7px}
-.info-head .btn{margin-left:auto}
+.info-head .btn{margin-left:auto;flex:0 0 auto}
+@media (max-width:520px){ .info-head .btn{margin-left:0;width:100%;text-align:center} }
 .tab{padding:8px 15px;border-radius:20px;font-size:12.5px;font-weight:600;color:var(--mut);
   white-space:nowrap;background:transparent;flex:0 0 auto;position:relative;z-index:1;
   transition:color var(--t2) var(--e),transform var(--t1) var(--e)}
@@ -509,6 +557,10 @@ canvas.drag{cursor:grabbing}
 .fmlcard>.ft .ic{width:20px;height:20px;display:grid;place-items:center;color:var(--blue)}
 .fmlcard>.ft .ic svg{width:19px;height:19px}
 .fmlcols{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+/* Schreibweisen-Hilfe: getippte Form links, gesetzte Form rechts */
+.syn{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;
+  background:var(--bg);border:1px solid var(--sur3);border-radius:var(--r);padding:2px 7px;color:#cfe6ff}
+.synto{margin:0 10px;color:var(--mut2)}
 /* Popup */
 .pop{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;
   background:rgba(4,14,21,.62);padding:20px}
@@ -563,9 +615,6 @@ td.name .ico{display:inline-grid;place-items:center;width:24px;height:24px;borde
   .wordmark{font-size:15px}
   .hdr-r .btn{padding:9px 11px;font-size:12.5px}
   .pfoot .mid small{display:none}
-  /* schmale Anzeige: Zaehler unter den Text statt daneben */
-  .fb{flex-direction:column;align-items:flex-start;gap:7px}
-  .fb .tries{margin-left:0}
   .metastrip{flex-wrap:wrap}
   .mcell{flex:1 1 45%}
   th:nth-child(3),td:nth-child(3){display:none}
@@ -604,6 +653,20 @@ td.name .ico{display:inline-grid;place-items:center;width:24px;height:24px;borde
   <symbol id="i-t-extremwert" viewBox="0 0 24 24"><path d="M3.4 19c3.4 0 3.4-12 8.6-12s5.2 12 8.6 12" fill="none" stroke="currentColor" stroke-width="2.05" stroke-linecap="round"/><circle cx="12" cy="7" r="2.1" fill="currentColor"/></symbol>
   <symbol id="i-t-integral" viewBox="0 0 24 24"><path d="M15.6 4.2c-3 0-3.6 1.6-4.2 5.4l-1.6 9.2c-.5 3.2-1.2 4.4-3.6 4.2" fill="none" stroke="currentColor" stroke-width="2.05" stroke-linecap="round"/><path d="M4.4 12.6h15.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".55"/></symbol>
   <symbol id="i-t-aufnahme" viewBox="0 0 24 24"><rect x="4.6" y="2.8" width="14.8" height="18.4" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M8.4 8.4h7.2M8.4 12.2h7.2M8.4 16h4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <!-- Mehrdimensionale Analysis, Lineare Algebra, Oekonomie -->
+  <symbol id="i-g-multi" viewBox="0 0 24 24"><path d="M12 2.6 21.4 7.4 12 12.2 2.6 7.4z" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linejoin="round"/><path d="M2.6 12.2 12 17l9.4-4.8M2.6 16.6 12 21.4l9.4-4.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/></symbol>
+  <symbol id="i-g-lin" viewBox="0 0 24 24"><rect x="3.4" y="3.4" width="17.2" height="17.2" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M9.1 3.6v17M14.9 3.6v17M3.6 9.1h17M3.6 14.9h17" stroke="currentColor" stroke-width="1.4" opacity=".65"/></symbol>
+  <symbol id="i-t-partiell" viewBox="0 0 24 24"><path d="M14.6 8.2c-3.4-1.6-6.6.4-6.6 3.6 0 2.6 2 4 3.8 4 2.6 0 4.2-2.4 4.2-5.6 0-4-2-6.6-4.6-6.6" fill="none" stroke="currentColor" stroke-width="1.95" stroke-linecap="round"/><path d="M4.4 20.6h15.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".5"/></symbol>
+  <symbol id="i-t-gradient" viewBox="0 0 24 24"><path d="M4.6 19.4 19.4 4.6" fill="none" stroke="currentColor" stroke-width="2.05" stroke-linecap="round"/><path d="M13.4 4.6h6v6" fill="none" stroke="currentColor" stroke-width="2.05" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.6 12.4v7h7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/></symbol>
+  <symbol id="i-t-extrem2d" viewBox="0 0 24 24"><path d="M2.8 6.6c4 0 4.6 10.8 9 10.8s5.4-10.8 9.4-10.8" fill="none" stroke="currentColor" stroke-width="2.05" stroke-linecap="round"/><circle cx="11.8" cy="12" r="2" fill="currentColor"/></symbol>
+  <symbol id="i-t-lagrange" viewBox="0 0 24 24"><path d="M3.2 17.4C8.4 17.4 15 12 15 5.4" fill="none" stroke="currentColor" stroke-width="2.05" stroke-linecap="round"/><path d="M3.6 20.4 20.4 6.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".6"/><circle cx="9.6" cy="14" r="2" fill="currentColor"/></symbol>
+  <symbol id="i-t-matrix" viewBox="0 0 24 24"><path d="M7.6 3.6H4.4v16.8h3.2M16.4 3.6h3.2v16.8h-3.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.6" cy="9" r="1.35" fill="currentColor"/><circle cx="14.4" cy="9" r="1.35" fill="currentColor"/><circle cx="9.6" cy="15" r="1.35" fill="currentColor"/><circle cx="14.4" cy="15" r="1.35" fill="currentColor"/></symbol>
+  <symbol id="i-t-det" viewBox="0 0 24 24"><path d="M5.4 3.6v16.8M18.6 3.6v16.8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M8.4 8.2 15.6 15.8M15.6 8.2 8.4 15.8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-t-gauss" viewBox="0 0 24 24"><path d="M3.4 4.6h6.2v5.8h6.2v5.8h5.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.4 20.4h17.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".5"/></symbol>
+  <symbol id="i-t-summe" viewBox="0 0 24 24"><path d="M18.2 4.4H5.6l6.6 7.6-6.6 7.6h12.6" fill="none" stroke="currentColor" stroke-width="1.95" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-t-oeko" viewBox="0 0 24 24"><path d="M3.4 3.6v17h17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".55"/><path d="M6.4 17.6 20.2 5.4" stroke="currentColor" stroke-width="2.05" stroke-linecap="round"/><path d="M6.4 6.2 20.2 17.8" stroke="currentColor" stroke-width="2.05" stroke-linecap="round" opacity=".75"/></symbol>
+  <symbol id="i-t-implizit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.95"/><path d="M4.6 7.6 20.6 15.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".7"/></symbol>
+  <symbol id="i-t-elast" viewBox="0 0 24 24"><path d="M3.4 3.6v17h17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".55"/><path d="M6.2 6.6 19 18.4" stroke="currentColor" stroke-width="2.05" stroke-linecap="round"/><path d="M6.2 13.4h5.4M9 10.8v5.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".8"/></symbol>
   <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3.2v17.4M7.6 20.6h8.8M3.6 7.4h16.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M3.6 7.4 1.2 13.4h4.8z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M20.4 7.4 18 13.4h4.8z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
   <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.4" y="3.4" width="7.2" height="7.2" rx="2" fill="none" stroke="currentColor" stroke-width="1.9"/><rect x="13.4" y="3.4" width="7.2" height="7.2" rx="2" fill="none" stroke="currentColor" stroke-width="1.9"/><rect x="3.4" y="13.4" width="7.2" height="7.2" rx="2" fill="none" stroke="currentColor" stroke-width="1.9"/><rect x="13.4" y="13.4" width="7.2" height="7.2" rx="2" fill="none" stroke="currentColor" stroke-width="1.9"/></symbol>
 </svg>
@@ -623,6 +686,7 @@ td.name .ico{display:inline-grid;place-items:center;width:24px;height:24px;borde
 
 <aside class="rail" id="rail">
   <div class="railview" id="railView"></div>
+  <div class="raildiv topdiv"></div>
   <div class="railsearch">
     <span class="rs-ic"><svg><use href="#i-search"/></svg></span>
     <input id="search" type="text" placeholder="Thema suchen" autocomplete="off">
@@ -706,9 +770,14 @@ td.name .ico{display:inline-grid;place-items:center;width:24px;height:24px;borde
         <canvas id="cv"></canvas>
         <div class="leg" id="legend"></div>
         <div class="zrow">
-          <span>Zoom</span><input type="range" id="zoom" min="-14" max="14" step="1" value="0">
-          <button class="btn ghost" id="btnReset" style="padding:4px 9px;font-size:12px">zurücksetzen</button>
-          <span style="margin-left:auto">ziehen zum Verschieben</span>
+          <span>Zoom</span>
+          <div class="track ztrack" id="zoomTrack">
+            <div class="fill" id="zoomFill"></div>
+            <div class="knob" id="zoomKnob"></div>
+            <input type="range" id="zoom" min="-14" max="14" step="1" value="0">
+          </div>
+          <button class="rowbtn" id="btnReset">zurücksetzen</button>
+          <span class="zhint">ziehen zum Verschieben</span>
         </div>
       </div></div>
     </section>
@@ -868,8 +937,38 @@ const FUNCS = {
   exp: Math.exp, sqrt: Math.sqrt, abs: Math.abs,
   log: function (a, b) { return b === undefined ? Math.log10(a) : Math.log(b) / Math.log(a); },
   wurzel: Math.sqrt, betrag: Math.abs,
+  /* Typst-nahe Schreibweisen: root(3, x), frac(1, 2) */
+  root: function (n, x) {
+    if (x === undefined) return Math.sqrt(n);
+    if (x < 0 && Math.abs(n - Math.round(n)) < 1e-9 && Math.round(n) % 2 !== 0) return -Math.pow(-x, 1 / n);
+    return Math.pow(x, 1 / n);
+  },
+  frac: function (a, b) { return b === undefined ? a : a / b; },
 };
 const CONSTS = { pi: Math.PI, 'π': Math.PI, e: Math.E, tau: 2 * Math.PI };
+
+/* Ein Komma ist in Deutschland ein Dezimaltrenner — ausser in Funktionen mit
+   zwei Argumenten wie root(3, x) oder log(2, 8). Dafuer merken wir uns, in
+   welcher Klammer wir gerade stehen. */
+const MULTI_FN = { root: 1, log: 1, frac: 1 };
+function fixCommas(s) {
+  const stack = []; let out = '';
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (c === '(') {
+      let j = i - 1; while (j >= 0 && /[a-zA-Z0-9_]/.test(s[j])) j--;
+      const name = s.slice(j + 1, i).toLowerCase();
+      stack.push(!!MULTI_FN[name]);
+      out += c;
+    } else if (c === ')') { stack.pop(); out += c; }
+    else if (c === ',') {
+      const inCall = stack.length && stack[stack.length - 1];
+      const between = /[0-9]/.test(s[i - 1] || '') && /[0-9]/.test(s[i + 1] || '');
+      out += (!inCall && between) ? '.' : ',';
+    } else out += c;
+  }
+  return out;
+}
 
 function tokenize(src) {
   let s = String(src)
@@ -879,8 +978,8 @@ function tokenize(src) {
     .replace(/²/g, '^2').replace(/³/g, '^3')
     .replace(/√/g, 'sqrt')
     .replace(/π/g, 'pi')
-    .replace(/\{|\[/g, '(').replace(/\}|\]/g, ')')
-    .replace(/(\d),(\d)/g, '$1.$2');
+    .replace(/\{|\[/g, '(').replace(/\}|\]/g, ')');
+  s = fixCommas(s);
   const t = []; let i = 0;
   while (i < s.length) {
     const c = s[i];
@@ -1031,6 +1130,34 @@ function parseFn(s) {
   try { ast = parseExpr(s); } catch (e) { return null; }
   return function (x) { try { return ev(ast, { x: x }); } catch (e) { return NaN; } };
 }
+/* Term in mehreren Variablen, z. B. f(x, y) */
+function parseFn2(s, vars) {
+  let ast;
+  try { ast = parseExpr(s); } catch (e) { return null; }
+  const vs = vars || ['x', 'y'];
+  return function () {
+    const env = {};
+    for (let i = 0; i < vs.length; i++) env[vs[i]] = arguments[i];
+    try { return ev(ast, env); } catch (e) { return NaN; }
+  };
+}
+/* Vergleich zweier Terme in zwei Variablen ueber ein Punktgitter */
+function fnEqual2(g, ref, opts) {
+  opts = opts || {};
+  const lo = opts.lo === undefined ? 0.4 : opts.lo, hi = opts.hi === undefined ? 2.6 : opts.hi;
+  let ok = 0, bad = 0;
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 6; j++) {
+      const x = lo + (hi - lo) * (i + 0.5) / 6 + (Math.random() - 0.5) * 0.01;
+      const y = lo + (hi - lo) * (j + 0.5) / 6 + (Math.random() - 0.5) * 0.01;
+      const a = g(x, y), b = ref(x, y);
+      if (!isFinite(a) || !isFinite(b) || Math.abs(b) > 1e8) continue;
+      ok++;
+      if (!close(a, b, 1e-5, 1e-5)) bad++;
+    }
+  }
+  return ok >= 8 && bad === 0;
+}
 
 
 /* ============================================================
@@ -1055,8 +1182,10 @@ function astMath(n) {
     case 'neg': return { h: '<span class="neg">−</span>' + mWrap(astMath(n.l), 3), p: 3 };
     case 'f': {
       const a = n.args.map(x => astMath(x).h);
-      if (n.name === 'sqrt') return { h: sqrtHTML(a[0]), p: 8 };
-      if (n.name === 'abs') return { h: '<span class="bars">' + a[0] + '</span>', p: 9 };
+      if (n.name === 'sqrt' || n.name === 'wurzel') return { h: sqrtHTML(a[0]), p: 8 };
+      if (n.name === 'root') return { h: a.length > 1 ? sqrtHTML(a[1], a[0]) : sqrtHTML(a[0]), p: 8 };
+      if (n.name === 'frac') return { h: a.length > 1 ? fracHTML(a[0], a[1]) : a[0], p: 8 };
+      if (n.name === 'abs' || n.name === 'betrag') return { h: '<span class="bars">' + a[0] + '</span>', p: 9 };
       if (n.name === 'exp') return { h: 'e<sup>' + a[0] + '</sup>', p: 9 };
       return { h: '<span class="fnm">' + n.name + '</span>(' + a.join('; ') + ')', p: 9 };
     }
@@ -1116,6 +1245,15 @@ function antiEqual(g, ref, lo, hi) {
    Darstellung von Termen als HTML
    ============================================================ */
 function V(name) { return '<i>' + (name || 'x') + '</i>'; }
+/* Matrix / Vektor als Tabelle mit Klammern */
+function matHTML(rows) {
+  /* Die Klammern sind leere Elemente — gezeichnet werden sie ueber Raender in der CSS. */
+  let h = '<span class="mat"><span class="mbr"></span><span class="mgrid" style="grid-template-columns:repeat('
+    + rows[0].length + ',auto)">';
+  rows.forEach(r => r.forEach(c => { h += '<span class="mc">' + c + '</span>'; }));
+  return h + '</span><span class="mbr"></span></span>';
+}
+function vecHTML(col) { return matHTML(col.map(c => [c])); }
 function fracHTML(a, b) { return '<span class="frac"><span class="fn">' + a + '</span><span class="fd">' + b + '</span></span>'; }
 function sqrtHTML(inner, idx) {
   return '<span class="rt">' + (idx ? '<span class="rti">' + idx + '</span>' : '') +
@@ -1228,12 +1366,13 @@ function st(t, h) { return { t: t, h: h }; }
 const DIFF_NAME = ['sehr leicht', 'leicht', 'einfach', 'mittel', 'solide', 'fortgeschritten', 'schwer', 'sehr schwer', 'Profi', 'Meister'];
 
 /* ---------- Eingabefelder ---------- */
-const Fnum = (label, ph) => ({ type: 'num', label: label || '<i>x</i> =', ph: ph || 'Zahl, Bruch oder LaTeX' });
+const Fnum = (label, ph) => ({ type: 'num', label: label || '<i>x</i> =', ph: ph || 'z. B. 12  ·  -3/4  ·  0.25' });
 const Fset = (n, label) => ({ type: 'set', slots: n, label: label || 'Lösungen (leere Felder ignoriert)' });
 const Fcond = (rows, join, vn) => ({ type: 'cond', rows: rows, join: join || 'UND', vn: vn || 'x' });
-const Fexpr = (label, ph) => ({ type: 'expr', label: label, ph: ph || 'z. B. 3x^2-4x  oder  \\frac{1}{x}' });
+const Fexpr = (label, ph) => ({ type: 'expr', label: label, ph: ph || 'z. B. 3x^2 - 4x  ·  1/x  ·  sqrt(x)' });
 const Fmc = (opts, label) => ({ type: 'mc', options: opts, label: label || 'Antwort' });
 const FLAG_EMPTY = [{ key: 'empty', label: 'keine (reelle) Lösung' }];
+const Fmat = (rows, cols, label) => ({ type: 'mat', rows: rows, cols: cols, label: label || '' });
 
 /* ---------- Prüf-Funktionen ---------- */
 function tag(fn, k, data) { fn.__k = k; Object.assign(fn, data); return fn; }
@@ -1270,6 +1409,43 @@ function checkExpr(ref, opts) {
 }
 function checkAnti(ref, lo, hi) {
   return tag(function (vals) { const g = parseFn(vals[0]); return !!g && antiEqual(g, ref, lo, hi); }, 'anti', { __ref: ref, __lo: lo, __hi: hi });
+}
+/* Term in zwei Variablen (x, y) */
+function checkExpr2(ref, opts) {
+  return tag(function (vals) { const g = parseFn2(vals[0]); return !!g && fnEqual2(g, ref, opts); }, 'expr2', { __ref: ref, __opts: opts });
+}
+function checkExprs2(refs, opts) {
+  return tag(function (vals) {
+    for (let i = 0; i < refs.length; i++) {
+      const g = parseFn2(vals[i]);
+      if (!g || !fnEqual2(g, refs[i], opts)) return false;
+    }
+    return true;
+  }, 'exprs2', { __refs: refs, __opts: opts });
+}
+/* Matrix: zeilenweise Zahlen */
+function checkMat(rows, tol) {
+  const flat = []; rows.forEach(r => r.forEach(v => flat.push(v)));
+  return tag(function (vals) {
+    const got = vals[0] || [];
+    if (got.length !== flat.length) return false;
+    for (let i = 0; i < flat.length; i++) {
+      const p = parseNum(got[i]);
+      if (p === null || !close(p, flat[i], tol || 1e-6)) return false;
+    }
+    return true;
+  }, 'mat', { __sol: flat });
+}
+/* Mehrere Felder gemischter Art: [{k:'num',v:…}, {k:'mc',v:index}] */
+function checkParts(parts, tol) {
+  return tag(function (vals) {
+    for (let i = 0; i < parts.length; i++) {
+      const want = parts[i];
+      if (want.k === 'mc') { if (String(vals[i]) !== String(want.v)) return false; }
+      else { const p = parseNum(vals[i]); if (p === null || !close(p, want.v, tol || 1e-4)) return false; }
+    }
+    return true;
+  }, 'parts', { __parts: parts, __sol: parts.filter(p => p.k !== 'mc').map(p => p.v) });
 }
 function checkMulti(sols, tol) {
   return tag(function (vals) {
@@ -3045,7 +3221,7 @@ function genAbl(d, v) {
     return {
       promptHTML: '<span class="big">f(' + V() + ') = ' + sqrtHTML(polyHTML([aa, b])) + '</span>',
       subPrompt: 'Bestimme f′(x).',
-      fields: [Fexpr('f′(<i>x</i>) =', 'z. B. 2/(2\\sqrt{2x+3})')], check: checkExpr(df, { lo: Math.max(0.4, (-b / aa) + 0.5), hi: (-b / aa) + 3.5 }), _f: x => Math.sqrt(aa * x + b),
+      fields: [Fexpr('f′(<i>x</i>) =', 'z. B. 2/(2 sqrt(2x+3))')], check: checkExpr(df, { lo: Math.max(0.4, (-b / aa) + 0.5), hi: (-b / aa) + 3.5 }), _f: x => Math.sqrt(aa * x + b),
       solHTML: 'f′(' + V() + ') = ' + fracHTML(num(aa), '2' + sqrtHTML(polyHTML([aa, b]))),
       steps: [st('Als Potenz schreiben', 'f(x) = (' + polyHTML([aa, b]) + ')<sup>1/2</sup>'),
       st('Äußere Ableitung', fracHTML('1', '2') + '·(' + polyHTML([aa, b]) + ')<sup>−1/2</sup>'),
@@ -5213,6 +5389,1049 @@ function aufStep(d) {
 </script>
 <script>
 /* ============================================================
+   TEIL 8 — Mehrdimensionale Analysis · Lineare Algebra ·
+            Summen/Produkte · Ökonomische Funktionen
+   ============================================================ */
+
+const XY = { lo: 0.5, hi: 2.6 };
+function Y() { return '<i>y</i>'; }
+/* Monom a·x^m·y^n als HTML; Exponent 0/1 werden weggelassen */
+function monoXY(a, m, n, first) {
+  let body = '';
+  if (m) body += 'x' === 'x' ? (m === 1 ? V() : V() + '<sup>' + m + '</sup>') : '';
+  if (n) body += (n === 1 ? Y() : Y() + '<sup>' + n + '</sup>');
+  return coefHTML(a, body, first);
+}
+function fxyHTML(terms) {
+  let out = '', first = true;
+  terms.forEach(t => {
+    if (!t[0]) return;
+    out += monoXY(t[0], t[1], t[2], first); first = false;
+  });
+  return out || '0';
+}
+function fxyF(terms) {
+  return function (x, y) {
+    let s = 0;
+    terms.forEach(t => { s += t[0] * Math.pow(x, t[1]) * Math.pow(y, t[2]); });
+    return s;
+  };
+}
+function dXY(terms, wrt) {          /* wrt: 1 = nach x, 2 = nach y */
+  const out = [];
+  terms.forEach(t => {
+    const e = wrt === 1 ? t[1] : t[2];
+    if (!e) return;
+    out.push(wrt === 1 ? [t[0] * e, t[1] - 1, t[2]] : [t[0] * e, t[1], t[2] - 1]);
+  });
+  return out.length ? out : [[0, 0, 0]];
+}
+
+/* ============================================================
+   PARTIELLE ABLEITUNGEN
+   ============================================================ */
+topic({
+  id: 'partiell', group: 'Mehrdim. Analysis', name: 'Partielle Ableitungen', icon: 'i-t-partiell',
+  sub: 'Nach einer Variablen ableiten, die andere bleibt konstant.',
+  variants: [
+    { id: 'monom', name: 'Einzelnes Monom', desc: 'a·xᵐ·yⁿ nach x oder y ableiten.' },
+    { id: 'summe', name: 'Summe von Termen', desc: 'Term für Term ableiten.' },
+    { id: 'zweite', name: 'Zweite Ableitungen', desc: 'f_xx, f_yy und die gemischte f_xy.' },
+    { id: 'expln', name: 'e-Funktion & ln', desc: 'Kettenregel in einer Variablen.' },
+  ],
+  formulas: [
+    st('Grundidee', 'Beim Ableiten nach <i>x</i> ist <i>y</i> eine <b>Zahl</b> — und umgekehrt.'),
+    st('Monom', '∂/∂x (a·x<sup>m</sup>y<sup>n</sup>) = a·m·x<sup>m−1</sup>y<sup>n</sup>'),
+    st('Gemischte Ableitung', 'f<sub>xy</sub> = f<sub>yx</sub> (Satz von Schwarz) — die Reihenfolge ist egal.'),
+    st('e-Funktion', '∂/∂y e<sup>k·y</sup> = k·e<sup>k·y</sup> &nbsp;·&nbsp; ∂/∂x ln(x) = ' + fracHTML(1, V())),
+  ],
+  gen: function (d, v) { return genPartiell(d, v); }
+});
+
+function genPartiell(d, v) {
+  const R = d <= 3 ? 4 : (d <= 6 ? 7 : 10);
+  if (v === 'expln') {
+    const a = rnz(-R, R), k = rnz(-3, 3), m = ri(1, d <= 5 ? 2 : 3);
+    if (coin()) {
+      /* f = a·x^m·e^(k y), gesucht ∂f/∂y */
+      const ref = (x, y) => a * k * Math.pow(x, m) * Math.exp(k * y);
+      return {
+        promptHTML: '<span class="big">f(' + V() + ', ' + Y() + ') = ' + coefHTML(a, xpow(m), true)
+          + '·e<sup>' + coefHTML(k, Y(), true) + '</sup></span>',
+        fields: [Fexpr('∂f/∂' + Y() + ' =', 'z. B. 6x^2*e^(2y)')], check: checkExpr2(ref, XY),
+        solHTML: '∂f/∂' + Y() + ' = ' + coefHTML(a * k, xpow(m), true) + '·e<sup>' + coefHTML(k, Y(), true) + '</sup>',
+        steps: [
+          st('y ist die Variable', 'x<sup>' + m + '</sup> ist beim Ableiten nach y nur ein Vorfaktor.'),
+          st('Kettenregel', '∂/∂y e<sup>' + coefHTML(k, Y(), true) + '</sup> = ' + num(k) + '·e<sup>' + coefHTML(k, Y(), true) + '</sup>'),
+          st('Ergebnis', '<b>' + coefHTML(a * k, xpow(m), true) + '·e<sup>' + coefHTML(k, Y(), true) + '</sup></b>')
+        ]
+      };
+    }
+    /* f = a·ln(x)·y^n, gesucht ∂f/∂x */
+    const n = ri(1, 3);
+    const ref = (x, y) => a * Math.pow(y, n) / x;
+    return {
+      promptHTML: '<span class="big">f(' + V() + ', ' + Y() + ') = ' + coefLn(a, 0, V()) + '·' + pw(Y(), n) + '</span>',
+      fields: [Fexpr('∂f/∂' + V() + ' =', 'z. B. 3y^2/x')], check: checkExpr2(ref, XY),
+      solHTML: '∂f/∂' + V() + ' = ' + fracHTML(coefHTML(a, pw(Y(), n), true), V()),
+      steps: [
+        st('x ist die Variable', pw(Y(), n) + ' ist nur ein Vorfaktor.'),
+        st('Ableitung von ln', '∂/∂x ln(x) = ' + fracHTML(1, V())),
+        st('Ergebnis', '<b>' + fracHTML(coefHTML(a, pw(Y(), n), true), V()) + '</b>')
+      ]
+    };
+  }
+
+  if (v === 'zweite') {
+    const terms = [[rnz(-R, R), ri(2, 3), ri(1, 2)], [rnz(-R, R), 1, ri(2, 3)], [rnz(-R, R), ri(1, 2), 0]];
+    const kind = pick(['xx', 'yy', 'xy']);
+    const lab = { xx: 'f<sub>xx</sub>', yy: 'f<sub>yy</sub>', xy: 'f<sub>xy</sub>' }[kind];
+    const dd = kind === 'xx' ? dXY(dXY(terms, 1), 1)
+      : (kind === 'yy' ? dXY(dXY(terms, 2), 2) : dXY(dXY(terms, 1), 2));
+    const ref = fxyF(dd);
+    const via = kind === 'yy' ? dXY(terms, 2) : dXY(terms, 1);
+    return {
+      promptHTML: '<span class="big">f(' + V() + ', ' + Y() + ') = ' + fxyHTML(terms) + '</span>',
+      fields: [Fexpr(lab + ' =', 'z. B. 12xy^2')], check: checkExpr2(ref, XY),
+      solHTML: lab + ' = ' + fxyHTML(dd),
+      steps: [
+        st('Erste Ableitung', (kind === 'yy' ? 'f<sub>y</sub>' : 'f<sub>x</sub>') + ' = ' + fxyHTML(via)),
+        st('Noch einmal ableiten', 'jetzt nach ' + (kind === 'xx' ? 'x' : (kind === 'yy' ? 'y' : 'y')) + ': ' + fxyHTML(dd)),
+        st('Ergebnis', '<b>' + lab + ' = ' + fxyHTML(dd) + '</b>')
+      ]
+    };
+  }
+
+  if (v === 'summe') {
+    const terms = [[rnz(-R, R), ri(1, 3), ri(1, 2)], [rnz(-R, R), ri(1, 2), 0], [rnz(-R, R), 0, ri(1, 3)]];
+    const wrt = coin() ? 1 : 2;
+    const dd = dXY(terms, wrt);
+    const ref = fxyF(dd);
+    const lab = wrt === 1 ? '∂f/∂' + V() : '∂f/∂' + Y();
+    return {
+      plot: { kind: 'contour', f: fxyF(terms), grad: { x: 1.1, y: 1.3 }, iso: true, r: 2.6, highlight: false },
+      promptHTML: '<span class="big">f(' + V() + ', ' + Y() + ') = ' + fxyHTML(terms) + '</span>',
+      fields: [Fexpr(lab + ' =', 'z. B. 6xy + 4')], check: checkExpr2(ref, XY),
+      solHTML: lab + ' = ' + fxyHTML(dd),
+      steps: [
+        st('Term für Term', 'Jeder Summand wird einzeln abgeleitet; ' + (wrt === 1 ? 'y' : 'x') + ' bleibt konstant.'),
+        st('Konstante Summanden', 'Terme ohne ' + (wrt === 1 ? 'x' : 'y') + ' fallen weg.'),
+        st('Ergebnis', '<b>' + lab + ' = ' + fxyHTML(dd) + '</b>')
+      ]
+    };
+  }
+
+  /* monom */
+  const a = rnz(-R, R), m = ri(1, d <= 4 ? 3 : 4), n = ri(1, d <= 4 ? 3 : 4);
+  const wrt = coin() ? 1 : 2;
+  const dd = dXY([[a, m, n]], wrt);
+  const ref = fxyF(dd);
+  const lab = wrt === 1 ? '∂f/∂' + V() : '∂f/∂' + Y();
+  return {
+    plot: { kind: 'contour', f: fxyF([[a, m, n]]), grad: { x: 1.2, y: 1.1 }, iso: true, r: 2.4, highlight: false },
+    promptHTML: '<span class="big">f(' + V() + ', ' + Y() + ') = ' + fxyHTML([[a, m, n]]) + '</span>',
+    fields: [Fexpr(lab + ' =', 'z. B. 6x*y^3')], check: checkExpr2(ref, XY),
+    solHTML: lab + ' = ' + fxyHTML(dd),
+    steps: [
+      st(wrt === 1 ? 'y festhalten' : 'x festhalten',
+        (wrt === 1 ? pw(Y(), n) : xpow(m)) + ' ist beim Ableiten nur ein Vorfaktor.'),
+      st('Potenzregel', 'Exponent nach vorne, dann um 1 verringern: ' + (wrt === 1 ? m : n) + '·'
+        + fxyHTML([[a, wrt === 1 ? m - 1 : m, wrt === 1 ? n : n - 1]])),
+      st('Ergebnis', '<b>' + lab + ' = ' + fxyHTML(dd) + '</b>')
+    ]
+  };
+}
+
+/* ============================================================
+   GRADIENT & HESSE-MATRIX
+   ============================================================ */
+topic({
+  id: 'gradient', group: 'Mehrdim. Analysis', name: 'Gradient & Hesse', icon: 'i-t-gradient',
+  sub: 'Alle partiellen Ableitungen erster und zweiter Ordnung.',
+  variants: [
+    { id: 'grad', name: 'Gradient', desc: 'Beide partiellen Ableitungen angeben.' },
+    { id: 'punkt', name: 'Gradient im Punkt', desc: 'Erst ableiten, dann einsetzen.' },
+    { id: 'hesse', name: 'Hesse-Matrix', desc: 'Die vier zweiten Ableitungen im Punkt.' },
+  ],
+  formulas: [
+    st('Gradient', '∇f = ' + vecHTML(['f<sub>x</sub>', 'f<sub>y</sub>'])),
+    st('Hesse-Matrix', 'H = ' + matHTML([['f<sub>xx</sub>', 'f<sub>xy</sub>'], ['f<sub>yx</sub>', 'f<sub>yy</sub>']])
+      + ' — symmetrisch, denn f<sub>xy</sub> = f<sub>yx</sub>.'),
+    st('Bedeutung', 'Der Gradient zeigt in Richtung des steilsten Anstiegs; H beschreibt die Krümmung.'),
+  ],
+  gen: function (d, v) { return genGradient(d, v); }
+});
+
+function genGradient(d, v) {
+  const R = d <= 3 ? 4 : (d <= 6 ? 6 : 9);
+  const terms = [[rnz(-R, R), ri(2, 3), 0], [rnz(-R, R), 1, 1], [rnz(-R, R), 0, ri(2, 3)], [rnz(-R, R), 1, 0]];
+  const fx = dXY(terms, 1), fy = dXY(terms, 2);
+  const head = '<span class="big">f(' + V() + ', ' + Y() + ') = ' + fxyHTML(terms) + '</span>';
+
+  if (v === 'hesse') {
+    const x0 = rnz(-3, 3), y0 = rnz(-3, 3);
+    const fxx = dXY(fx, 1), fxy = dXY(fx, 2), fyy = dXY(fy, 2);
+    const H = [[fxyF(fxx)(x0, y0), fxyF(fxy)(x0, y0)], [fxyF(fxy)(x0, y0), fxyF(fyy)(x0, y0)]];
+    return {
+      plot: { kind: 'contour', f: fxyF(terms), point: { x: x0, y: y0 }, iso: true, r: 3, pointLabel: 'Punkt P' },
+      promptHTML: head + '<p class="qtext">Hesse-Matrix an der Stelle P(' + num(x0) + ' | ' + num(y0) + ')</p>',
+      fields: [Fmat(2, 2, 'H(' + num(x0) + ' | ' + num(y0) + ')')], check: checkMat(H),
+      solHTML: 'H = ' + matHTML([[num(H[0][0]), num(H[0][1])], [num(H[1][0]), num(H[1][1])]]),
+      steps: [
+        st('Erste Ableitungen', 'f<sub>x</sub> = ' + fxyHTML(fx) + ' &nbsp;·&nbsp; f<sub>y</sub> = ' + fxyHTML(fy)),
+        st('Zweite Ableitungen', 'f<sub>xx</sub> = ' + fxyHTML(fxx) + ' &nbsp;·&nbsp; f<sub>xy</sub> = ' + fxyHTML(fxy)
+          + ' &nbsp;·&nbsp; f<sub>yy</sub> = ' + fxyHTML(fyy)),
+        st('Einsetzen', 'x = ' + num(x0) + ', y = ' + num(y0)),
+        st('Ergebnis', '<b>H = ' + matHTML([[num(H[0][0]), num(H[0][1])], [num(H[1][0]), num(H[1][1])]]) + '</b>')
+      ]
+    };
+  }
+
+  if (v === 'punkt') {
+    const x0 = rnz(-3, 3), y0 = rnz(-3, 3);
+    const gx = fxyF(fx)(x0, y0), gy = fxyF(fy)(x0, y0);
+    return {
+      plot: { kind: 'contour', f: fxyF(terms), grad: { x: x0, y: y0 }, point: { x: x0, y: y0 },
+        iso: true, r: 3, cxy: [x0, y0],
+        pointLabel: 'Punkt P', levelLabel: 'Höhenlinie durch P' },
+      promptHTML: head + '<p class="qtext">Gradient an der Stelle P(' + num(x0) + ' | ' + num(y0) + ')</p>',
+      fields: [Fnum('f<sub>x</sub>(P) =', 'Zahl'), Fnum('f<sub>y</sub>(P) =', 'Zahl')],
+      check: checkMulti([gx, gy]),
+      solHTML: '∇f(P) = ' + vecHTML([num(gx), num(gy)]),
+      steps: [
+        st('Ableiten', 'f<sub>x</sub> = ' + fxyHTML(fx) + ' &nbsp;·&nbsp; f<sub>y</sub> = ' + fxyHTML(fy)),
+        st('Einsetzen', 'x = ' + num(x0) + ', y = ' + num(y0)),
+        st('Ergebnis', '<b>∇f(P) = ' + vecHTML([num(gx), num(gy)]) + '</b>')
+      ]
+    };
+  }
+
+  /* grad */
+  return {
+    plot: { kind: 'contour', f: fxyF(terms), grad: { x: 1.3, y: 1.2 }, iso: true, r: 2.8, highlight: false },
+    promptHTML: head,
+    fields: [Fexpr('f<sub>x</sub> =', 'z. B. 6x^2 + 2y'), Fexpr('f<sub>y</sub> =', 'z. B. 2x - 3y^2')],
+    check: checkExprs2([fxyF(fx), fxyF(fy)], XY),
+    solHTML: '∇f = ' + vecHTML([fxyHTML(fx), fxyHTML(fy)]),
+    steps: [
+      st('Nach x ableiten', 'y konstant halten: f<sub>x</sub> = ' + fxyHTML(fx)),
+      st('Nach y ableiten', 'x konstant halten: f<sub>y</sub> = ' + fxyHTML(fy)),
+      st('Ergebnis', '<b>∇f = ' + vecHTML([fxyHTML(fx), fxyHTML(fy)]) + '</b>')
+    ]
+  };
+}
+
+/* ============================================================
+   EXTREMWERTE OHNE NEBENBEDINGUNG
+   ============================================================ */
+topic({
+  id: 'extrem2d', group: 'Mehrdim. Analysis', name: 'Extrema (2 Variablen)', icon: 'i-t-extrem2d',
+  sub: 'Kritische Stellen finden und mit der Hesse-Matrix einordnen.',
+  variants: [
+    { id: 'kritisch', name: 'Kritische Stelle', desc: 'Beide partiellen Ableitungen null setzen.' },
+    { id: 'art', name: 'Art bestimmen', desc: 'Minimum, Maximum oder Sattelpunkt?' },
+    { id: 'beides', name: 'Stelle & Art', desc: 'Erst die Stelle, dann die Einordnung.' },
+  ],
+  formulas: [
+    st('Notwendig', 'f<sub>x</sub> = 0 <i>und</i> f<sub>y</sub> = 0 → kritische Stelle.'),
+    st('Hinreichend', 'D = f<sub>xx</sub>·f<sub>yy</sub> − (f<sub>xy</sub>)²'),
+    st('Einordnung', 'D &gt; 0 und f<sub>xx</sub> &gt; 0 → <b>Minimum</b><br>D &gt; 0 und f<sub>xx</sub> &lt; 0 → <b>Maximum</b><br>D &lt; 0 → <b>Sattelpunkt</b>'),
+  ],
+  gen: function (d, v) { return genExtrem2d(d, v); }
+});
+
+const ART = ['Minimum', 'Maximum', 'Sattelpunkt'];
+function genExtrem2d(d, v) {
+  /* f = a x² + b y² + c xy + d x + e y  mit ganzzahliger kritischer Stelle */
+  const a = rnz(-3, 3), b = rnz(-3, 3);
+  let c = d <= 4 ? 0 : rnz(-3, 3);
+  const D = 4 * a * b - c * c;
+  if (D === 0) return genExtrem2d(d, v);
+  const x0 = rnz(-4, 4), y0 = rnz(-4, 4);
+  /* f_x = 2a x + c y + p = 0 und f_y = 2b y + c x + q = 0 */
+  const p = -(2 * a * x0 + c * y0), q = -(2 * b * y0 + c * x0);
+  const terms = [[a, 2, 0], [b, 0, 2], [c, 1, 1], [p, 1, 0], [q, 0, 1]];
+  const fx = dXY(terms, 1), fy = dXY(terms, 2);
+  const art = D < 0 ? 2 : (a > 0 ? 0 : 1);
+  const head = '<span class="big">f(' + V() + ', ' + Y() + ') = ' + fxyHTML(terms) + '</span>';
+  const stepsBase = [
+    st('Ableitungen null setzen', 'f<sub>x</sub> = ' + fxyHTML(fx) + ' = 0 &nbsp;·&nbsp; f<sub>y</sub> = ' + fxyHTML(fy) + ' = 0'),
+    st('Lösen', 'x = ' + num(x0) + ', y = ' + num(y0)),
+    st('Zweite Ableitungen', 'f<sub>xx</sub> = ' + num(2 * a) + ' , f<sub>yy</sub> = ' + num(2 * b) + ' , f<sub>xy</sub> = ' + num(c)),
+    st('Kriterium', 'D = ' + num(2 * a) + '·' + num(2 * b) + ' − (' + num(c) + ')² = <b>' + num(D) + '</b> → ' + ART[art])
+  ];
+
+  const plot2 = { kind: 'contour', f: fxyF(terms), point: { x: x0, y: y0 },
+    iso: true, r: Math.max(2.6, Math.abs(y0) + 2.2),
+    pointLabel: 'kritische Stelle', levelLabel: 'Höhenlinie durch die Stelle' };
+  if (v === 'art') {
+    return {
+      plot: plot2,
+      promptHTML: head + '<p class="qtext">Die kritische Stelle liegt bei P(' + num(x0) + ' | ' + num(y0) + '). Welche Art?</p>',
+      fields: [Fmc(ART, 'Art der Stelle')], check: checkMC(art),
+      solHTML: ART[art] + ' (D = ' + num(D) + ')', steps: stepsBase
+    };
+  }
+  if (v === 'beides') {
+    return {
+      plot: plot2,
+      promptHTML: head,
+      fields: [Fnum('<i>x</i><sub>0</sub> =', 'Zahl'), Fnum('<i>y</i><sub>0</sub> =', 'Zahl'), Fmc(ART, 'Art der Stelle')],
+      check: checkParts([{ k: 'num', v: x0 }, { k: 'num', v: y0 }, { k: 'mc', v: art }]),
+      solHTML: 'P(' + num(x0) + ' | ' + num(y0) + ') — ' + ART[art], steps: stepsBase
+    };
+  }
+  return {
+    plot: plot2,
+    promptHTML: head,
+    fields: [Fnum('<i>x</i><sub>0</sub> =', 'Zahl'), Fnum('<i>y</i><sub>0</sub> =', 'Zahl')],
+    check: checkMulti([x0, y0]),
+    solHTML: 'P(' + num(x0) + ' | ' + num(y0) + ')', steps: stepsBase
+  };
+}
+
+/* ============================================================
+   LAGRANGE — Extrema mit Nebenbedingung
+   ============================================================ */
+topic({
+  id: 'lagrange', group: 'Mehrdim. Analysis', name: 'Lagrange-Optimierung', icon: 'i-t-lagrange',
+  sub: 'Nutzen maximieren, Kosten minimieren — mit Nebenbedingung.',
+  variants: [
+    { id: 'cobb', name: 'Nutzenmaximierung', desc: 'Cobb-Douglas mit Budgetgeraden.' },
+    { id: 'lambda', name: 'Multiplikator λ', desc: 'Der Schattenpreis des Budgets.' },
+    { id: 'kosten', name: 'Kostenminimierung', desc: 'Vorgegebene Menge zu kleinsten Kosten.' },
+  ],
+  formulas: [
+    st('Ansatz', 'L(x, y, λ) = f(x, y) − λ·(g(x, y) − c)'),
+    st('Bedingungen', 'L<sub>x</sub> = 0 , L<sub>y</sub> = 0 , L<sub>λ</sub> = 0 (die Nebenbedingung selbst)'),
+    st('Cobb-Douglas', 'Für U = x<sup>a</sup>y<sup>b</sup> und p<sub>1</sub>x + p<sub>2</sub>y = m gilt<br>x* = '
+      + fracHTML('a', 'a+b') + '·' + fracHTML('m', 'p<sub>1</sub>') + ' &nbsp;·&nbsp; y* = '
+      + fracHTML('b', 'a+b') + '·' + fracHTML('m', 'p<sub>2</sub>')),
+    st('Bedeutung von λ', 'λ gibt an, um wie viel der Zielwert steigt, wenn das Budget um 1 wächst.'),
+  ],
+  gen: function (d, v) { return genLagrange(d, v); }
+});
+
+function genLagrange(d, v) {
+  /* Zahlen so waehlen, dass x* und y* glatt werden */
+  const a = ri(1, 3), b = ri(1, 3);
+  const S = a + b;
+  const p1 = pick([1, 2, 4, 5, 10]), p2 = pick([1, 2, 4, 5, 10]);
+  const k = ri(2, d <= 4 ? 6 : 12);
+  const m = S * k * Math.max(p1, p2);           /* m/(S·p) bleibt ganzzahlig */
+  const xs = a * m / (S * p1), ys = b * m / (S * p2);
+  if (!isNice(xs) || !isNice(ys)) return genLagrange(d, v);
+
+  const uHTML = 'U(' + V() + ', ' + Y() + ') = ' + pw(V(), a) + '·' + pw(Y(), b);
+  const nbHTML = coefHTML(p1, V(), true) + coefHTML(p2, Y(), false) + ' = ' + m;
+
+  if (v === 'kosten') {
+    /* Kosten minimieren bei vorgegebenem Nutzenniveau: gleiche Struktur, Ausgabe x*, y* */
+    const q = ri(2, d <= 5 ? 5 : 9);
+    const xk = q * p2, yk = q * p1;             /* Tangentialbedingung a/b · y/x = p1/p2 → hier a=b=1 */
+    return {
+      promptHTML: '<span class="big">Kosten K = ' + coefHTML(p1, V(), true) + coefHTML(p2, Y(), false)
+        + ' minimieren<br>unter ' + V() + '·' + Y() + ' = ' + (xk * yk) + '</span>', wordy: true,
+      fields: [Fnum('<i>x</i>* =', 'Menge'), Fnum('<i>y</i>* =', 'Menge')],
+      check: checkMulti([xk, yk]),
+      solHTML: V() + '* = ' + valHTML(xk) + ' , ' + Y() + '* = ' + valHTML(yk) + ' , K = ' + valHTML(p1 * xk + p2 * yk),
+      steps: [
+        st('Ansatz', 'L = ' + coefHTML(p1, V(), true) + coefHTML(p2, Y(), false) + ' − λ·(' + V() + Y() + ' − ' + (xk * yk) + ')'),
+        st('Ableiten', 'L<sub>x</sub> = ' + p1 + ' − λ' + Y() + ' = 0 &nbsp;·&nbsp; L<sub>y</sub> = ' + p2 + ' − λ' + V() + ' = 0'),
+        st('Verhältnis', fracHTML(p1, p2) + ' = ' + fracHTML(Y(), V()) + ' → ' + Y() + ' = ' + fracHTML(p1, p2) + '·' + V()),
+        st('Einsetzen', V() + '·' + fracHTML(p1, p2) + V() + ' = ' + (xk * yk) + ' → ' + V() + ' = ' + num(xk)),
+        st('Ergebnis', '<b>' + V() + '* = ' + valHTML(xk) + ' , ' + Y() + '* = ' + valHTML(yk) + '</b>, Kosten ' + valHTML(p1 * xk + p2 * yk))
+      ]
+    };
+  }
+
+  const steps = [
+    st('Ansatz', 'L = ' + pw(V(), a) + pw(Y(), b) + ' − λ·(' + coefHTML(p1, V(), true) + coefHTML(p2, Y(), false) + ' − ' + m + ')'),
+    st('Optimalitätsbedingung', fracHTML('a·' + Y(), 'b·' + V()) + ' = ' + fracHTML('p<sub>1</sub>', 'p<sub>2</sub>')
+      + ' → ' + Y() + ' = ' + fracHTML(b + '·' + p1, a + '·' + p2) + '·' + V()),
+    st('In die Nebenbedingung', coefHTML(p1, V(), true) + ' + ' + p2 + '·' + fracHTML(b + '·' + p1, a + '·' + p2) + V() + ' = ' + m),
+    st('Auflösen', V() + '* = ' + fracHTML(a, S) + '·' + fracHTML(m, p1) + ' = <b>' + valHTML(xs) + '</b>'),
+    st('Zweite Variable', Y() + '* = ' + fracHTML(b, S) + '·' + fracHTML(m, p2) + ' = <b>' + valHTML(ys) + '</b>')
+  ];
+
+  const plotL = { kind: 'contour', f: (x, y) => (x > 0 && y > 0 ? Math.pow(x, a) * Math.pow(y, b) : NaN),
+    point: { x: xs, y: ys }, line: { a: p1, b: p2, c: m },
+    pointLabel: 'Optimum (x*, y*)', lineLabel: 'Budgetgerade', levelLabel: 'Indifferenzkurve',
+    box: [-(m / p1) * 0.12, (m / p1) * 1.18, -(m / p2) * 0.12, (m / p2) * 1.18] };
+  if (v === 'lambda') {
+    /* λ = a/(p1·x*) · U(x*,y*)  → aus L_x = 0: a x^(a-1) y^b = λ p1 */
+    const U = Math.pow(xs, a) * Math.pow(ys, b);
+    const lam = a * U / (xs * p1);
+    if (!isNice(lam)) return genLagrange(d, v);
+    return {
+      plot: plotL,
+      promptHTML: '<span class="big">' + uHTML + '<br>Nebenbedingung: ' + nbHTML + '</span>', wordy: true,
+      fields: [Fnum('<i>x</i>* =', 'Menge'), Fnum('<i>y</i>* =', 'Menge'), Fnum('λ =', 'Multiplikator')],
+      check: checkMulti([xs, ys, lam], 1e-3),
+      solHTML: V() + '* = ' + valHTML(xs) + ' , ' + Y() + '* = ' + valHTML(ys) + ' , λ = ' + fmt(lam, 4),
+      steps: steps.concat([
+        st('λ bestimmen', 'aus L<sub>x</sub> = 0: λ = ' + fracHTML('a·U', 'p<sub>1</sub>·' + V() + '*') + ' = <b>' + fmt(lam, 4) + '</b>'),
+        st('Bedeutung', 'Ein Euro mehr Budget hebt den Nutzen um etwa ' + fmt(lam, 4) + '.')
+      ])
+    };
+  }
+
+  return {
+    plot: plotL,
+    promptHTML: '<span class="big">' + uHTML + '<br>Nebenbedingung: ' + nbHTML + '</span>', wordy: true,
+    fields: [Fnum('<i>x</i>* =', 'Menge'), Fnum('<i>y</i>* =', 'Menge')],
+    check: checkMulti([xs, ys]),
+    solHTML: V() + '* = ' + valHTML(xs) + ' , ' + Y() + '* = ' + valHTML(ys),
+    steps: steps
+  };
+}
+
+/* ============================================================
+   MATRIZEN — Rechnen
+   ============================================================ */
+function randMat(r, c, lo, hi) {
+  const m = [];
+  for (let i = 0; i < r; i++) { const row = []; for (let j = 0; j < c; j++) row.push(ri(lo, hi)); m.push(row); }
+  return m;
+}
+function mapMat(m, f) { return m.map((r, i) => r.map((v, j) => f(v, i, j))); }
+function numMat(m) { return mapMat(m, v => num(v)); }
+function matMul(A, B) {
+  const out = [];
+  for (let i = 0; i < A.length; i++) {
+    const row = [];
+    for (let j = 0; j < B[0].length; j++) {
+      let s = 0; for (let k = 0; k < B.length; k++) s += A[i][k] * B[k][j];
+      row.push(s);
+    }
+    out.push(row);
+  }
+  return out;
+}
+function transp(A) { return A[0].map((_, j) => A.map(r => r[j])); }
+function det2(A) { return A[0][0] * A[1][1] - A[0][1] * A[1][0]; }
+function det3(A) {
+  return A[0][0] * (A[1][1] * A[2][2] - A[1][2] * A[2][1])
+    - A[0][1] * (A[1][0] * A[2][2] - A[1][2] * A[2][0])
+    + A[0][2] * (A[1][0] * A[2][1] - A[1][1] * A[2][0]);
+}
+
+topic({
+  id: 'matrix', group: 'Lineare Algebra', name: 'Matrizen-Rechnung', icon: 'i-t-matrix',
+  sub: 'Addieren, multiplizieren, transponieren.',
+  variants: [
+    { id: 'add', name: 'Addition', desc: 'Eintrag für Eintrag addieren.' },
+    { id: 'skalar', name: 'Mit Zahl malnehmen', desc: 'Jeden Eintrag mit k multiplizieren.' },
+    { id: 'transp', name: 'Transponieren', desc: 'Zeilen und Spalten tauschen.' },
+    { id: 'mult', name: 'Multiplikation', desc: 'Zeile mal Spalte.' },
+  ],
+  formulas: [
+    st('Addition', 'Nur bei gleichem Format — Eintrag für Eintrag.'),
+    st('Multiplikation', '(A·B)<sub>ij</sub> = Zeile <i>i</i> von A · Spalte <i>j</i> von B. Spaltenzahl von A = Zeilenzahl von B.'),
+    st('Transponieren', '(A<sup>T</sup>)<sub>ij</sub> = A<sub>ji</sub> — die Matrix wird an der Diagonale gespiegelt.'),
+    st('Achtung', 'A·B ist im Allgemeinen <b>nicht</b> gleich B·A.'),
+  ],
+  gen: function (d, v) { return genMatrix(d, v); }
+});
+
+function genMatrix(d, v) {
+  const R = d <= 3 ? 5 : (d <= 6 ? 9 : 12);
+  const n = d <= 5 ? 2 : (coin() ? 2 : 3);
+
+  if (v === 'transp') {
+    const r = d <= 4 ? 2 : ri(2, 3), c = d <= 4 ? 3 : ri(2, 3);
+    const A = randMat(r, c, -R, R);
+    const T = transp(A);
+    return {
+      promptHTML: '<span class="big">A = ' + matHTML(numMat(A)) + '</span><p class="qtext">Gesucht: A<sup>T</sup></p>',
+      fields: [Fmat(c, r, 'A<sup>T</sup>')], check: checkMat(T),
+      solHTML: 'A<sup>T</sup> = ' + matHTML(numMat(T)),
+      steps: [
+        st('Regel', 'Die erste Zeile von A wird zur ersten Spalte von A<sup>T</sup>.'),
+        st('Format', r + '×' + c + ' wird zu ' + c + '×' + r + '.'),
+        st('Ergebnis', '<b>' + matHTML(numMat(T)) + '</b>')
+      ]
+    };
+  }
+
+  if (v === 'skalar') {
+    const A = randMat(n, n, -R, R), k = rnz(-5, 5);
+    const K = mapMat(A, x => k * x);
+    return {
+      promptHTML: '<span class="big">' + num(k) + ' · ' + matHTML(numMat(A)) + '</span>',
+      fields: [Fmat(n, n, 'Ergebnis')], check: checkMat(K),
+      solHTML: matHTML(numMat(K)),
+      steps: [
+        st('Regel', 'Jeder einzelne Eintrag wird mit ' + num(k) + ' multipliziert.'),
+        st('Ergebnis', '<b>' + matHTML(numMat(K)) + '</b>')
+      ]
+    };
+  }
+
+  if (v === 'mult') {
+    const A = randMat(n, n, d <= 5 ? -4 : -7, d <= 5 ? 4 : 7);
+    const B = randMat(n, n, d <= 5 ? -4 : -7, d <= 5 ? 4 : 7);
+    const P = matMul(A, B);
+    return {
+      promptHTML: '<span class="big">' + matHTML(numMat(A)) + ' · ' + matHTML(numMat(B)) + '</span>',
+      fields: [Fmat(n, n, 'A · B')], check: checkMat(P),
+      solHTML: matHTML(numMat(P)),
+      steps: [
+        st('Regel', 'Eintrag oben links = 1. Zeile von A mal 1. Spalte von B.'),
+        st('Beispiel', '(' + A[0].map(num).join(' ; ') + ') · (' + B.map(r => num(r[0])).join(' ; ') + ') = '
+          + A[0].map((x, k2) => num(x) + '·' + num(B[k2][0])).join(' + ') + ' = ' + num(P[0][0])),
+        st('Ergebnis', '<b>' + matHTML(numMat(P)) + '</b>')
+      ]
+    };
+  }
+
+  /* add */
+  const A = randMat(n, n, -R, R), B = randMat(n, n, -R, R);
+  const minus = d > 4 && coin();
+  const S = mapMat(A, (x, i, j) => minus ? x - B[i][j] : x + B[i][j]);
+  return {
+    promptHTML: '<span class="big">' + matHTML(numMat(A)) + (minus ? ' <span class="op">−</span> ' : ' <span class="op">+</span> ')
+      + matHTML(numMat(B)) + '</span>',
+    fields: [Fmat(n, n, 'Ergebnis')], check: checkMat(S),
+    solHTML: matHTML(numMat(S)),
+    steps: [
+      st('Regel', 'Gleiche Positionen werden ' + (minus ? 'subtrahiert' : 'addiert') + '.'),
+      st('Erster Eintrag', num(A[0][0]) + (minus ? ' − ' : ' + ') + num(B[0][0]) + ' = ' + num(S[0][0])),
+      st('Ergebnis', '<b>' + matHTML(numMat(S)) + '</b>')
+    ]
+  };
+}
+
+/* ============================================================
+   DETERMINANTEN & INVERSE
+   ============================================================ */
+topic({
+  id: 'determinante', group: 'Lineare Algebra', name: 'Determinante & Inverse', icon: 'i-t-det',
+  sub: 'Determinanten von 2×2 und 3×3, Inverse einer 2×2.',
+  variants: [
+    { id: 'det2', name: 'Determinante 2×2', desc: 'ad − bc.' },
+    { id: 'det3', name: 'Determinante 3×3', desc: 'Regel von Sarrus.' },
+    { id: 'inv', name: 'Inverse 2×2', desc: 'Tauschen, Vorzeichen, durch die Determinante.' },
+    { id: 'regulaer', name: 'Invertierbar?', desc: 'Determinante null oder nicht.' },
+  ],
+  formulas: [
+    st('2×2', 'det ' + matHTML([['a', 'b'], ['c', 'd']]) + ' = a·d − b·c'),
+    st('Sarrus (3×3)', 'Die ersten beiden Spalten rechts anhängen, dann drei Diagonalen nach rechts unten addieren und drei nach rechts oben abziehen.'),
+    st('Inverse 2×2', 'A<sup>−1</sup> = ' + fracHTML('1', 'det A') + '·' + matHTML([['d', '−b'], ['−c', 'a']])),
+    st('Invertierbar', 'Genau dann, wenn det A ≠ 0.'),
+  ],
+  gen: function (d, v) { return genDet(d, v); }
+});
+
+function genDet(d, v) {
+  const R = d <= 3 ? 5 : (d <= 6 ? 8 : 12);
+
+  if (v === 'det3') {
+    const A = randMat(3, 3, d <= 6 ? -4 : -7, d <= 6 ? 4 : 7);
+    const D = det3(A);
+    return {
+      promptHTML: '<span class="big">det ' + matHTML(numMat(A)) + '</span>',
+      fields: [Fnum('det A =', 'Zahl')], check: checkNum(D),
+      solHTML: 'det A = ' + num(D),
+      steps: [
+        st('Entwicklung nach der 1. Zeile', num(A[0][0]) + '·det' + matHTML([[num(A[1][1]), num(A[1][2])], [num(A[2][1]), num(A[2][2])]])
+          + ' − ' + num(A[0][1]) + '·det' + matHTML([[num(A[1][0]), num(A[1][2])], [num(A[2][0]), num(A[2][2])]])
+          + ' + ' + num(A[0][2]) + '·det' + matHTML([[num(A[1][0]), num(A[1][1])], [num(A[2][0]), num(A[2][1])]])),
+        st('Unterdeterminanten', num(A[1][1] * A[2][2] - A[1][2] * A[2][1]) + ' , ' + num(A[1][0] * A[2][2] - A[1][2] * A[2][0])
+          + ' , ' + num(A[1][0] * A[2][1] - A[1][1] * A[2][0])),
+        st('Ergebnis', 'det A = <b>' + num(D) + '</b>')
+      ]
+    };
+  }
+
+  if (v === 'inv') {
+    /* Determinante klein halten, damit die Eintraege glatt bleiben */
+    let A, D, tries = 0;
+    do { A = randMat(2, 2, -R, R); D = det2(A); tries++; }
+    while ((D === 0 || !isNice(A[1][1] / D) || !isNice(A[0][0] / D) || !isNice(A[0][1] / D) || !isNice(A[1][0] / D)) && tries < 400);
+    if (D === 0) return genDet(d, 'det2');
+    const I = [[A[1][1] / D, -A[0][1] / D], [-A[1][0] / D, A[0][0] / D]];
+    return {
+      promptHTML: '<span class="big">A = ' + matHTML(numMat(A)) + '</span><p class="qtext">Gesucht: A<sup>−1</sup></p>',
+      fields: [Fmat(2, 2, 'A<sup>−1</sup>')], check: checkMat(I),
+      solHTML: 'A<sup>−1</sup> = ' + matHTML(I.map(r => r.map(valHTML))),
+      steps: [
+        st('Determinante', 'det A = ' + num(A[0][0]) + '·' + num(A[1][1]) + ' − ' + num(A[0][1]) + '·' + num(A[1][0]) + ' = <b>' + num(D) + '</b>'),
+        st('Umstellen', 'Hauptdiagonale tauschen, Nebendiagonale mit −1: ' + matHTML([[num(A[1][1]), num(-A[0][1])], [num(-A[1][0]), num(A[0][0])]])),
+        st('Durch die Determinante', 'A<sup>−1</sup> = ' + fracHTML(1, num(D)) + '·' + matHTML([[num(A[1][1]), num(-A[0][1])], [num(-A[1][0]), num(A[0][0])]])),
+        st('Ergebnis', '<b>' + matHTML(I.map(r => r.map(valHTML))) + '</b>')
+      ]
+    };
+  }
+
+  if (v === 'regulaer') {
+    const sing = coin();
+    let A;
+    if (sing) { const r1 = [rnz(-5, 5), rnz(-5, 5)]; let k = rnz(-4, 4); if (k === 1) k = 2; A = [r1, [r1[0] * k, r1[1] * k]]; }
+    else { do { A = randMat(2, 2, -R, R); } while (det2(A) === 0); }
+    const D = det2(A);
+    const opts = ['Ja, sie ist invertierbar', 'Nein, det A = 0'];
+    return {
+      promptHTML: '<span class="big">A = ' + matHTML(numMat(A)) + '</span><p class="qtext">Ist A invertierbar?</p>',
+      fields: [Fmc(opts, 'Antwort wählen')], check: checkMC(D === 0 ? 1 : 0),
+      solHTML: 'det A = ' + num(D) + ' → ' + (D === 0 ? 'nicht invertierbar' : 'invertierbar'),
+      steps: [
+        st('Determinante', num(A[0][0]) + '·' + num(A[1][1]) + ' − ' + num(A[0][1]) + '·' + num(A[1][0]) + ' = ' + num(D)),
+        st('Kriterium', 'det A ≠ 0 → invertierbar; det A = 0 → nicht invertierbar.'),
+        st('Ergebnis', '<b>' + (D === 0 ? 'nicht invertierbar' : 'invertierbar') + '</b>')
+      ]
+    };
+  }
+
+  /* det2 */
+  const A = randMat(2, 2, -R, R);
+  const D = det2(A);
+  return {
+    promptHTML: '<span class="big">det ' + matHTML(numMat(A)) + '</span>',
+    fields: [Fnum('det A =', 'Zahl')], check: checkNum(D),
+    solHTML: 'det A = ' + num(D),
+    steps: [
+      st('Formel', 'a·d − b·c'),
+      st('Einsetzen', num(A[0][0]) + '·' + num(A[1][1]) + ' − ' + num(A[0][1]) + '·' + num(A[1][0])
+        + ' = ' + num(A[0][0] * A[1][1]) + ' − ' + num(A[0][1] * A[1][0])),
+      st('Ergebnis', 'det A = <b>' + num(D) + '</b>')
+    ]
+  };
+}
+
+/* ============================================================
+   GAUSS-VERFAHREN
+   ============================================================ */
+topic({
+  id: 'gauss', group: 'Lineare Algebra', name: 'Gauß-Verfahren', icon: 'i-t-gauss',
+  sub: 'Lineare Gleichungssysteme mit drei Unbekannten.',
+  variants: [
+    { id: 'zwei', name: 'Zwei Gleichungen', desc: 'Einstieg mit zwei Unbekannten.' },
+    { id: 'drei', name: 'Drei Gleichungen', desc: 'Stufenform herstellen, dann rückwärts einsetzen.' },
+    { id: 'art', name: 'Lösbarkeit', desc: 'Eindeutig, keine oder unendlich viele Lösungen?' },
+  ],
+  formulas: [
+    st('Ziel', 'Durch Zeilenumformungen eine Stufenform erzeugen, dann von unten nach oben einsetzen.'),
+    st('Erlaubt', 'Zeilen tauschen · Zeile mit einer Zahl ≠ 0 multiplizieren · Vielfaches einer Zeile addieren.'),
+    st('Lösbarkeit', 'Widerspruchszeile (0 = c mit c ≠ 0) → keine Lösung.<br>Nullzeile (0 = 0) → unendlich viele Lösungen.'),
+  ],
+  gen: function (d, v) { return genGauss(d, v); }
+});
+
+function genGauss(d, v) {
+  if (v === 'art') {
+    const kind = pick(['eindeutig', 'keine', 'unendlich']);
+    const a = [rnz(-4, 4), rnz(-4, 4)], k = ri(2, 3);
+    let b, r1, r2;
+    if (kind === 'eindeutig') { b = [rnz(-4, 4), rnz(-4, 4)]; while (a[0] * b[1] - a[1] * b[0] === 0) b = [rnz(-4, 4), rnz(-4, 4)]; r1 = rnz(-9, 9); r2 = rnz(-9, 9); }
+    else { b = [a[0] * k, a[1] * k]; r1 = rnz(-9, 9); r2 = kind === 'unendlich' ? r1 * k : r1 * k + rnz(1, 4); }
+    const opts = ['genau eine Lösung', 'keine Lösung', 'unendlich viele Lösungen'];
+    const idx = kind === 'eindeutig' ? 0 : (kind === 'keine' ? 1 : 2);
+    return {
+      promptHTML: '<span class="big">' + coefHTML(a[0], V(), true) + coefHTML(a[1], Y(), false) + ' = ' + num(r1) + '<br>'
+        + coefHTML(b[0], V(), true) + coefHTML(b[1], Y(), false) + ' = ' + num(r2) + '</span>', wordy: true,
+      fields: [Fmc(opts, 'Wie viele Lösungen?')], check: checkMC(idx),
+      solHTML: opts[idx],
+      steps: [
+        st('Zweite Zeile ansehen', kind === 'eindeutig'
+          ? 'Die Zeilen sind keine Vielfachen voneinander.'
+          : 'Zeile 2 ist das ' + k + '-fache von Zeile 1 auf der linken Seite.'),
+        st('Rechte Seite', kind === 'eindeutig' ? 'Zwei unabhängige Gleichungen, zwei Unbekannte.'
+          : (kind === 'unendlich' ? 'Auch rechts passt der Faktor ' + k + ' → dieselbe Gleichung.'
+            : 'Rechts passt der Faktor <i>nicht</i> → Widerspruch.')),
+        st('Ergebnis', '<b>' + opts[idx] + '</b>')
+      ]
+    };
+  }
+
+  const n = v === 'zwei' ? 2 : 3;
+  const R = d <= 4 ? 3 : (d <= 7 ? 5 : 8);
+  const sol = []; for (let i = 0; i < n; i++) sol.push(rnz(-R, R));
+  let A, tries = 0;
+  do { A = randMat(n, n, -4, 4); tries++; }
+  while ((n === 2 ? det2(A) === 0 : det3(A) === 0) && tries < 200);
+  const rhs = A.map(row => row.reduce((s, c, j) => s + c * sol[j], 0));
+  const names = [V(), Y(), '<i>z</i>'];
+  const rowHTML = (row, r) => {
+    let h = ''; let first = true;
+    row.forEach((c, j) => { if (c === 0) return; h += coefHTML(c, names[j], first); first = false; });
+    if (!h) h = '0';
+    return h + ' = ' + num(r);
+  };
+  return {
+    promptHTML: '<span class="big">' + A.map((row, i) => rowHTML(row, rhs[i])).join('<br>') + '</span>', wordy: true,
+    fields: names.slice(0, n).map((nm, i) => Fnum(nm + ' =', 'Zahl')),
+    check: checkMulti(sol),
+    solHTML: names.slice(0, n).map((nm, i) => nm + ' = ' + num(sol[i])).join(' , '),
+    steps: [
+      st('Stufenform', 'Vielfache der ersten Zeile von den anderen abziehen, bis unter der Diagonale nur Nullen stehen.'),
+      st('Rückwärts einsetzen', 'Aus der letzten Zeile ' + names[n - 1] + ' = ' + num(sol[n - 1]) + ' ablesen, dann nach oben einsetzen.'),
+      st('Ergebnis', '<b>' + names.slice(0, n).map((nm, i) => nm + ' = ' + num(sol[i])).join(' , ') + '</b>')
+    ]
+  };
+}
+
+/* ============================================================
+   SUMMEN- UND PRODUKTZEICHEN
+   ============================================================ */
+function bigOpHTML(sym, from, to, body) {
+  return '<span class="bigop"><span class="bt">' + to + '</span><span class="bo">' + sym
+    + '</span><span class="bb">i&#8202;=&#8202;' + from + '</span></span>'
+    + '<span class="bopb">' + body + '</span>';
+}
+function sumHTML(from, to, body) { return bigOpHTML('∑', from, to, body); }
+function prodHTML(from, to, body) { return bigOpHTML('∏', from, to, body); }
+
+topic({
+  id: 'summen', group: 'Grundlagen', name: 'Summen & Produkte', icon: 'i-t-summe',
+  sub: 'Das Summen- und das Produktzeichen ausrechnen.',
+  variants: [
+    { id: 'linear', name: 'Summe ausrechnen', desc: 'Glieder einsetzen und addieren.' },
+    { id: 'formel', name: 'Summenformeln', desc: 'Gaußsche Summenformel statt Einzelrechnung.' },
+    { id: 'geo', name: 'Geometrische Summe', desc: 'Summe über qⁱ.' },
+    { id: 'produkt', name: 'Produktzeichen', desc: 'Faktoren multiplizieren.' },
+  ],
+  formulas: [
+    st('Bedeutung', sumHTML('1', 'n', 'a<sub>i</sub>') + ' = a<sub>1</sub> + a<sub>2</sub> + … + a<sub>n</sub>'),
+    st('Gaußsche Summenformel', sumHTML('1', 'n', 'i') + ' = ' + fracHTML('n(n+1)', '2')),
+    st('Quadratsummen', sumHTML('1', 'n', 'i²') + ' = ' + fracHTML('n(n+1)(2n+1)', '6')),
+    st('Geometrische Summe', sumHTML('0', 'n', 'q<sup>i</sup>') + ' = ' + fracHTML('q<sup>n+1</sup> − 1', 'q − 1') + ' (q ≠ 1)'),
+    st('Konstante', sumHTML('1', 'n', 'c') + ' = n·c &nbsp;·&nbsp; ' + prodHTML('1', 'n', 'i') + ' = n!'),
+  ],
+  gen: function (d, v) { return genSummen(d, v); }
+});
+
+function genSummen(d, v) {
+  if (v === 'produkt') {
+    const n = ri(3, d <= 5 ? 5 : 7);
+    if (coin()) {
+      let val = 1; for (let i = 1; i <= n; i++) val *= i;
+      return {
+        promptHTML: '<span class="big">' + prodHTML(1, n, '<i>i</i>') + '</span>',
+        fields: [Fnum('=', 'Zahl')], check: checkNum(val), solHTML: num(val),
+        steps: [
+          st('Ausschreiben', Array.from({ length: n }, (_, i) => i + 1).join(' · ')),
+          st('Das ist die Fakultät', n + '! = ' + val),
+          st('Ergebnis', '<b>' + num(val) + '</b>')
+        ]
+      };
+    }
+    const c = ri(2, 4);
+    let val = 1; for (let i = 1; i <= n; i++) val *= c * i;
+    if (val > 1e6) return genSummen(d, v);      /* Ergebnis soll noch handhabbar bleiben */
+    return {
+      promptHTML: '<span class="big">' + prodHTML(1, n, coefHTML(c, '<i>i</i>', true)) + '</span>',
+      fields: [Fnum('=', 'Zahl')], check: checkNum(val), solHTML: num(val),
+      steps: [
+        st('Faktor herausziehen', c + ' kommt ' + n + '-mal vor: ' + c + '<sup>' + n + '</sup> · ' + n + '!'),
+        st('Rechnen', Math.pow(c, n) + ' · ' + (val / Math.pow(c, n)) + ' = ' + val),
+        st('Ergebnis', '<b>' + num(val) + '</b>')
+      ]
+    };
+  }
+
+  if (v === 'geo') {
+    const q = pick(d <= 5 ? [2, 3] : [2, 3, 4, 5]);
+    const n = ri(2, d <= 5 ? 4 : 6);
+    let val = 0; for (let i = 0; i <= n; i++) val += Math.pow(q, i);
+    return {
+      promptHTML: '<span class="big">' + sumHTML(0, n, pw(String(q), '<i>i</i>')) + '</span>',
+      fields: [Fnum('=', 'Zahl')], check: checkNum(val), solHTML: num(val),
+      steps: [
+        st('Ausschreiben', Array.from({ length: n + 1 }, (_, i) => Math.pow(q, i)).join(' + ')),
+        st('Formel', fracHTML(q + '<sup>' + (n + 1) + '</sup> − 1', q + ' − 1') + ' = ' + fracHTML(Math.pow(q, n + 1) - 1, q - 1)),
+        st('Ergebnis', '<b>' + num(val) + '</b>')
+      ]
+    };
+  }
+
+  if (v === 'formel') {
+    const n = ri(5, d <= 4 ? 12 : (d <= 7 ? 30 : 60));
+    const quad = d > 5 && coin();
+    let val = 0; for (let i = 1; i <= n; i++) val += quad ? i * i : i;
+    return {
+      promptHTML: '<span class="big">' + sumHTML(1, n, quad ? '<i>i</i>²' : '<i>i</i>') + '</span>',
+      fields: [Fnum('=', 'Zahl')], check: checkNum(val), solHTML: num(val),
+      steps: [
+        st('Formel', quad ? fracHTML('n(n+1)(2n+1)', '6') : fracHTML('n(n+1)', '2')),
+        st('Einsetzen', quad ? fracHTML(n + '·' + (n + 1) + '·' + (2 * n + 1), 6) : fracHTML(n + '·' + (n + 1), 2)),
+        st('Ergebnis', '<b>' + num(val) + '</b>')
+      ]
+    };
+  }
+
+  /* linear */
+  const from = d <= 3 ? 1 : ri(1, 3);
+  const to = from + ri(2, d <= 5 ? 4 : 6);
+  const a = rnz(-4, 4), b = rnz(-6, 6);
+  let val = 0; for (let i = from; i <= to; i++) val += a * i + b;
+  const body = coefHTML(a, '<i>i</i>', true) + coefHTML(b, '', false);
+  return {
+    promptHTML: '<span class="big">' + sumHTML(from, to, '(' + body + ')') + '</span>',
+    fields: [Fnum('=', 'Zahl')], check: checkNum(val), solHTML: num(val),
+    steps: [
+      st('Glieder einsetzen', Array.from({ length: to - from + 1 }, (_, k) => num(a * (from + k) + b)).join(' + ')),
+      st('Aufteilen', num(a) + '·(' + Array.from({ length: to - from + 1 }, (_, k) => from + k).join('+') + ')'
+        + coefHTML((to - from + 1) * b, '', false)),
+      st('Ergebnis', '<b>' + num(val) + '</b>')
+    ]
+  };
+}
+
+/* ============================================================
+   ÖKONOMISCHE FUNKTIONEN
+   ============================================================ */
+topic({
+  id: 'oekonomie', group: 'Grundlagen', name: 'Ökonomische Funktionen', icon: 'i-t-oeko',
+  sub: 'Angebot, Nachfrage, Erlös, Kosten und Gewinn.',
+  variants: [
+    { id: 'umstellen', name: 'Nachfrage umstellen', desc: 'p(x) nach x auflösen.' },
+    { id: 'gleich', name: 'Marktgleichgewicht', desc: 'Angebot = Nachfrage.' },
+    { id: 'erloes', name: 'Erlös & Gewinn', desc: 'E = p·x und G = E − K.' },
+    { id: 'breakeven', name: 'Break-even', desc: 'Gewinnschwelle: G = 0.' },
+  ],
+  formulas: [
+    st('Erlös', 'E(x) = p(x) · x'),
+    st('Gewinn', 'G(x) = E(x) − K(x)'),
+    st('Kosten', 'K(x) = K<sub>f</sub> + k<sub>v</sub>·x — Fixkosten plus variable Kosten.'),
+    st('Marktgleichgewicht', 'Angebotspreis = Nachfragepreis → Gleichgewichtsmenge x*, dann p* einsetzen.'),
+    st('Break-even', 'G(x) = 0 → ab dieser Menge trägt sich die Produktion.'),
+  ],
+  gen: function (d, v) { return genOeko(d, v); }
+});
+
+function genOeko(d, v) {
+  if (v === 'umstellen') {
+    const a = ri(2, d <= 5 ? 6 : 12), b = ri(2, 10) * (d <= 5 ? 10 : 5);
+    const p0 = a * ri(1, 8);
+    const x0 = (b - p0) / a;
+    if (!isNice(x0) || x0 <= 0) return genOeko(d, v);
+    return {
+      promptHTML: '<span class="big">Nachfrage: p(' + V() + ') = ' + num(b) + ' <span class="op">−</span> ' + coefHTML(a, V(), true)
+        + '<br>Welche Menge wird bei p = ' + p0 + ' nachgefragt?</span>', wordy: true,
+      fields: [Fnum('<i>x</i> =', 'Menge')], check: checkNum(x0),
+      solHTML: V() + ' = ' + valHTML(x0),
+      steps: [
+        st('Gleichsetzen', p0 + ' = ' + num(b) + ' − ' + num(a) + V()),
+        st('Umstellen', num(a) + V() + ' = ' + num(b - p0) + ' → ' + V() + ' = ' + fracHTML(num(b - p0), num(a))),
+        st('Ergebnis', '<b>' + V() + ' = ' + valHTML(x0) + '</b>')
+      ]
+    };
+  }
+
+  if (v === 'gleich') {
+    const an = ri(1, 5), bn = ri(2, 12) * 5;      /* Nachfrage p = bn - an·x */
+    const aa = ri(1, 5), ba = ri(1, 8);           /* Angebot   p = ba + aa·x */
+    const xs = (bn - ba) / (an + aa);
+    const ps = ba + aa * xs;
+    if (!isNice(xs) || !isNice(ps) || xs <= 0) return genOeko(d, v);
+    return {
+      promptHTML: '<span class="big">Nachfrage: p = ' + num(bn) + ' <span class="op">−</span> ' + coefHTML(an, V(), true)
+        + '<br>Angebot: p = ' + num(ba) + ' <span class="op">+</span> ' + coefHTML(aa, V(), true) + '</span>', wordy: true,
+      fields: [Fnum('<i>x</i>* =', 'Menge'), Fnum('p* =', 'Preis')], check: checkMulti([xs, ps]),
+      solHTML: V() + '* = ' + valHTML(xs) + ' , p* = ' + valHTML(ps),
+      steps: [
+        st('Gleichsetzen', num(bn) + ' − ' + num(an) + V() + ' = ' + num(ba) + ' + ' + num(aa) + V()),
+        st('Nach x auflösen', num(bn - ba) + ' = ' + num(an + aa) + V() + ' → ' + V() + '* = ' + valHTML(xs)),
+        st('Preis einsetzen', 'p* = ' + num(ba) + ' + ' + num(aa) + '·' + valHTML(xs) + ' = <b>' + valHTML(ps) + '</b>')
+      ]
+    };
+  }
+
+  if (v === 'breakeven') {
+    const p = ri(4, 20), kv = ri(1, p - 1), Kf = (p - kv) * ri(2, d <= 5 ? 12 : 40);
+    const xb = Kf / (p - kv);
+    return {
+      promptHTML: '<span class="big">Preis p = ' + p + ' €<br>K(' + V() + ') = ' + Kf + ' <span class="op">+</span> ' + coefHTML(kv, V(), true)
+        + '<br>Ab welcher Menge entsteht Gewinn?</span>', wordy: true,
+      fields: [Fnum('<i>x</i> =', 'Menge')], check: checkNum(xb),
+      solHTML: V() + ' = ' + valHTML(xb) + ' Stück',
+      steps: [
+        st('Erlös', 'E(x) = ' + p + V()),
+        st('Gewinn', 'G(x) = ' + p + V() + ' − (' + Kf + ' + ' + kv + V() + ') = ' + num(p - kv) + V() + ' − ' + Kf),
+        st('Null setzen', num(p - kv) + V() + ' = ' + Kf + ' → ' + V() + ' = ' + fracHTML(Kf, num(p - kv))),
+        st('Ergebnis', '<b>' + valHTML(xb) + ' Stück</b>')
+      ]
+    };
+  }
+
+  /* erloes */
+  const a = ri(1, 4), q = ri(6, 20), b = q * a, x0 = ri(2, Math.min(10, q - 2));
+  const kv = ri(1, 5), Kf = ri(2, 20) * 5;
+  const p0 = b - a * x0;
+  const E = p0 * x0, K = Kf + kv * x0, G = E - K;
+  return {
+    promptHTML: '<span class="big">p(' + V() + ') = ' + num(b) + ' <span class="op">−</span> ' + coefHTML(a, V(), true)
+      + ' , K(' + V() + ') = ' + Kf + ' <span class="op">+</span> ' + coefHTML(kv, V(), true)
+      + '<br>Erlös und Gewinn bei ' + V() + ' = ' + x0 + '?</span>', wordy: true,
+    fields: [Fnum('E =', 'Erlös'), Fnum('G =', 'Gewinn')], check: checkMulti([E, G]),
+    solHTML: 'E = ' + num(E) + ' , G = ' + num(G),
+    steps: [
+      st('Preis bei x = ' + x0, 'p = ' + num(b) + ' − ' + num(a) + '·' + x0 + ' = ' + num(p0)),
+      st('Erlös', 'E = p·x = ' + num(p0) + '·' + x0 + ' = <b>' + num(E) + '</b>'),
+      st('Kosten', 'K = ' + Kf + ' + ' + kv + '·' + x0 + ' = ' + num(K)),
+      st('Gewinn', 'G = ' + num(E) + ' − ' + num(K) + ' = <b>' + num(G) + '</b>')
+    ]
+  };
+}
+
+/* ============================================================
+   IMPLIZITES ABLEITEN
+   ============================================================ */
+topic({
+  id: 'implizit', group: 'Analysis', name: 'Implizites Ableiten', icon: 'i-t-implizit',
+  sub: 'dy/dx aus einer Gleichung F(x, y) = c gewinnen.',
+  variants: [
+    { id: 'kreis', name: 'Grundform', desc: 'a·x² + b·y² = c.' },
+    { id: 'gemischt', name: 'Mit x·y-Term', desc: 'Produktregel im gemischten Term.' },
+    { id: 'grs', name: 'Grenzrate der Substitution', desc: 'Steigung einer Indifferenzkurve.' },
+  ],
+  formulas: [
+    st('Idee', 'Beide Seiten nach x ableiten und dabei y als Funktion von x behandeln — jedes y liefert ein y′.'),
+    st('Kurzformel', fracHTML('d' + Y(), 'd' + V()) + ' = −' + fracHTML('F<sub>x</sub>', 'F<sub>y</sub>')),
+    st('Beispiel', 'x² + y² = 25 → 2x + 2y·y′ = 0 → y′ = −' + fracHTML(V(), Y())),
+    st('GRS', 'Die Grenzrate der Substitution ist der Betrag der Steigung der Indifferenzkurve: |dy/dx|.'),
+  ],
+  gen: function (d, v) { return genImplizit(d, v); }
+});
+
+function genImplizit(d, v) {
+  const R = d <= 4 ? 4 : (d <= 7 ? 6 : 9);
+  if (v === 'grs') {
+    /* U = x^a · y^b = const → dy/dx = −(a·y)/(b·x) */
+    const a = ri(1, 4), b = ri(1, 4);
+    const ref = (x, y) => -(a * y) / (b * x);
+    return {
+      plot: { kind: 'contour', f: (x, y) => (x > 0 && y > 0 ? Math.pow(x, a) * Math.pow(y, b) : NaN),
+        point: { x: 1.6, y: 1.4 }, iso: true, r: 2.8, pointLabel: 'Punkt auf der Kurve', levelLabel: 'Indifferenzkurve' },
+      promptHTML: '<span class="big">U(' + V() + ', ' + Y() + ') = ' + pw(V(), a) + '·' + pw(Y(), b) + ' = const.</span>'
+        + '<p class="qtext">Steigung der Indifferenzkurve d' + Y() + '/d' + V() + '?</p>',
+      fields: [Fexpr('d' + Y() + '/d' + V() + ' =', 'z. B. -2y/(3x)')], check: checkExpr2(ref, XY),
+      solHTML: fracHTML('d' + Y(), 'd' + V()) + ' = ' + MINUS + fracHTML(coefHTML(a, Y(), true), coefHTML(b, V(), true)),
+      steps: [
+        st('Partielle Ableitungen', 'U<sub>x</sub> = ' + monoXY(a, a - 1, b, true)
+          + ' &nbsp;·&nbsp; U<sub>y</sub> = ' + monoXY(b, a, b - 1, true)),
+        st('Kurzformel', fracHTML('d' + Y(), 'd' + V()) + ' = −' + fracHTML('U<sub>x</sub>', 'U<sub>y</sub>')),
+        st('Kürzen', 'x und y kürzen sich bis auf je eine Potenz heraus.'),
+        st('Ergebnis', '<b>' + MINUS + fracHTML(coefHTML(a, Y(), true), coefHTML(b, V(), true)) + '</b>')
+      ]
+    };
+  }
+  if (v === 'gemischt') {
+    /* a x² + b xy + c y² = k  →  y′ = −(2a x + b y)/(b x + 2c y) */
+    const a = rnz(-R, R), b = rnz(-R, R), c = rnz(-R, R), k = rnz(-9, 9);
+    const ref = (x, y) => -(2 * a * x + b * y) / (b * x + 2 * c * y);
+    return {
+      promptHTML: '<span class="big">' + fxyHTML([[a, 2, 0], [b, 1, 1], [c, 0, 2]]) + ' = ' + num(k) + '</span>',
+      fields: [Fexpr(Y() + '′ =', 'z. B. -(4x+3y)/(3x-2y)')], check: checkExpr2(ref, XY),
+      solHTML: Y() + '′ = ' + MINUS + fracHTML(fxyHTML([[2 * a, 1, 0], [b, 0, 1]]), fxyHTML([[b, 1, 0], [2 * c, 0, 1]])),
+      steps: [
+        st('Nach x ableiten', fxyHTML([[2 * a, 1, 0]])
+          + coefHTML(b, '(' + Y() + ' + ' + V() + Y() + '′)', false)
+          + coefHTML(2 * c, Y() + Y() + '′', false) + ' = 0'),
+        st('Nach y′ sortieren', Y() + '′·(' + fxyHTML([[b, 1, 0], [2 * c, 0, 1]]) + ') = ' + MINUS + '('
+          + fxyHTML([[2 * a, 1, 0], [b, 0, 1]]) + ')'),
+        st('Ergebnis', '<b>' + Y() + '′ = ' + MINUS + fracHTML(fxyHTML([[2 * a, 1, 0], [b, 0, 1]]), fxyHTML([[b, 1, 0], [2 * c, 0, 1]])) + '</b>')
+      ]
+    };
+  }
+  /* kreis: a x² + b y² = k → y′ = −(a x)/(b y) */
+  const a = ri(1, R), b = ri(1, R), k = ri(4, 40);
+  const ref = (x, y) => -(a * x) / (b * y);
+  return {
+    plot: { kind: 'contour', f: fxyF([[a, 2, 0], [b, 0, 2]]), levels: [k],
+      iso: true, r: Math.sqrt(k / Math.min(a, b)) * 1.35, highlight: false, levelLabel: 'Kurve' },
+    promptHTML: '<span class="big">' + fxyHTML([[a, 2, 0], [b, 0, 2]]) + ' = ' + k + '</span>',
+    fields: [Fexpr(Y() + '′ =', 'z. B. -3x/(2y)')], check: checkExpr2(ref, XY),
+    solHTML: Y() + '′ = ' + MINUS + fracHTML(coefHTML(a, V(), true), coefHTML(b, Y(), true)),
+    steps: [
+      st('Beide Seiten ableiten', fxyHTML([[2 * a, 1, 0]]) + ' + ' + num(2 * b) + Y() + '·' + Y() + '′ = 0'),
+      st('Nach y′ auflösen', num(2 * b) + Y() + '·' + Y() + '′ = ' + MINUS + fxyHTML([[2 * a, 1, 0]])),
+      st('Kürzen', 'Der Faktor 2 fällt weg.'),
+      st('Ergebnis', '<b>' + Y() + '′ = ' + MINUS + fracHTML(coefHTML(a, V(), true), coefHTML(b, Y(), true)) + '</b>')
+    ]
+  };
+}
+
+/* ============================================================
+   ELASTIZITÄTEN
+   ============================================================ */
+topic({
+  id: 'elastizitaet', group: 'Analysis', name: 'Elastizitäten', icon: 'i-t-elast',
+  sub: 'Prozentuale Reaktion — die Preiselastizität der Nachfrage.',
+  variants: [
+    { id: 'linear', name: 'Lineare Nachfrage', desc: 'ε an einer Stelle berechnen.' },
+    { id: 'potenz', name: 'Potenzfunktion', desc: 'Bei x^n ist ε konstant.' },
+    { id: 'einordnen', name: 'Elastisch oder nicht?', desc: '|ε| größer oder kleiner als 1.' },
+  ],
+  formulas: [
+    st('Definition', 'ε(x) = ' + fracHTML("f′(x)·x", 'f(x)') + ' — relative Änderung geteilt durch relative Änderung.'),
+    st('Deutung', '|ε| &gt; 1 → <b>elastisch</b> · |ε| &lt; 1 → <b>unelastisch</b> · |ε| = 1 → proportional.'),
+    st('Potenzfunktion', 'Für f(x) = a·x<sup>n</sup> ist ε = n — unabhängig von x.'),
+    st('Lineare Nachfrage', 'Für f(x) = b − a·x gilt ε(x) = ' + fracHTML('−a·x', 'b − a·x') + '.'),
+  ],
+  gen: function (d, v) { return genElast(d, v); }
+});
+
+function genElast(d, v) {
+  if (v === 'potenz') {
+    const a = ri(2, 12), n = rnz(-4, 4);
+    const x0 = ri(1, 6);
+    return {
+      promptHTML: '<span class="big">f(' + V() + ') = ' + coefHTML(a, xpow(n), true) + '</span>'
+        + '<p class="qtext">Elastizität ε an der Stelle ' + V() + ' = ' + x0 + '?</p>',
+      fields: [Fnum('ε =', 'Zahl')], check: checkNum(n), solHTML: 'ε = ' + num(n),
+      steps: [
+        st('Ableiten', 'f′(x) = ' + coefHTML(a * n, xpow(n - 1), true)),
+        st('Einsetzen', 'ε = ' + fracHTML(coefHTML(a * n, xpow(n - 1), true) + '·' + V(), coefHTML(a, xpow(n), true))),
+        st('Kürzen', 'a und x<sup>' + n + '</sup> kürzen sich vollständig heraus.'),
+        st('Ergebnis', 'ε = <b>' + num(n) + '</b> — bei Potenzfunktionen unabhängig von x.')
+      ]
+    };
+  }
+
+  if (v === 'einordnen') {
+    const a = ri(1, 6), b = a * ri(4, 14);
+    const x0 = ri(1, Math.floor(b / a) - 1);
+    const eps = (-a * x0) / (b - a * x0);
+    const opts = ['elastisch (|ε| &gt; 1)', 'unelastisch (|ε| &lt; 1)'];
+    const idx = Math.abs(eps) > 1 ? 0 : 1;
+    if (Math.abs(Math.abs(eps) - 1) < 1e-9) return genElast(d, v);
+    return {
+      promptHTML: '<span class="big">p(' + V() + ') = ' + num(b) + ' <span class="op">−</span> ' + coefHTML(a, V(), true) + '</span>'
+        + '<p class="qtext">Verhalten der Nachfrage bei ' + V() + ' = ' + x0 + '?</p>',
+      fields: [Fmc(opts, 'Einordnung')], check: checkMC(idx),
+      solHTML: 'ε = ' + fmt(eps, 3) + ' → ' + (idx === 0 ? 'elastisch' : 'unelastisch'),
+      steps: [
+        st('Formel', 'ε = ' + fracHTML('p′(x)·x', 'p(x)')),
+        st('Einsetzen', 'ε = ' + fracHTML(num(-a) + '·' + x0, num(b) + ' − ' + num(a) + '·' + x0) + ' = ' + fmt(eps, 3)),
+        st('Ergebnis', '|ε| ' + (idx === 0 ? '&gt;' : '&lt;') + ' 1 → <b>' + (idx === 0 ? 'elastisch' : 'unelastisch') + '</b>')
+      ]
+    };
+  }
+
+  /* linear */
+  const a = ri(1, 6), b = a * ri(4, 16);
+  const x0 = ri(1, Math.floor(b / a) - 1);
+  const eps = (-a * x0) / (b - a * x0);
+  if (!isNice(eps)) return genElast(d, v);
+  return {
+    promptHTML: '<span class="big">p(' + V() + ') = ' + num(b) + ' <span class="op">−</span> ' + coefHTML(a, V(), true) + '</span>'
+      + '<p class="qtext">Elastizität ε an der Stelle ' + V() + ' = ' + x0 + '?</p>',
+    fields: [Fnum('ε =', 'Zahl')], check: checkNum(eps, 1e-4), solHTML: 'ε = ' + valHTML(eps),
+    steps: [
+      st('Ableiten', 'p′(x) = ' + num(-a)),
+      st('Formel', 'ε = ' + fracHTML('p′(x)·x', 'p(x)')),
+      st('Einsetzen', 'ε = ' + fracHTML(num(-a) + '·' + x0, num(b) + ' − ' + num(a) + '·' + x0)
+        + ' = ' + fracHTML(num(-a * x0), num(b - a * x0))),
+      st('Ergebnis', 'ε = <b>' + valHTML(eps) + '</b>')
+    ]
+  };
+}
+
+</script>
+<script>
+/* ============================================================
    TEIL 4 — Kurzfassungen: knappe Themen- und Typbeschreibungen
    ============================================================ */
 
@@ -5234,6 +6453,17 @@ const SHORT_SUB = {
   extremwert: 'Kurvendiskussion und Optimierung.',
   integral: 'Stammfunktion, Grenzen, Fläche.',
   aufnahme: 'SAT, Oxford MAT und Cambridge TMUA.',
+  partiell: 'Eine Variable ableiten, die andere festhalten.',
+  gradient: 'Alle ersten und zweiten Ableitungen.',
+  extrem2d: 'Kritische Stelle und ihre Art.',
+  lagrange: 'Optimieren mit Nebenbedingung.',
+  matrix: 'Addieren, malnehmen, transponieren.',
+  determinante: 'det A und die Inverse.',
+  gauss: 'Gleichungssysteme stufenweise lösen.',
+  summen: 'Summen- und Produktzeichen.',
+  oekonomie: 'Angebot, Nachfrage, Erlös, Gewinn.',
+  implizit: 'dy/dx ohne nach y aufzulösen.',
+  elastizitaet: 'Prozent auf Prozent.',
 };
 
 const SHORT_DESC = {
@@ -5516,7 +6746,8 @@ function renderNav(filter) {
 }
 
 const GROUP_ICON = {
-  'Grundlagen': 'i-grid', 'Gleichungen': 'i-scale', 'Analysis': 'i-chart', 'Aufnahmetests': 'i-cap'
+  'Grundlagen': 'i-grid', 'Gleichungen': 'i-scale', 'Analysis': 'i-chart',
+  'Mehrdim. Analysis': 'i-g-multi', 'Lineare Algebra': 'i-g-lin', 'Aufnahmetests': 'i-cap'
 };
 /* Jedes Thema bekommt ein Strichsymbol im Stil der Ueberthemen — keine Emojis. */
 const TOPIC_ICON = {
@@ -5525,7 +6756,10 @@ const TOPIC_ICON = {
   bruchgl: 'i-t-bruchgl', betrag: 'i-t-betrag', potenz: 'i-t-potenz',
   wurzelgl: 'i-t-wurzelgl', expo: 'i-t-expo', logar: 'i-t-logar',
   ungleichung: 'i-t-ungleichung', grenzwert: 'i-t-grenzwert', ableitung: 'i-t-ableitung',
-  extremwert: 'i-t-extremwert', integral: 'i-t-integral', aufnahme: 'i-t-aufnahme'
+  extremwert: 'i-t-extremwert', integral: 'i-t-integral', aufnahme: 'i-t-aufnahme',
+  partiell: 'i-t-partiell', gradient: 'i-t-gradient', extrem2d: 'i-t-extrem2d', lagrange: 'i-t-lagrange',
+  matrix: 'i-t-matrix', determinante: 'i-t-det', gauss: 'i-t-gauss',
+  summen: 'i-t-summe', oekonomie: 'i-t-oeko', implizit: 'i-t-implizit', elastizitaet: 'i-t-elast'
 };
 function topicIco(t, w) { return ico(TOPIC_ICON[t && t.id] || 'i-grid', w || 19); }
 
@@ -5544,13 +6778,29 @@ function setView(v) {
 }
 
 /* ---------- Formelsammlung als eigene Seite ---------- */
+/* Kurze Schreibweisen-Hilfe — was man wie eintippt. */
+const SYNTAX = [
+  ['Mal &amp; geteilt', '2*x  oder  2x &nbsp;·&nbsp; 6/2', '2·x &nbsp;·&nbsp; ' + fracHTML(6, 2)],
+  ['Potenz', 'x^2 &nbsp;·&nbsp; x^(n+1)', 'x<sup>2</sup> &nbsp;·&nbsp; x<sup>n+1</sup>'],
+  ['Bruch', '1/x &nbsp;·&nbsp; (x+1)/(x-1)', fracHTML('1', '<i>x</i>') + ' &nbsp;·&nbsp; ' + fracHTML('x+1', 'x−1')],
+  ['Wurzel', 'sqrt(x) &nbsp;·&nbsp; root(3, x)', sqrtHTML('<i>x</i>') + ' &nbsp;·&nbsp; ' + sqrtHTML('<i>x</i>', 3)],
+  ['e-Funktion &amp; ln', 'e^(2x) &nbsp;·&nbsp; ln(x)', 'e<sup>2x</sup> &nbsp;·&nbsp; ln(<i>x</i>)'],
+  ['Betrag', 'abs(x-3) &nbsp;·&nbsp; |x-3|', '<span class="bars"><i>x</i>−3</span>'],
+  ['Konstanten', 'pi &nbsp;·&nbsp; e &nbsp;·&nbsp; inf', 'π &nbsp;·&nbsp; e &nbsp;·&nbsp; ∞'],
+  ['Dezimalzahlen', '0.25 &nbsp;·&nbsp; 0,25 &nbsp;·&nbsp; 1/4', '0,25'],
+];
 function renderAllFormulas() {
   const box = $('fmlAll');
   let n = 0;
   TOPICS.forEach(t => { n += (t.formulas || []).length; });
   $('fmlSum').textContent = n + ' Formeln aus ' + TOPICS.length + ' Themen';
   if (box.dataset.built) return;
-  let h = '';
+  let h = '<div class="fmlgrp"><h3>Schreibweise</h3><div class="fmlcard">'
+    + '<div class="ft"><span class="ic">' + ico('i-t-vereinfachen', 19) + '</span>So tippst du ein</div>'
+    + '<div class="fmlcols">'
+    + SYNTAX.map(r => '<div class="fml"><div class="t">' + r[0] + '</div>'
+      + '<div class="h"><code class="syn">' + r[1] + '</code><span class="synto">→</span>' + r[2] + '</div></div>').join('')
+    + '</div></div></div>';
   groups().forEach(g => {
     const items = TOPICS.filter(t => t.group === g && (t.formulas || []).length);
     if (!items.length) return;
@@ -5716,8 +6966,8 @@ function buildAnswer() {
   state.getters = []; state.flagEls = {}; state.mcSel = [];
   const t = state.task;
   const track = inp => {
-    inp.addEventListener('focus', () => { state.lastInput = inp; showPreview(inp); });
-    inp.addEventListener('input', () => showPreview(inp));
+    inp.addEventListener('focus', () => { state.lastInput = inp; if (!state.noPrev) showPreview(inp); });
+    inp.addEventListener('input', () => { state.noPrev = false; showPreview(inp); });
     inp.addEventListener('blur', () => setTimeout(() => {
       const a = document.activeElement;
       if (a && a.closest && a.closest('#answer')) return;   /* nur Feldwechsel */
@@ -5738,6 +6988,23 @@ function buildAnswer() {
       }
       wrap.appendChild(row); box.appendChild(wrap);
       state.getters.push(() => inputs.map(x => x.value));
+    } else if (f.type === 'mat') {
+      const wrap = el('div');
+      if (f.label) wrap.appendChild(el('div', 'setlab', f.label));
+      const m = el('div', 'matin');
+      m.appendChild(el('span', 'mbr'));
+      const grid = el('div', 'mgrid');
+      grid.style.gridTemplateColumns = 'repeat(' + f.cols + ',auto)';
+      const cells = [];
+      for (let r = 0; r < f.rows; r++) for (let c = 0; c < f.cols; c++) {
+        const inp = track(el('input', 'inp'));
+        inp.autocomplete = 'off'; inp.spellcheck = false; inp.placeholder = '';
+        grid.appendChild(inp); cells.push(inp);
+      }
+      m.appendChild(grid);
+      m.appendChild(el('span', 'mbr'));
+      wrap.appendChild(m); box.appendChild(wrap);
+      state.getters.push(() => cells.map(x => x.value));
     } else if (f.type === 'mc') {
       const wrap = el('div', 'mcwrap');
       if (f.label) wrap.appendChild(el('div', 'setlab', f.label));
@@ -5785,7 +7052,9 @@ function buildAnswer() {
   (t.flags || []).forEach(fl => {
     const lab = el('label', 'flag');
     const cb = el('input'); cb.type = 'checkbox';
-    lab.appendChild(cb); lab.appendChild(el('span', '', fl.label));
+    const bx = el('span', 'box2', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4"'
+      + ' stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>');
+    lab.appendChild(cb); lab.appendChild(bx); lab.appendChild(el('span', '', fl.label));
     box.appendChild(lab);
     state.flagEls[fl.key] = cb;
   });
@@ -5793,20 +7062,21 @@ function buildAnswer() {
   if (first) { state.lastInput = first; setTimeout(() => { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }, 20); }
 }
 
-/* ---------- Zeichen-Tasten (LaTeX) ---------- */
+/* ---------- Zeichen-Tasten: einfache Schreibweise, kein LaTeX ---------- */
 /* Zeichentasten: nur was im jeweiligen Thema wirklich vorkommt, durch Striche getrennt */
 function keySet() {
   const t = state.task, id = state.topic;
   const hasExpr = (t.fields || []).some(f => f.type === 'expr');
-  const k = [['+', '+'], ['−', '-'], ['·', '\\cdot '], [':', '/'], ['|']];
+  const k = [['+', '+'], ['−', '-'], ['·', '*'], [':', '/'], ['|']];
   if (hasExpr) k.push(['<i>x</i>', 'x']);
-  k.push(['<i>x</i>²', '^2'], ['<i>x</i><sup>n</sup>', '^{', '}'], ['√', '\\sqrt{', '}', 'big2'], ['|']);
-  k.push(['e<sup><i>x</i></sup>', 'e^{', '}'], ['ln', '\\ln(', ')']);
-  if (id === 'ableitung' || id === 'grenzwert') k.push(['sin', '\\sin(', ')'], ['cos', '\\cos(', ')']);
-  k.push(['|'], ['a/b', '\\frac{', '}{}', 'txt'], ['( )', '(', ')']);
-  if (id === 'betrag') k.push(['|x|', '|', '|']);
-  if (id === 'extremwert') k.push(['π', '\\pi ']);
-  if (id === 'grenzwert') k.push(['∞', '\\infty '], ['−∞', '-\\infty ']);
+  k.push(['<i>x</i>²', '^2'], ['<i>x</i><sup>n</sup>', '^(', ')'], ['√', 'sqrt(', ')', 'big2'],
+    ['<sup>n</sup>√', 'root(3, ', ')', 'big2'], ['|']);
+  k.push(['e<sup><i>x</i></sup>', 'e^(', ')'], ['ln', 'ln(', ')']);
+  if (id === 'ableitung' || id === 'grenzwert') k.push(['sin', 'sin(', ')'], ['cos', 'cos(', ')']);
+  k.push(['|'], ['( )', '(', ')']);
+  if (id === 'betrag') k.push(['|x|', 'abs(', ')']);
+  if (id === 'extremwert') k.push(['π', 'pi']);
+  if (id === 'grenzwert') k.push(['∞', 'inf'], ['−∞', '-inf']);
   return k;
 }
 function buildKeys() {
@@ -5878,21 +7148,27 @@ function paintOps(root) {
       else if (c.nodeType === 1) {
         const cl = c.classList;
         if (OP_SKIP[c.tagName]) continue;
+        /* In Matrizen und Vektoren ist ein Minus ein Vorzeichen, kein Rechenzeichen. */
         if (cl && (cl.contains('op') || cl.contains('op2') || cl.contains('rel')
-          || cl.contains('rti') || cl.contains('rts'))) continue;
+          || cl.contains('rti') || cl.contains('rts') || cl.contains('syn')
+          || cl.contains('mgrid') || cl.contains('bigop'))) continue;
         walk(c);
       }
     }
   })(root);
   texts.forEach(t => {
     const frag = document.createDocumentFragment();
+    /* Ein Zeichen ganz am Anfang ist ein Vorzeichen und bleibt eng am Term. */
+    const lead = !t.previousSibling && /^\s*[+\u2212]/.test(t.nodeValue);
+    let first = true;
     t.nodeValue.split(/([+\u2212\u00b7\u00d7\u00f7=])/).forEach(part => {
       if (!part) return;
       if (part.length === 1 && OP_RE.test(part)) {
         const sp = document.createElement('span');
-        sp.className = 'op'; sp.textContent = part;
+        sp.className = 'op' + (first && lead ? ' lead' : ''); sp.textContent = part;
         frag.appendChild(sp);
       } else frag.appendChild(document.createTextNode(part));
+      first = false;
     });
     if (t.parentNode) t.parentNode.replaceChild(frag, t);
   });
@@ -5942,7 +7218,7 @@ function readAnswer() {
   let anyEmpty = true, condMissing = false;
   vals.forEach((v, i) => {
     const f = state.task.fields[i];
-    if (f.type === 'set') { if (v.some(s => String(s).trim())) anyEmpty = false; }
+    if (f.type === 'set' || f.type === 'mat') { if (v.some(s => String(s).trim())) anyEmpty = false; }
     else if (f.type === 'cond') v.forEach(r => { if (String(r.v).trim()) { anyEmpty = false; if (!r.op) condMissing = true; } });
     else if (String(v).trim()) anyEmpty = false;
   });
@@ -5956,6 +7232,7 @@ function check() {
   const a = readAnswer(), fb = $('fb');
   if (a.anyEmpty) { setFb('bad', 'Trage zuerst eine Antwort ein.'); return; }
   if (a.condMissing) { setFb('bad', 'Wähle in jeder Zeile ein Vergleichszeichen.'); return; }
+  hidePreview(); state.noPrev = true;   /* Vorschau darf die Rueckmeldung nicht verdecken */
   let ok = false;
   try { ok = !!state.task.check(a.vals, a.flags); } catch (e) { ok = false; }
 
@@ -5975,6 +7252,9 @@ function check() {
     setFb('bad', '<b>Noch nicht richtig.</b> Versuch es nochmal'
       + (state.tries >= 3 ? ' — der Lösungsweg hilft weiter.' : '.'),
       state.tries + (state.tries === 1 ? ' Versuch' : ' Versuche'));
+    /* Feld fuer den naechsten Versuch bereitstellen — die Vorschau bleibt dabei zu,
+       sie wuerde sonst die Rueckmeldung ueberdecken. */
+    state.noPrev = true;
     const first = $('answer').querySelector('input:not([type=checkbox])');
     if (first) setTimeout(() => { try { first.focus({ preventScroll: true }); first.select(); } catch (e) { } }, 30);
     if (state.tries === 1 && state.session) sessionAnswered(false);
@@ -6287,6 +7567,34 @@ function setupPlot() {
   $('vizCard').style.display = p ? '' : 'none';
   $('ficGraph').style.display = p ? '' : 'none';
   if (!p) return;
+  if (p.kind === 'contour') {
+    /* Ausschnitt so waehlen, dass alle wichtigen Punkte sichtbar sind. */
+    let bx;
+    if (p.box) bx = p.box.slice();
+    else {
+      const xs = [], ys = [];
+      if (p.point) { xs.push(p.point.x); ys.push(p.point.y); }
+      if (p.grad) { xs.push(p.grad.x); ys.push(p.grad.y); }
+      if (p.line && Math.abs(p.line.a) > 1e-9) { xs.push(0); xs.push(p.line.c / p.line.a); }
+      if (p.line && Math.abs(p.line.b) > 1e-9) { ys.push(0); ys.push(p.line.c / p.line.b); }
+      const sp = p.span || 3;
+      if (!xs.length) { xs.push(-sp, sp); } if (!ys.length) { ys.push(-sp, sp); }
+      let xlo = Math.min.apply(null, xs), xhi = Math.max.apply(null, xs);
+      let ylo = Math.min.apply(null, ys), yhi = Math.max.apply(null, ys);
+      if (xhi - xlo < sp) { const m = (xhi + xlo) / 2; xlo = m - sp / 2; xhi = m + sp / 2; }
+      if (yhi - ylo < sp) { const m = (yhi + ylo) / 2; ylo = m - sp / 2; yhi = m + sp / 2; }
+      const px2 = (xhi - xlo) * 0.28, py2 = (yhi - ylo) * 0.28;
+      bx = [xlo - px2, xhi + px2, ylo - py2, yhi + py2];
+    }
+    if (p.iso && !p.box) {
+      const c = p.cxy || (p.point ? [p.point.x, p.point.y] : (p.grad ? [p.grad.x, p.grad.y] : [0, 0]));
+      bx = [c[0] - 1, c[0] + 1, c[1] - 1, c[1] + 1];
+    }
+    state.view2 = { cx: (bx[0] + bx[1]) / 2, cy: (bx[2] + bx[3]) / 2, w: bx[1] - bx[0], h: bx[3] - bx[2], zoom: 1 };
+    $('zoom').value = 0; paintZoom();
+    setTimeout(drawPlot, 0);
+    return;
+  }
   const xs = [];
   (p.points || []).forEach(q => xs.push(q.x));
   (p.regions || []).forEach(r => { if (isFinite(r.from) && Math.abs(r.from) < 1e5) xs.push(r.from); if (isFinite(r.to) && Math.abs(r.to) < 1e5) xs.push(r.to); });
@@ -6310,7 +7618,7 @@ function setupPlot() {
   if (yhi - ylo < 2) { const m = (yhi + ylo) / 2; ylo = m - 2; yhi = m + 2; }
   const padY = (yhi - ylo) * 0.25; ylo -= padY; yhi += padY;
   state.view2 = { cx: (lo + hi) / 2, cy: (ylo + yhi) / 2, w: hi - lo, h: yhi - ylo, zoom: 1 };
-  $('zoom').value = 0;
+  $('zoom').value = 0; paintZoom();
   drawPlot();
 }
 function niceStep(raw) {
@@ -6319,13 +7627,18 @@ function niceStep(raw) {
 }
 function drawPlot() {
   const p = state.task && state.task.plot; if (!p || !state.view2) return;
-  const W = CV.clientWidth, H = 250;
+  const W = CV.clientWidth, H = (p.kind === 'contour' ? 340 : 250);
   if (!W) return;
   const dpr = window.devicePixelRatio || 1;
+  CV.style.height = H + 'px';
   CV.width = W * dpr; CV.height = H * dpr;
   CTX.setTransform(dpr, 0, 0, dpr, 0, 0);
   CTX.clearRect(0, 0, W, H);
-  const v = state.view2, wx = v.w * v.zoom, wy = v.h * v.zoom;
+  const v = state.view2;
+  /* Bei Hoehenlinien sollen Kreise auch wie Kreise aussehen: Ausschnitt an die
+     Leinwand angleichen, statt ihn zu verzerren. */
+  if (p.kind === 'contour' && p.iso) { v.h = 2 * (p.r || 3); v.w = v.h * W / H; }
+  const wx = v.w * v.zoom, wy = v.h * v.zoom;
   const x0 = v.cx - wx / 2, x1 = v.cx + wx / 2, y0 = v.cy - wy / 2, y1 = v.cy + wy / 2;
   const SX = x => (x - x0) / wx * W, SY = y => H - (y - y0) / wy * H;
   const stepX = niceStep(wx / 8), stepY = niceStep(wy / 5);
@@ -6342,6 +7655,7 @@ function drawPlot() {
     CTX.beginPath(); CTX.moveTo(0, sy); CTX.lineTo(W, sy); CTX.stroke();
     if (Math.abs(y) > 1e-9) { CTX.fillStyle = '#557086'; CTX.fillText(fmt(y, 2), Math.min(W - 30, Math.max(4, SX(0) + 5)), sy - 4); }
   }
+  if (p.kind === 'contour') { drawContour(p, W, H, x0, x1, y0, y1, SX, SY); return; }
   (p.regions || []).forEach(r => {
     const a = SX(Math.max(r.from, x0 - 1)), b = SX(Math.min(r.to, x1 + 1));
     CTX.fillStyle = 'rgba(0,231,1,.10)'; CTX.fillRect(a, 0, b - a, H);
@@ -6385,6 +7699,130 @@ function drawPlot() {
   $('legend').innerHTML = lg.map(l => '<span><i style="background:' + l[0] + '"></i>' + l[1] + '</span>').join('');
 }
 
+/* ============================================================
+   HÖHENLINIEN — Draufsicht auf f(x, y)
+   ============================================================ */
+const CLEVELS = ['#1f5fa8', '#2a7fd0', '#3ea0e0', '#63bfd6', '#9ac9a0', '#c9c25e', '#e0a13a', '#e26f45', '#ed4163'];
+/* Marching Squares: Segmente einer Höhenlinie im Gitter */
+function isoSegments(G, nx, ny, lev, px, py) {
+  const seg = [];
+  const ip = (a, b, va, vb) => a + (b - a) * ((lev - va) / (vb - va));
+  for (let j = 0; j < ny; j++) {
+    for (let i = 0; i < nx; i++) {
+      const v0 = G[j][i], v1 = G[j][i + 1], v2 = G[j + 1][i + 1], v3 = G[j + 1][i];
+      if (!isFinite(v0) || !isFinite(v1) || !isFinite(v2) || !isFinite(v3)) continue;
+      let idx = 0;
+      if (v0 > lev) idx |= 1; if (v1 > lev) idx |= 2; if (v2 > lev) idx |= 4; if (v3 > lev) idx |= 8;
+      if (idx === 0 || idx === 15) continue;
+      const x0 = px(i), x1 = px(i + 1), y0 = py(j), y1 = py(j + 1);
+      const A = () => [ip(x0, x1, v0, v1), y0];
+      const B = () => [x1, ip(y0, y1, v1, v2)];
+      const C = () => [ip(x0, x1, v3, v2), y1];
+      const D = () => [x0, ip(y0, y1, v0, v3)];
+      const push = (p1, p2) => seg.push([p1[0], p1[1], p2[0], p2[1]]);
+      switch (idx) {
+        case 1: case 14: push(D(), A()); break;
+        case 2: case 13: push(A(), B()); break;
+        case 3: case 12: push(D(), B()); break;
+        case 4: case 11: push(B(), C()); break;
+        case 5: push(D(), C()); push(A(), B()); break;
+        case 6: case 9: push(A(), C()); break;
+        case 7: case 8: push(D(), C()); break;
+        case 10: push(D(), A()); push(B(), C()); break;
+      }
+    }
+  }
+  return seg;
+}
+function drawContour(p, W, H, x0, x1, y0, y1, SX, SY) {
+  const f = p.f;
+  const nx = 108, ny = 68;
+  const gx = i => x0 + (x1 - x0) * i / nx, gy = j => y0 + (y1 - y0) * j / ny;
+  const G = [], vals = [];
+  for (let j = 0; j <= ny; j++) {
+    const row = [];
+    for (let i = 0; i <= nx; i++) { const z = f(gx(i), gy(j)); row.push(z); if (isFinite(z)) vals.push(z); }
+    G.push(row);
+  }
+  if (vals.length < 20) { $('legend').innerHTML = ''; return; }
+  /* Die Höhen werden einmal je Aufgabe bestimmt. Sonst würden sich beim Verschieben
+     ständig neue Niveaus ergeben und die Linien scheinbar wandern. */
+  let levels = p.levels ? p.levels.slice() : p.__lv;
+  if (!levels) {
+    vals.sort((a, b) => a - b);
+    const q = t => vals[Math.min(vals.length - 1, Math.max(0, Math.round(t * (vals.length - 1))))];
+    const lo = q(0.04), hi = q(0.96);
+    levels = [];
+    const n = 9; for (let k = 0; k < n; k++) levels.push(lo + (hi - lo) * (k + 0.5) / n);
+    p.__lv = levels;
+  }
+  const px = i => SX(gx(i)), py = j => SY(gy(j));
+  CTX.lineWidth = 1.7; CTX.lineCap = 'round';
+  levels.forEach((lev, k) => {
+    CTX.strokeStyle = CLEVELS[Math.round(k / Math.max(1, levels.length - 1) * (CLEVELS.length - 1))];
+    CTX.globalAlpha = .95;
+    CTX.beginPath();
+    isoSegments(G, nx, ny, lev, px, py).forEach(sg => { CTX.moveTo(sg[0], sg[1]); CTX.lineTo(sg[2], sg[3]); });
+    CTX.stroke();
+  });
+  CTX.globalAlpha = 1;
+
+  /* Höhenlinie durch den optimalen Punkt hervorheben */
+  if (p.point && p.highlight !== false) {
+    const lev = f(p.point.x, p.point.y);
+    if (isFinite(lev)) {
+      CTX.strokeStyle = '#ffbf3f'; CTX.lineWidth = 2.6;
+      CTX.beginPath();
+      isoSegments(G, nx, ny, lev, px, py).forEach(sg => { CTX.moveTo(sg[0], sg[1]); CTX.lineTo(sg[2], sg[3]); });
+      CTX.stroke();
+    }
+  }
+  /* Nebenbedingung als Gerade a·x + b·y = c */
+  if (p.line) {
+    const L = p.line;
+    const pts = [];
+    if (Math.abs(L.b) > 1e-9) { pts.push([x0, (L.c - L.a * x0) / L.b]); pts.push([x1, (L.c - L.a * x1) / L.b]); }
+    else { pts.push([L.c / L.a, y0]); pts.push([L.c / L.a, y1]); }
+    CTX.strokeStyle = '#00e701'; CTX.lineWidth = 2.4; CTX.setLineDash([]);
+    CTX.beginPath(); CTX.moveTo(SX(pts[0][0]), SY(pts[0][1])); CTX.lineTo(SX(pts[1][0]), SY(pts[1][1])); CTX.stroke();
+  }
+  /* Gradientpfeil */
+  if (p.grad) {
+    const gxp = p.grad.x, gyp = p.grad.y;
+    const h = 1e-4;
+    const dx = (f(gxp + h, gyp) - f(gxp - h, gyp)) / (2 * h);
+    const dy = (f(gxp, gyp + h) - f(gxp, gyp - h)) / (2 * h);
+    const n = Math.hypot(dx, dy);
+    if (isFinite(n) && n > 1e-9) {
+      const len = Math.min(W, H) * 0.16;
+      const sx = SX(gxp), sy = SY(gyp);
+      const ex = sx + dx / n * len, ey = sy - dy / n * len;
+      CTX.strokeStyle = '#ff9aa9'; CTX.fillStyle = '#ff9aa9'; CTX.lineWidth = 2.4;
+      CTX.beginPath(); CTX.moveTo(sx, sy); CTX.lineTo(ex, ey); CTX.stroke();
+      const ang = Math.atan2(ey - sy, ex - sx);
+      CTX.beginPath();
+      CTX.moveTo(ex, ey);
+      CTX.lineTo(ex - 9 * Math.cos(ang - 0.42), ey - 9 * Math.sin(ang - 0.42));
+      CTX.lineTo(ex - 9 * Math.cos(ang + 0.42), ey - 9 * Math.sin(ang + 0.42));
+      CTX.closePath(); CTX.fill();
+      CTX.fillStyle = '#0f212e'; CTX.strokeStyle = '#ff9aa9'; CTX.lineWidth = 2;
+      CTX.beginPath(); CTX.arc(sx, sy, 3.4, 0, 7); CTX.fill(); CTX.stroke();
+    }
+  }
+  /* Markierter Punkt */
+  if (p.point) {
+    const sx = SX(p.point.x), sy = SY(p.point.y);
+    CTX.fillStyle = '#00e701'; CTX.strokeStyle = '#0f212e'; CTX.lineWidth = 2.5;
+    CTX.beginPath(); CTX.arc(sx, sy, 5, 0, 7); CTX.fill(); CTX.stroke();
+  }
+  const lg = [['#3ea0e0', 'niedrig'], ['#e0a13a', 'hoch']];
+  if (p.point && p.highlight !== false) lg.push(['#ffbf3f', p.levelLabel || 'Höhenlinie durch P']);
+  if (p.line) lg.push(['#00e701', p.lineLabel || 'Nebenbedingung']);
+  if (p.grad) lg.push(['#ff9aa9', '∇f (steilster Anstieg)']);
+  if (p.point) lg.push(['#00e701', p.pointLabel || 'gesuchte Stelle']);
+  $('legend').innerHTML = lg.map(l => '<span><i style="background:' + l[0] + '"></i>' + l[1] + '</span>').join('');
+}
+
 let drag = null;
 CV.addEventListener('pointerdown', e => {
   if (!state.view2) return;
@@ -6395,7 +7833,7 @@ CV.addEventListener('pointermove', e => {
   if (!drag || !state.view2) return;
   const v = state.view2;
   v.cx = drag.cx - (e.clientX - drag.x) / CV.clientWidth * v.w * v.zoom;
-  v.cy = drag.cy + (e.clientY - drag.y) / 250 * v.h * v.zoom;
+  v.cy = drag.cy + (e.clientY - drag.y) / Math.max(1, CV.clientHeight) * v.h * v.zoom;
   drawPlot();
 });
 ['pointerup', 'pointercancel'].forEach(ev => CV.addEventListener(ev, () => { drag = null; CV.classList.remove('drag'); }));
@@ -6405,9 +7843,17 @@ CV.addEventListener('wheel', e => {
   const zmax = Math.pow(1.12, 14), zmin = Math.pow(1.12, -14);   /* gleicher Bereich wie der Regler */
   state.view2.zoom = Math.min(zmax, Math.max(zmin, state.view2.zoom * (e.deltaY > 0 ? 1.12 : 1 / 1.12)));
   $('zoom').value = Math.round(Math.log(state.view2.zoom) / Math.log(1.12));
+  paintZoom();
   drawPlot();
 }, { passive: false });
-$('zoom').oninput = e => { if (state.view2) { state.view2.zoom = Math.pow(1.12, +e.target.value); drawPlot(); } };
+function paintZoom() {
+  const z = $('zoom'), pct = (+z.value + 14) / 28 * 100;
+  const pos = 'calc(' + pct + '% + ' + (7.5 - pct * 0.15).toFixed(3) + 'px)';
+  $('zoomFill').style.width = pos; $('zoomKnob').style.left = pos;
+}
+$('zoom').oninput = e => { if (state.view2) { state.view2.zoom = Math.pow(1.12, +e.target.value); drawPlot(); } paintZoom(); };
+$('zoom').onpointerdown = () => $('zoomTrack').classList.add('drag');
+['pointerup', 'pointercancel'].forEach(ev => window.addEventListener(ev, () => $('zoomTrack').classList.remove('drag')));
 $('btnReset').onclick = e => { e.stopPropagation(); setupPlot(); };
 
 /* ============================================================
