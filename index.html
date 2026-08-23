@@ -170,6 +170,23 @@ input{font:inherit;color:inherit}
 /* Ohne Unterstuetzung fuer den Kreis blenden die Farben weich um. */
 :root.theming *{transition:background-color .38s var(--e),color .38s var(--e),
   border-color .38s var(--e),box-shadow .38s var(--e),fill .38s var(--e),stroke .38s var(--e)!important}
+/* ---- Rueckmeldung ----
+   Statt fliegender Teilchen zwei ruhige Bewegungen: eine Farbe laeuft einmal
+   durch die Leiste, und das Zeichen davor wird gezeichnet statt eingeblendet. */
+.fb{position:relative;overflow:hidden}
+.fb:before{content:'';position:absolute;inset:0;pointer-events:none;
+  transform-origin:left center;transform:scaleX(0)}
+.fb.good:before{background:var(--greens);animation:fbWipe 460ms var(--e) forwards}
+.fb.bad:before{background:var(--reds);animation:fbWipe 460ms var(--e) forwards}
+@keyframes fbWipe{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.fb .msg,.fb .tries,.fb .fbic{position:relative;z-index:1}
+.fbic{width:19px;height:19px;flex:0 0 19px;margin-right:9px;overflow:visible}
+.fbic path{fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:30;stroke-dashoffset:30;animation:draw 420ms var(--e) 90ms forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.fb .tries{animation:chipPop 380ms var(--e) 140ms both}
+@keyframes chipPop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+/* Der Rahmen des Feldes zieht einmal nach — ein Ring, kein Blinken. */
 @keyframes themeSpin{from{transform:rotate(-140deg) scale(.4);opacity:0}to{transform:none;opacity:1}}
 .iconbtn.spin svg{animation:themeSpin .55s var(--e)}
 
@@ -6820,7 +6837,10 @@ function setLvlColor(d) {
 function setFb(kind, html, chip) {
   const fb = $('fb');
   fb.className = 'fb' + (kind ? ' ' + kind + ' show' : '');
-  fb.innerHTML = kind ? ('<span class="msg">' + html + '</span>' + (chip ? '<span class="tries">' + chip + '</span>' : '')) : '';
+  const mark = kind === 'good' ? '<svg class="fbic" viewBox="0 0 24 24"><path d="M4.6 12.6l4.8 4.8L19.4 7.2"/></svg>'
+    : (kind === 'bad' ? '<svg class="fbic" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg>' : '');
+  fb.innerHTML = kind ? (mark + '<span class="msg">' + html + '</span>'
+    + (chip ? '<span class="tries">' + chip + '</span>' : '')) : '';
   $('fbSec').classList.toggle('on', !!kind);
 }
 
@@ -6851,8 +6871,8 @@ const PRAISE = ['Sauber gerechnet.', 'Genau so geht das.', 'Perfekt.', 'Stimmt e
 function check() {
   if (state.answered) { newTask(); return; }
   const a = readAnswer(), fb = $('fb');
-  if (a.anyEmpty) { setFb('bad', 'Trage zuerst eine Antwort ein.'); return; }
-  if (a.condMissing) { setFb('bad', 'Wähle in jeder Zeile ein Vergleichszeichen.'); return; }
+  if (a.anyEmpty) { setFb('bad', 'Trage zuerst eine Antwort ein.'); playBad(1); return; }
+  if (a.condMissing) { setFb('bad', 'Wähle in jeder Zeile ein Vergleichszeichen.'); playBad(1); return; }
   hidePreview(); state.noPrev = true;   /* Vorschau darf die Rueckmeldung nicht verdecken */
   let ok = false;
   try { ok = !!state.task.check(a.vals, a.flags); } catch (e) { ok = false; }
@@ -6873,6 +6893,7 @@ function check() {
     setFb('bad', '<b>Noch nicht richtig.</b> Versuch es nochmal'
       + (state.tries >= 3 ? ' — der Lösungsweg hilft weiter.' : '.'),
       state.tries + (state.tries === 1 ? ' Versuch' : ' Versuche'));
+    playBad(state.tries);
     /* Feld fuer den naechsten Versuch bereitstellen — die Vorschau bleibt dabei zu,
        sie wuerde sonst die Rueckmeldung ueberdecken. */
     state.noPrev = true;
@@ -6893,6 +6914,8 @@ function check() {
 
   setFb('good', '<b>Richtig.</b> ' + PRAISE[Math.floor(Math.random() * PRAISE.length)],
     s.streak >= 3 ? s.streak + ' in Folge' : '');
+  /* Richtig ist richtig — nach Fehlversuchen klingt es nur ruhiger. */
+  state.tries ? playRecover() : playGood(s.streak);
 
   if (state.session && !state.tries) { sessionAnswered(true); return; }   /* Serie lädt selbst nach */
   const cur = state.task;
@@ -7013,6 +7036,7 @@ function endSession(cancel) {
     const q = Math.round(100 * S0.ok / S0.n), fb = $('fb');
     setFb(q >= 60 ? 'good' : 'bad',
       '<b>Runde beendet: ' + S0.ok + ' von ' + S0.n + ' richtig (' + q + ' %).</b> Auswertung unter Statistik.');
+    if (q >= 60) playDone();
   }
   state.session = null;
   updateSession(); renderModeMenu();
@@ -7714,6 +7738,71 @@ window.addEventListener('resize', redraw);
 /* Nach dem Laden der eingebetteten Schrift stimmen die Reiterbreiten erst — dann neu setzen. */
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => moveTabInd(true));
 window.addEventListener('load', () => moveTabInd(true));
+
+
+/* ============================================================
+   TON
+   ============================================================
+   Alle Klaenge entstehen im Browser — so bleibt die Datei eigenstaendig.
+   Drei Faelle: auf Anhieb richtig, nach Fehlversuchen richtig, und daneben. */
+let AC = null;
+function audioCtx() {
+  try {
+    const C = window.AudioContext || window.webkitAudioContext;
+    if (!C) return null;
+    AC = AC || new C();
+    if (AC.state === 'suspended') AC.resume();
+    return AC;
+  } catch (e) { return null; }
+}
+/* Weiche Huellkurve — hartes Ein- und Ausschalten wuerde knacken. */
+function tone(ctx, freq, at, dur, peak, type, glide) {
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = type || 'sine';
+  o.frequency.setValueAtTime(freq, at);
+  if (glide) o.frequency.exponentialRampToValueAtTime(glide, at + dur * 0.9);
+  g.gain.setValueAtTime(0.0001, at);
+  g.gain.exponentialRampToValueAtTime(peak, at + 0.016);
+  g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(at); o.stop(at + dur + 0.03);
+}
+/* Auf Anhieb richtig: heller Dur-Dreiklang aufwaerts. */
+function playGood(streak) {
+  const ctx = audioCtx(); if (!ctx) return;
+  const t = ctx.currentTime + 0.01;
+  const notes = [1046.50, 1318.51, 1567.98];               /* C6 · E6 · G6 */
+  if (streak >= 3) notes.push(2093.00);
+  notes.forEach((f, i) => {
+    tone(ctx, f, t + i * 0.072, 0.30, 0.10, 'sine');
+    tone(ctx, f * 2, t + i * 0.072, 0.14, 0.018, 'triangle');
+  });
+}
+/* Nach Fehlversuchen richtig: waermer und tiefer — es loest sich auf,
+   statt zu jubeln. */
+function playRecover() {
+  const ctx = audioCtx(); if (!ctx) return;
+  const t = ctx.currentTime + 0.01;
+  [[783.99, 0], [1046.50, 0.10]].forEach(([f, d]) => {
+    tone(ctx, f, t + d, 0.36, 0.085, 'sine');
+    tone(ctx, f * 2, t + d, 0.18, 0.014, 'triangle');
+  });
+}
+/* Daneben: ein kurzer, tiefer Doppelton. Leise gehalten — er soll auf den
+   Fehler zeigen, nicht bestrafen. Ab dem dritten Versuch noch dezenter. */
+function playBad(tries) {
+  const ctx = audioCtx(); if (!ctx) return;
+  const t = ctx.currentTime + 0.01;
+  const v = tries >= 3 ? 0.038 : 0.055;
+  tone(ctx, 311.13, t, 0.15, v, 'triangle');               /* Es4 */
+  tone(ctx, 233.08, t + 0.09, 0.22, v, 'triangle');        /* B3 */
+}
+function playDone() {
+  const ctx = audioCtx(); if (!ctx) return;
+  const t = ctx.currentTime + 0.01;
+  [783.99, 1046.50, 1318.51, 1567.98, 2093.00].forEach((f, i) =>
+    tone(ctx, f, t + i * 0.082, 0.40, 0.09, 'sine'));
+}
 
 /* ============================================================
    FARBMODUS & SPEICHERUNG
