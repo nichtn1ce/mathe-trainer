@@ -2,11 +2,9 @@
   <img src="assets/banner.png" alt="Mathe Trainer" width="100%">
 </p>
 
-Ein Übungsgenerator für Mathematik — von Kopfrechnen bis Lagrange-Optimierung. Jede Aufgabe wird beim Aufrufen neu erzeugt, exakt geprüft und auf Wunsch Schritt für Schritt vorgerechnet.
+Ein mathematischer Übungsgenerator, der das gesamte Spektrum abdeckt: von einfachem Kopfrechnen bis zur Lagrange Optimierung. Jede Aufgabe entsteht beim Aufrufen neu, wird exakt berechnet und lässt sich auf Wunsch Schritt für Schritt nachvollziehen. Die gesamte Anwendung steckt in einer einzigen HTML Datei - ganz ohne Server, ohne Vorbereitung beim Erstellen und ohne Netzwerkanfragen. Einfach im Browser öffnen und direkt nutzen, selbst ohne Internetverbindung.
 
-Das gesamte Programm ist **eine einzige HTML-Datei** ohne Server, Build-Schritt oder Netzwerkanfragen. Öffnen genügt — auch offline.
-
-→ **Live ausprobieren:** https://nichtn1ce.github.io/mathe-trainer/
+→ **Live ausprobieren:** nichtn1ce.github.io/Mathe-Trainer/
 
 ---
 
