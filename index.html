@@ -470,6 +470,8 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 /* Antwortfelder */
 .ans{display:flex;flex-direction:column;gap:9px;max-width:none}
 .ans .frow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ans .fwrap{display:flex;flex-direction:column}
+.ans .fwrap .inp{flex:0 0 auto;width:100%}
 .flab{font-family:var(--math);font-size:16px;color:var(--mut);flex:0 0 auto;min-width:32px}
 .inp{background:var(--inset);border:1px solid var(--sur3);border-radius:var(--r);padding:10px 12px;
   font-family:var(--math);font-size:16px;outline:none;min-width:0;flex:1;font-weight:400}
@@ -480,7 +482,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .setlab{font-size:11.5px;color:var(--mut);font-weight:600;margin-bottom:6px}
 .setrow{display:flex;gap:8px;flex-wrap:wrap}
 .setrow .inp{flex:1 1 118px}
-.fb .tries{flex:0 0 auto;align-self:center;font-weight:700;font-size:11.5px;opacity:.75;
+.fb .tries{flex:0 0 auto;align-self:center;font-weight:800;font-size:11.5px;opacity:.92;
   background:var(--tint);border-radius:20px;padding:3px 10px;margin-left:14px;white-space:nowrap}
 /* Sehr schmal rutscht der Zaehler unter den Text — aber weiter nach rechts. */
 @media (max-width:430px){
@@ -488,6 +490,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
   .fb .tries{align-self:flex-end;margin-left:0}
 }
 .fb .msg{flex:1 1 auto;min-width:0}
+.fb .msg b{font-weight:650}   /* die Farbe traegt die Betonung schon */
 .qtext{margin-top:14px;font-size:14px;color:var(--mut);font-weight:600;line-height:1.5;max-width:640px}
 .qtext b{color:var(--on)}
 .stage.wordy .qtext{font-size:13.5px}
@@ -544,6 +547,20 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .fb.good{color:var(--goodtxt);box-shadow:inset 0 0 0 1px rgba(34,221,110,.3)}
 .fb.bad{color:var(--badtxt);box-shadow:inset 0 0 0 1px rgba(255,84,112,.35)}
 .fb .sol{display:block;margin-top:6px;font-family:var(--math);font-size:17px;color:var(--on);font-weight:400}
+
+
+/* Binomialkoeffizient: zwei Zahlen uebereinander in grossen Klammern */
+/* Vektorpfeil sitzt nur in der Mathe-Schrift sauber ueber dem Buchstaben */
+.vn{font-family:var(--math);font-style:italic;font-weight:400}
+.binom{display:inline-flex;align-items:center;font-family:var(--math);line-height:1}
+.binom .bstack{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;
+  margin:0 .12em;font-size:.86em}
+/* Vierfeldertafel und Wertetabelle */
+.vft{border-collapse:collapse;margin:6px auto;font-family:var(--ui);font-size:13.5px;font-weight:600}
+.vft th,.vft td{border:1px solid var(--sur3);padding:6px 13px;text-align:center;white-space:nowrap}
+.vft th{color:var(--mut);font-weight:700;background:var(--inset);
+  text-transform:none;letter-spacing:0;font-size:12.5px;text-align:center}
+.vft td{font-family:var(--math);font-size:15px;font-weight:400}
 
 /* Anzeige-Fläche */
 .stage{min-height:214px;display:grid;place-items:center;text-align:center;padding:30px 18px;overflow-x:auto}
@@ -838,6 +855,11 @@ td.name .ico{display:inline-grid;place-items:center;width:24px;height:24px;borde
   <symbol id="i-t-matrix" viewBox="0 0 24 24"><path d="M7.6 3.6H4.4v16.8h3.2M16.4 3.6h3.2v16.8h-3.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.6" cy="9" r="1.35" fill="currentColor"/><circle cx="14.4" cy="9" r="1.35" fill="currentColor"/><circle cx="9.6" cy="15" r="1.35" fill="currentColor"/><circle cx="14.4" cy="15" r="1.35" fill="currentColor"/></symbol>
   <symbol id="i-t-det" viewBox="0 0 24 24"><path d="M5.4 3.6v16.8M18.6 3.6v16.8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M8.4 8.2 15.6 15.8M15.6 8.2 8.4 15.8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
   <symbol id="i-t-gauss" viewBox="0 0 24 24"><path d="M3.4 4.6h6.2v5.8h6.2v5.8h5.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.4 20.4h17.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".5"/></symbol>
+  <symbol id="i-g-stoch" viewBox="0 0 24 24"><path d="M2.6 18.4c3.6 0 3.2-11.2 9.4-11.2s5.8 11.2 9.4 11.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M2.6 21.2h18.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-t-wahrsch" viewBox="0 0 24 24"><path d="M12 3.6v4.2M12 7.8L6.6 13M12 7.8L17.4 13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="3.6" r="1.7" fill="currentColor"/><circle cx="6.6" cy="14.6" r="1.7" fill="currentColor"/><circle cx="17.4" cy="14.6" r="1.7" fill="currentColor"/><path d="M6.6 16.4v3.4M17.4 16.4v3.4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-t-kombi" viewBox="0 0 24 24"><circle cx="7.4" cy="7.4" r="3.6" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="16.6" cy="7.4" r="3.6" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="16.4" r="3.6" fill="none" stroke="currentColor" stroke-width="1.9"/></symbol>
+  <symbol id="i-t-folgen" viewBox="0 0 24 24"><circle cx="4.6" cy="17.6" r="1.7" fill="currentColor"/><circle cx="9.8" cy="14.2" r="1.7" fill="currentColor"/><circle cx="15" cy="9.6" r="1.7" fill="currentColor"/><circle cx="20.2" cy="4.8" r="1.7" fill="currentColor"/><path d="M6.4 16.6l1.8-1.2M11.6 13.2l1.8-1.8M16.8 8.4l1.8-1.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-t-vektor" viewBox="0 0 24 24"><path d="M4.4 19.6L18 6" fill="none" stroke="currentColor" stroke-width="1.95" stroke-linecap="round"/><path d="M12.6 5.4H18.6V11.4" fill="none" stroke="currentColor" stroke-width="1.95" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-t-summe" viewBox="0 0 24 24"><path d="M18.2 4.4H5.6l6.6 7.6-6.6 7.6h12.6" fill="none" stroke="currentColor" stroke-width="1.95" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-t-oeko" viewBox="0 0 24 24"><path d="M3.4 3.6v17h17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".55"/><path d="M6.4 17.6 20.2 5.4" stroke="currentColor" stroke-width="2.05" stroke-linecap="round"/><path d="M6.4 6.2 20.2 17.8" stroke="currentColor" stroke-width="2.05" stroke-linecap="round" opacity=".75"/></symbol>
   <symbol id="i-t-implizit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.95"/><path d="M4.6 7.6 20.6 15.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".7"/></symbol>
@@ -2085,9 +2107,9 @@ topic({
 
 function genQuad(d, v) {
   if (v === 'rein') {
-    const a = d <= 4 ? 1 : ri(2, 5) * sgnPick();
+    const a = d <= 3 ? 1 : (d <= 4 ? pick([1, 1, 2, 3]) : ri(2, 6) * sgnPick());
     const noSol = d >= 6 && coin(0.25);
-    const x0 = d <= 5 ? ri(1, 9) : ri(1, 15);
+    const x0 = ri(1, 7 + 2 * d);                 /* waechst gleichmaessig mit der Stufe */
     let c, sol;
     if (noSol) { c = Math.abs(a) * ri(1, 20) * (a > 0 ? 1 : -1); sol = []; }
     else { c = -a * x0 * x0; sol = [-x0, x0]; }
@@ -2123,7 +2145,7 @@ function genQuad(d, v) {
     };
   }
   if (v === 'bi') {
-    const u1 = ri(1, d <= 6 ? 5 : 9), u2 = ri(1, d <= 6 ? 5 : 9);
+    const u1 = ri(1, d <= 3 ? 6 : (d <= 6 ? 9 : 13)), u2 = ri(1, d <= 3 ? 6 : (d <= 6 ? 9 : 13));
     const neg = d >= 7 && coin(0.4);
     const U = neg ? [u1 * u1, -u2 * u2] : [u1 * u1, u2 * u2];
     const p = -(U[0] + U[1]), q = U[0] * U[1];
@@ -2210,8 +2232,8 @@ topic({
 
 function genKub(d, v) {
   if (v === 'rein') {
-    const a = d <= 4 ? 1 : ri(2, 5);
-    const x0 = ri(1, d <= 5 ? 5 : 9) * sgnPick();
+    const a = d <= 3 ? 1 : (d <= 4 ? pick([1, 1, 2]) : ri(2, 6));
+    const x0 = ri(1, 4 + d) * sgnPick();
     const dd = -a * x0 * x0 * x0;
     return {
       promptHTML: '<span class="big">' + polyHTML([a, 0, 0, dd]) + ' <span class="rel">=</span> 0</span>',
@@ -2546,7 +2568,7 @@ topic({
 });
 
 function genPotenz(d, v) {
-  const n = d <= 3 ? pick([2, 3]) : (d <= 6 ? ri(2, 4) : ri(2, 6));
+  const n = d <= 2 ? pick([2, 3]) : (d <= 5 ? ri(2, 4) : ri(2, 6));
   if (v === 'klammer') {
     const a = rnz(-(d <= 5 ? 3 : 6), d <= 5 ? 3 : 6), b = rnz(-9, 9);
     const w = ri(1, d <= 5 ? 4 : 7);
@@ -2571,8 +2593,8 @@ function genPotenz(d, v) {
     };
   }
   if (v === 'negativ') {
-    const m = d <= 5 ? pick([1, 2, 3]) : ri(1, 4);
-    const w = ri(2, d <= 5 ? 4 : 6);
+    const m = d <= 5 ? pick([1, 2, 3]) : ri(1, 5);
+    const w = ri(2, d <= 3 ? 11 : (d <= 5 ? 16 : 22));
     const a = new F(1, Math.pow(w, m));
     let sol = m % 2 === 0 ? uniqSorted([-w, w]) : [w];
     return {
@@ -2591,8 +2613,10 @@ function genPotenz(d, v) {
     };
   }
   if (v === 'rational') {
-    const base = pick([2, 3, 4, 5]);
-    const nn = pick([2, 3]), mm = pick([2, 3, 4]);
+    const base = pick(d <= 4 ? [2, 3, 4, 5, 6, 7] : [2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const nn = pick(d <= 4 ? [2, 3] : [2, 3, 4, 5]);
+    let mm = pick(d <= 4 ? [2, 3, 4] : [2, 3, 4, 5, 6, 7]);
+    if (mm === nn) mm = nn + 1;
     const x0 = Math.pow(base, nn);
     const a = Math.pow(x0, mm / nn);
     return {
@@ -2612,7 +2636,7 @@ function genPotenz(d, v) {
   }
   /* rein */
   const noSol = n % 2 === 0 && d >= 5 && coin(0.2);
-  const w = ri(1, d <= 4 ? 5 : (d <= 7 ? 9 : 13));
+  const w = ri(1, 5 + d);
   const a = noSol ? -Math.pow(w, n) : Math.pow(w, n) * (n % 2 === 1 && coin() ? -1 : 1);
   let sol;
   if (noSol) sol = [];
@@ -2800,9 +2824,9 @@ function genExpo(d, v) {
   }
 
   if (v === 'subst') {
-    const a = pick([2, 3, 5]);
-    const cap = a === 2 ? 4 : (a === 3 ? 3 : 2);
-    const m1 = ri(0, Math.min(cap, d <= 6 ? 2 : 3)), m2 = ri(0, Math.min(cap, d <= 6 ? 3 : 4));
+    const a = pick(d <= 5 ? [2, 3, 4, 5, 6] : [2, 3, 4, 5, 6, 7, 10]);
+    const cap = a === 2 ? 6 : (a === 3 ? 4 : (a <= 5 ? 3 : 2));
+    const m1 = ri(0, Math.min(cap, d <= 6 ? 3 : 4)), m2 = ri(0, Math.min(cap, d <= 6 ? 4 : 5));
     const u1 = Math.pow(a, m1), u2 = Math.pow(a, m2);
     const p = -(u1 + u2), q = u1 * u2;
     const sol = uniqSorted([m1, m2]);
@@ -2905,8 +2929,8 @@ function genLog(d, v) {
 
   if (v === 'regeln') {
     /* log(x) + log(x+a) = log(b) → x(x+a) = b */
-    const r = ri(1, d <= 6 ? 6 : 12);
-    const a = ri(1, d <= 6 ? 6 : 12);
+    const r = ri(1, d <= 3 ? 9 : (d <= 6 ? 15 : 30));
+    const a = ri(1, d <= 3 ? 9 : (d <= 6 ? 15 : 30));
     const b = r * (r + a);
     const sol = [r];
     return {
@@ -2952,8 +2976,8 @@ function genLog(d, v) {
     };
   }
   /* grund */
-  const a = pick(d <= 4 ? [2, 3, 10] : [2, 3, 4, 5, 10]);
-  const b = ri(-2, d <= 5 ? 4 : 6);
+  const a = pick(d <= 4 ? [2, 3, 4, 5, 6, 7, 10] : [2, 3, 4, 5, 6, 7, 8, 9, 10, 12]);
+  const b = ri(-3, d <= 5 ? 5 : 8);
   const s = Math.pow(a, b);
   return {
     promptHTML: '<span class="big">log<sub>' + a + '</sub>(' + V() + ') <span class="rel">=</span> ' + num(b) + '</span>',
@@ -3137,7 +3161,7 @@ function limPrompt(inner, to) {
 
 function genLim(d, v) {
   if (v === 'null') {
-    const a = rnz(-(d <= 5 ? 5 : 9), d <= 5 ? 5 : 9);
+    const a = rnz(-(3 + d), 3 + d);
     if (d <= 4 || coin(0.4)) {
       const res = 2 * a;
       return {
@@ -3174,7 +3198,7 @@ function genLim(d, v) {
     };
   }
   if (v === 'wurzel') {
-    const a = rnz(-9, 9);
+    const a = rnz(-(d <= 4 ? 12 : 30), d <= 4 ? 12 : 30);
     const res = a / 2;
     return {
       promptHTML: limPrompt(sqrtHTML(polyHTML([1, a, 0])) + ' − ' + V(), '∞'),
@@ -3225,7 +3249,7 @@ function genLim(d, v) {
   if (v === 'speziell') {
     const k = pick(d <= 5 ? ['sin', 'exp', 'lnx'] : ['sin', 'exp', 'lnx', 'euler', 'wachstum']);
     if (k === 'sin') {
-      const kf = d <= 5 ? 1 : ri(1, 4); const KX = (kf === 1 ? '' : kf) + V();
+      const kf = d <= 3 ? ri(1, 4) : (d <= 6 ? ri(1, 7) : ri(1, 12)); const KX = (kf === 1 ? '' : kf) + V();
       return {
         promptHTML: limPrompt(fracHTML('sin(' + KX + ')', V()), '0'),
         fields: [Fnum('Grenzwert =')], check: checkNum(kf), solHTML: '' + kf,
@@ -3238,7 +3262,7 @@ function genLim(d, v) {
       };
     }
     if (k === 'exp') {
-      const a = ri(1, 4);
+      const a = ri(1, d <= 4 ? 9 : 20);
       return {
         promptHTML: limPrompt(num(a) + '·e<sup>−' + V() + '</sup>', '∞'),
         fields: [Fnum('Grenzwert =')], check: checkNum(0), solHTML: '0',
@@ -3789,8 +3813,8 @@ function genInt(d, v) {
     };
   }
   if (v === 'flaeche') {
-    const r1 = rnz(-5, 3); const r2 = r1 + ri(1, d <= 5 ? 3 : 6);
-    const a = d <= 5 ? -1 : (coin() ? -1 : -ri(1, 3));
+    const r1 = rnz(-8, 6); const r2 = r1 + ri(1, d <= 5 ? 5 : 8);
+    const a = d <= 3 ? -1 : (coin() ? -1 : -ri(1, 4));
     const co = [a, -a * (r1 + r2), a * r1 * r2];
     const area = Math.abs(a) * Math.pow(r2 - r1, 3) / 6;
     return {
@@ -5623,7 +5647,7 @@ topic({
 
 function genSummen(d, v) {
   if (v === 'produkt') {
-    const n = ri(3, d <= 5 ? 5 : 7);
+    const n = ri(2, d <= 3 ? 6 : (d <= 6 ? 8 : 11));
     if (coin()) {
       let val = 1; for (let i = 1; i <= n; i++) val *= i;
       return {
@@ -5636,9 +5660,24 @@ function genSummen(d, v) {
         ]
       };
     }
-    const c = ri(2, 4);
+    if (d >= 3 && coin(0.45)) {
+      /* Produkt ab einer beliebigen unteren Grenze — deutlich mehr Varianten */
+      const lo = ri(2, 6), hi = lo + ri(1, d <= 6 ? 4 : 6);
+      let v2 = 1; for (let i = lo; i <= hi; i++) v2 *= i;
+      if (v2 > 1e7) return genSummen(d, v);
+      return {
+        promptHTML: '<span class="big">' + prodHTML(lo, hi, '<i>i</i>') + '</span>',
+        fields: [Fnum('=', 'Zahl')], check: checkNum(v2), solHTML: num(v2),
+        steps: [
+          st('Ausschreiben', Array.from({ length: hi - lo + 1 }, (_, i) => lo + i).join(' · ')),
+          st('Als Fakultäten', fracHTML(hi + '!', (lo - 1) + '!') + ' — die Faktoren bis ' + (lo - 1) + ' kürzen sich weg.'),
+          st('Ergebnis', '<b>' + num(v2) + '</b>')
+        ]
+      };
+    }
+    const c = ri(2, d <= 5 ? 5 : 8);
     let val = 1; for (let i = 1; i <= n; i++) val *= c * i;
-    if (val > 1e6) return genSummen(d, v);      /* Ergebnis soll noch handhabbar bleiben */
+    if (val > 1e7) return genSummen(d, v);      /* Ergebnis soll noch handhabbar bleiben */
     return {
       promptHTML: '<span class="big">' + prodHTML(1, n, coefHTML(c, '<i>i</i>', true)) + '</span>',
       fields: [Fnum('=', 'Zahl')], check: checkNum(val), solHTML: num(val),
@@ -5651,24 +5690,26 @@ function genSummen(d, v) {
   }
 
   if (v === 'geo') {
-    const q = pick(d <= 5 ? [2, 3] : [2, 3, 4, 5]);
-    const n = ri(2, d <= 5 ? 4 : 6);
-    let val = 0; for (let i = 0; i <= n; i++) val += Math.pow(q, i);
+    const q = pick(d <= 3 ? [2, 3, 4] : (d <= 6 ? [2, 3, 4, 5, 6] : [2, 3, 4, 5, 6, 7, 8, 10]));
+    const n = ri(2, d <= 3 ? 5 : (d <= 6 ? 7 : 9));
+    const lo = d >= 4 && coin(0.4) ? ri(1, 3) : 0;
+    let val = 0; for (let i = lo; i <= n + lo; i++) val += Math.pow(q, i);
     return {
       plot: { fns: [{ f: x => Math.pow(q, x), label: q + '^i' }],
-        points: Array.from({ length: n + 1 }, (_, k) => ({ x: k, y: Math.pow(q, k) })) },
-      promptHTML: '<span class="big">' + sumHTML(0, n, pw(String(q), '<i>i</i>')) + '</span>',
+        points: Array.from({ length: n + 1 }, (_, k) => ({ x: lo + k, y: Math.pow(q, lo + k) })) },
+      promptHTML: '<span class="big">' + sumHTML(lo, n + lo, pw(String(q), '<i>i</i>')) + '</span>',
       fields: [Fnum('=', 'Zahl')], check: checkNum(val), solHTML: num(val),
       steps: [
-        st('Ausschreiben', Array.from({ length: n + 1 }, (_, i) => Math.pow(q, i)).join(' + ')),
-        st('Formel', fracHTML(q + '<sup>' + (n + 1) + '</sup> − 1', q + ' − 1') + ' = ' + fracHTML(Math.pow(q, n + 1) - 1, q - 1)),
+        st('Ausschreiben', Array.from({ length: n + 1 }, (_, i) => Math.pow(q, lo + i)).join(' + ')),
+        st('Formel', 'Erstes Glied ' + Math.pow(q, lo) + ', Faktor ' + q + ', ' + (n + 1) + ' Glieder:<br>'
+          + Math.pow(q, lo) + '·' + fracHTML(q + '<sup>' + (n + 1) + '</sup> − 1', q + ' − 1')),
         st('Ergebnis', '<b>' + num(val) + '</b>')
       ]
     };
   }
 
   if (v === 'formel') {
-    const n = ri(5, d <= 4 ? 12 : (d <= 7 ? 30 : 60));
+    const n = ri(5, d <= 4 ? 25 : (d <= 7 ? 60 : 120));
     const quad = d > 5 && coin();
     let val = 0; for (let i = 1; i <= n; i++) val += quad ? i * i : i;
     return {
@@ -5841,7 +5882,7 @@ function genImplizit(d, v) {
   const R = d <= 4 ? 4 : (d <= 7 ? 6 : 9);
   if (v === 'grs') {
     /* U = x^a · y^b = const → dy/dx = −(a·y)/(b·x) */
-    const a = ri(1, 4), b = ri(1, 4);
+    const a = ri(1, d <= 5 ? 6 : 9), b = ri(1, d <= 5 ? 6 : 9);
     const ref = (x, y) => -(a * y) / (b * x);
     return {
       plot: { kind: 'contour', f: (x, y) => (x > 0 && y > 0 ? Math.pow(x, a) * Math.pow(y, b) : NaN),
@@ -5978,6 +6019,1064 @@ function genElast(d, v) {
     ]
   };
 }
+
+</script>
+<script>
+/* ============================================================
+   TEIL 9 — Stochastik · Folgen & Reihen · Vektorrechnung
+   ============================================================
+   Alle Aufgaben hier sind so gebaut, dass die Loesung immer eine
+   rationale Zahl ist: Wahrscheinlichkeiten sind Brueche, Folgenglieder
+   und Summen entstehen aus ganzzahligen Parametern, und bei Vektoren
+   werden Betraege nur dort gefragt, wo pythagoreische Tripel dafuer
+   sorgen, dass die Wurzel aufgeht.
+   ============================================================ */
+
+/* ---------- kleine Helfer ---------- */
+function fakt(n) { let r = 1; for (let i = 2; i <= n; i++) r *= i; return r; }
+function binom(n, k) {
+  if (k < 0 || k > n) return 0;
+  k = Math.min(k, n - k);
+  let r = 1;
+  for (let i = 1; i <= k; i++) r = r * (n - k + i) / i;
+  return Math.round(r);
+}
+/* Bruch als Antwortfeld-Hinweis: Wahrscheinlichkeiten duerfen als Bruch,
+   Dezimalzahl oder Prozentzahl eingegeben werden. */
+const P_PH = 'z. B. 3/8  ·  0,375';
+function pHTML(f) { return f.d === 1 ? num(f.n) : f.html(); }
+/* Klammern um HTML, das mit einem Minus beginnt — paren() sieht nur Zahlen. */
+/* Kette aus Bruechen mit richtigem Vorzeichen: 4 − 2 + 1 statt 4 + −2 + 1 */
+function chainF(list) {
+  return list.map((f, i) => i === 0 ? pHTML(f)
+    : ' <span class="op">' + (f.v < 0 ? MINUS : '+') + '</span> ' + pHTML(f.v < 0 ? f.neg() : f)).join('');
+}
+function parenH(h) { return /^\s*(<[^>]+>)*\s*[-\u2212]/.test(h) || h.indexOf('frac') >= 0 ? '(' + h + ')' : h; }
+/* Pythagoreische Tripel — damit Betraege ganzzahlig bleiben */
+const TRIP2 = [[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25], [20, 21, 29], [9, 40, 41], [12, 35, 37], [11, 60, 61], [28, 45, 53], [33, 56, 65], [16, 63, 65], [48, 55, 73]];
+const TRIP3 = [[1, 2, 2, 3], [2, 3, 6, 7], [1, 4, 8, 9], [2, 6, 9, 11], [4, 4, 7, 9], [1, 12, 12, 17],
+  [2, 10, 11, 15], [6, 6, 7, 11], [3, 4, 12, 13], [2, 5, 14, 15], [1, 6, 18, 19], [4, 8, 19, 21],
+  [8, 9, 12, 17], [3, 16, 24, 29], [6, 10, 15, 19], [5, 4, 20, 21], [2, 14, 23, 27], [9, 12, 20, 25]];
+/* Vielfache erweitern den Vorrat, ohne dass die Wurzel unschoen wird. */
+function scaleTrip(t, f) { return t.map(x => x * f); }
+function vec(a) { return vecHTML(a.map(num)); }
+/* Vektorpfeile sitzen nur in der Mathe-Schrift richtig ueber dem Buchstaben. */
+function vn(n) { return '<span class="vn">' + n + '\u20d7</span>'; }
+const VA = vn('a'), VB = vn('b');
+function vecRow(a) { return '(' + a.map(num).join(' | ') + ')'; }
+
+/* ============================================================
+   WAHRSCHEINLICHKEIT
+   ============================================================ */
+topic({
+  id: 'wahrsch', group: 'Stochastik', name: 'Wahrscheinlichkeit', icon: 'i-t-wahrsch',
+  sub: 'Laplace, Gegenereignis, Pfadregeln, bedingte Wahrscheinlichkeit und Erwartungswert.',
+  variants: [
+    { id: 'laplace', name: 'Laplace-Wahrscheinlichkeit', desc: 'Günstige durch mögliche Fälle.' },
+    { id: 'gegen', name: 'Gegenereignis', desc: '„Mindestens einmal" über 1 − P(kein Treffer).' },
+    { id: 'pfad', name: 'Pfadregeln', desc: 'Mehrstufige Versuche: entlang multiplizieren, quer addieren.' },
+    { id: 'bedingt', name: 'Bedingte Wahrscheinlichkeit', desc: 'Vierfeldertafel: P(A|B) = P(A∩B) / P(B).' },
+    { id: 'bernoulli', name: 'Bernoulli-Kette', desc: 'Genau k Treffer bei n Versuchen.' },
+    { id: 'erwartung', name: 'Erwartungswert', desc: 'Werte mit ihren Wahrscheinlichkeiten gewichten.' },
+  ],
+  formulas: [
+    st('Laplace', 'P(E) = ' + fracHTML('Anzahl günstiger Fälle', 'Anzahl möglicher Fälle')),
+    st('Gegenereignis', 'P(E) = 1 − P(Ē) — bei „mindestens einmal" fast immer der kürzere Weg.'),
+    st('Pfadregeln', 'Entlang eines Pfades <b>multiplizieren</b>, mehrere Pfade <b>addieren</b>.'),
+    st('Bedingt', 'P(A|B) = ' + fracHTML('P(A ∩ B)', 'P(B)')),
+    st('Bernoulli', 'P(genau k) = ' + binomHTML() + '·p<sup>k</sup>·(1−p)<sup>n−k</sup>'),
+    st('Erwartungswert', 'E(X) = x<sub>1</sub>·p<sub>1</sub> + x<sub>2</sub>·p<sub>2</sub> + … '),
+  ],
+  gen: function (d, v) { return genWahrsch(d, v); }
+});
+function binomHTML(n, k) {
+  return '<span class="binom">(<span class="bstack"><span>' + (n === undefined ? 'n' : n) + '</span><span>'
+    + (k === undefined ? 'k' : k) + '</span></span>)</span>';
+}
+
+function genWahrsch(d, v) {
+  if (v === 'gegen') return wGegen(d);
+  if (v === 'pfad') return wPfad(d);
+  if (v === 'bedingt') return wBedingt(d);
+  if (v === 'bernoulli') return wBernoulli(d);
+  if (v === 'erwartung') return wErwartung(d);
+  return wLaplace(d);
+}
+
+function wLaplace(d) {
+  const art = d <= 3 ? pick(['wuerfel', 'urne']) : pick(['wuerfel', 'urne', 'karten', 'zwei']);
+  if (art === 'wuerfel') {
+    const cond = pick([
+      { t: 'eine gerade Zahl', g: 3, n: 6 },
+      { t: 'eine Zahl größer als 4', g: 2, n: 6 },
+      { t: 'eine Primzahl', g: 3, n: 6 },
+      { t: 'eine durch 3 teilbare Zahl', g: 2, n: 6 },
+    ]);
+    const p = new F(cond.g, cond.n);
+    return {
+      promptHTML: '<span class="big">Ein fairer Würfel wird einmal geworfen.<br>Wie wahrscheinlich ist ' + cond.t + '?</span>',
+      wordy: true, fields: [Fnum('P =', P_PH)], check: checkNum(p.v), solHTML: 'P = ' + pHTML(p),
+      steps: [
+        st('Mögliche Fälle', 'Der Würfel hat <b>6</b> gleich wahrscheinliche Ergebnisse.'),
+        st('Günstige Fälle', 'Es gibt <b>' + cond.g + '</b> Ergebnisse, auf die die Bedingung passt.'),
+        st('Laplace', 'P = ' + fracHTML(cond.g, cond.n) + ' = <b>' + pHTML(p) + '</b>')
+      ]
+    };
+  }
+  if (art === 'urne') {
+    const r = ri(2, d <= 4 ? 12 : 30), b = ri(2, d <= 4 ? 12 : 30);
+    const p = new F(r, r + b);
+    return {
+      promptHTML: '<span class="big">In einer Urne liegen ' + r + ' rote und ' + b + ' blaue Kugeln.<br>Es wird eine Kugel gezogen. Wie wahrscheinlich ist sie rot?</span>',
+      wordy: true, fields: [Fnum('P =', P_PH)], check: checkNum(p.v), solHTML: 'P = ' + pHTML(p),
+      steps: [
+        st('Mögliche Fälle', r + ' + ' + b + ' = <b>' + (r + b) + '</b> Kugeln insgesamt.'),
+        st('Günstige Fälle', '<b>' + r + '</b> rote Kugeln.'),
+        st('Laplace', 'P = ' + fracHTML(r, r + b) + ' = <b>' + pHTML(p) + '</b>')
+      ]
+    };
+  }
+  if (art === 'karten') {
+    const cond = pick([
+      { t: 'ein Herz', g: 8 }, { t: 'ein Ass', g: 4 }, { t: 'eine Bildkarte (Bube, Dame, König)', g: 12 },
+      { t: 'eine rote Karte', g: 16 },
+    ]);
+    const p = new F(cond.g, 32);
+    return {
+      promptHTML: '<span class="big">Aus einem Skatblatt (32 Karten) wird eine Karte gezogen.<br>Wie wahrscheinlich ist es ' + cond.t + '?</span>',
+      wordy: true, fields: [Fnum('P =', P_PH)], check: checkNum(p.v), solHTML: 'P = ' + pHTML(p),
+      steps: [
+        st('Mögliche Fälle', '<b>32</b> Karten.'),
+        st('Günstige Fälle', '<b>' + cond.g + '</b> passende Karten.'),
+        st('Laplace', 'P = ' + fracHTML(cond.g, 32) + ' = <b>' + pHTML(p) + '</b>')
+      ]
+    };
+  }
+  /* zwei Würfel */
+  const s = ri(4, 10);
+  let g = 0;
+  for (let a = 1; a <= 6; a++) for (let b = 1; b <= 6; b++) if (a + b === s) g++;
+  const p = new F(g, 36);
+  return {
+    promptHTML: '<span class="big">Zwei faire Würfel werden geworfen.<br>Wie wahrscheinlich ist die Augensumme ' + s + '?</span>',
+    wordy: true, fields: [Fnum('P =', P_PH)], check: checkNum(p.v), solHTML: 'P = ' + pHTML(p),
+    steps: [
+      st('Mögliche Fälle', '6 · 6 = <b>36</b> Paare (die Würfel gelten als unterscheidbar).'),
+      st('Günstige Fälle', '<b>' + g + '</b> Paare ergeben die Summe ' + s + '.'),
+      st('Laplace', 'P = ' + fracHTML(g, 36) + ' = <b>' + pHTML(p) + '</b>')
+    ]
+  };
+}
+
+function wGegen(d) {
+  const n = d <= 3 ? ri(2, 3) : (d <= 6 ? ri(2, 4) : ri(3, 6));
+  const kind = pick(['wuerfel', 'urne', 'muenze']);
+  let p1, txt, was;
+  if (kind === 'wuerfel') {
+    const z = ri(1, 6);
+    p1 = new F(1, 6); txt = 'Ein Würfel wird ' + n + '-mal geworfen.'; was = 'mindestens eine ' + ['Eins','Zwei','Drei','Vier','Fünf','Sechs'][z-1];
+  } else if (kind === 'muenze') {
+    p1 = new F(1, 2); txt = 'Eine faire Münze wird ' + n + '-mal geworfen.'; was = 'mindestens einmal Kopf';
+  } else {
+    const r = ri(1, 6), b = ri(3, 12);
+    p1 = new F(r, r + b);
+    txt = 'Aus einer Urne mit ' + r + ' roten und ' + b + ' blauen Kugeln wird ' + n + '-mal <b>mit Zurücklegen</b> gezogen.';
+    was = 'mindestens eine rote Kugel';
+  }
+  const q = new F(p1.d - p1.n, p1.d);
+  const qn = q.pow(n);
+  const res = new F(1, 1).sub(qn);
+  return {
+    promptHTML: '<span class="big">' + txt + '<br>Wie wahrscheinlich ist ' + was + '?</span>',
+    wordy: true, fields: [Fnum('P =', P_PH)], check: checkNum(res.v), solHTML: 'P = ' + pHTML(res),
+    steps: [
+      st('Gegenereignis', '„Mindestens einmal" ist das Gegenteil von „<b>kein einziges Mal</b>".'),
+      st('Ein Versuch geht daneben', 'P = ' + pHTML(q)),
+      st('Alle ' + n + ' Versuche gehen daneben', pHTML(q) + '<sup>' + n + '</sup> = ' + pHTML(qn)),
+      st('Ergebnis', 'P = 1 − ' + pHTML(qn) + ' = <b>' + pHTML(res) + '</b>')
+    ]
+  };
+}
+
+function wPfad(d) {
+  const r = ri(2, d <= 4 ? 7 : 12), b = ri(2, d <= 4 ? 7 : 12), N = r + b;
+  const zurueck = d <= 4 ? true : coin();
+  const frage = pick(['beide', 'gemischt']);
+  let res, steps;
+  if (zurueck) {
+    const p = new F(r, N);
+    if (frage === 'beide') {
+      res = p.mul(p);
+      steps = [
+        st('Mit Zurücklegen', 'Vor jedem Zug liegen wieder alle ' + N + ' Kugeln in der Urne.'),
+        st('Pfadregel', 'P(rot, rot) = ' + fracHTML(r, N) + ' · ' + fracHTML(r, N) + ' = <b>' + pHTML(res) + '</b>')
+      ];
+    } else {
+      const q = new F(b, N);
+      res = p.mul(q).add(q.mul(p));
+      steps = [
+        st('Zwei Pfade', 'rot–blau <b>oder</b> blau–rot.'),
+        st('Entlang multiplizieren', fracHTML(r, N) + '·' + fracHTML(b, N) + ' und ' + fracHTML(b, N) + '·' + fracHTML(r, N)),
+        st('Quer addieren', '<b>' + pHTML(res) + '</b>')
+      ];
+    }
+  } else {
+    if (frage === 'beide') {
+      if (r < 2) return wPfad(d);
+      res = new F(r, N).mul(new F(r - 1, N - 1));
+      steps = [
+        st('Ohne Zurücklegen', 'Nach dem ersten Zug liegt eine Kugel weniger in der Urne.'),
+        st('Pfadregel', 'P = ' + fracHTML(r, N) + ' · ' + fracHTML(r - 1, N - 1) + ' = <b>' + pHTML(res) + '</b>')
+      ];
+    } else {
+      res = new F(r, N).mul(new F(b, N - 1)).add(new F(b, N).mul(new F(r, N - 1)));
+      steps = [
+        st('Zwei Pfade', 'rot–blau <b>oder</b> blau–rot, jeweils ohne Zurücklegen.'),
+        st('Entlang multiplizieren', fracHTML(r, N) + '·' + fracHTML(b, N - 1) + ' und ' + fracHTML(b, N) + '·' + fracHTML(r, N - 1)),
+        st('Quer addieren', '<b>' + pHTML(res) + '</b>')
+      ];
+    }
+  }
+  const wasTxt = frage === 'beide' ? 'beide Kugeln rot' : 'genau eine rote und eine blaue Kugel';
+  return {
+    promptHTML: '<span class="big">In einer Urne liegen ' + r + ' rote und ' + b + ' blaue Kugeln.<br>Es wird zweimal '
+      + (zurueck ? '<b>mit</b>' : '<b>ohne</b>') + ' Zurücklegen gezogen.<br>Wie wahrscheinlich sind ' + wasTxt + '?</span>',
+    wordy: true, fields: [Fnum('P =', P_PH)], check: checkNum(res.v), solHTML: 'P = ' + pHTML(res), steps: steps
+  };
+}
+
+function wBedingt(d) {
+  /* Vierfeldertafel mit ganzen Zahlen — dadurch bleibt jede Wahrscheinlichkeit rational */
+  const a = ri(4, d <= 5 ? 20 : 60), b = ri(4, d <= 5 ? 20 : 60);
+  const c = ri(4, d <= 5 ? 20 : 60), e = ri(4, d <= 5 ? 20 : 60);
+  const N = a + b + c + e;
+  const merk = pick([
+    { A: 'Brille', nA: 'keine Brille', B: 'Mädchen', nB: 'Junge',
+      frage: 'eine Brille trägt', geg: 'es sich um ein Mädchen handelt' },
+    { A: 'Fahrrad', nA: 'kein Fahrrad', B: 'Oberstufe', nB: 'Mittelstufe',
+      frage: 'mit dem Fahrrad kommt', geg: 'sie in die Oberstufe geht' },
+    { A: 'Sportverein', nA: 'kein Verein', B: 'Jungen', nB: 'Mädchen',
+      frage: 'in einem Sportverein ist', geg: 'es sich um einen Jungen handelt' },
+  ]);
+  const res = new F(a, a + c);   /* P(A|B) mit B = Spalte 1 */
+  const tab = '<table class="vft"><tr><th></th><th>' + merk.B + '</th><th>' + merk.nB + '</th><th>Σ</th></tr>'
+    + '<tr><th>' + merk.A + '</th><td>' + a + '</td><td>' + b + '</td><td>' + (a + b) + '</td></tr>'
+    + '<tr><th>' + merk.nA + '</th><td>' + c + '</td><td>' + e + '</td><td>' + (c + e) + '</td></tr>'
+    + '<tr><th>Σ</th><td>' + (a + c) + '</td><td>' + (b + e) + '</td><td>' + N + '</td></tr></table>';
+  return {
+    promptHTML: '<span class="big">' + tab + '<br>Eine Person wird zufällig ausgewählt.<br>Wie wahrscheinlich ist es, dass sie '
+      + merk.frage + ' — wenn bekannt ist, dass ' + merk.geg + '?</span>',
+    wordy: true, fields: [Fnum('P =', P_PH)], check: checkNum(res.v),
+    solHTML: 'P(' + merk.A + ' | ' + merk.B + ') = ' + pHTML(res),
+    steps: [
+      st('Bedingung einschränken', 'Nur die Spalte „' + merk.B + '" zählt — das sind <b>' + (a + c) + '</b> Personen.'),
+      st('Günstige darin', 'Davon tragen <b>' + a + '</b> ' + merk.A.toLowerCase() + '.'),
+      st('Formel', 'P(A|B) = ' + fracHTML('P(A ∩ B)', 'P(B)') + ' = ' + fracHTML(a, a + c) + ' = <b>' + pHTML(res) + '</b>')
+    ]
+  };
+}
+
+function wBernoulli(d) {
+  const n = d <= 3 ? ri(2, 4) : (d <= 6 ? ri(3, 6) : ri(5, 9));
+  const k = ri(1, n - 1);
+  const pf = pick(d <= 4 ? [new F(1, 2), new F(1, 3), new F(1, 4), new F(2, 3), new F(1, 5), new F(3, 4)]
+    : [new F(1, 2), new F(1, 3), new F(1, 4), new F(2, 5), new F(1, 6), new F(3, 5), new F(2, 3),
+       new F(1, 8), new F(3, 8), new F(5, 6), new F(1, 10), new F(3, 10)]);
+  const qf = new F(1, 1).sub(pf);
+  const res = pf.pow(k).mul(qf.pow(n - k)).mul(binom(n, k));
+  return {
+    promptHTML: '<span class="big">Ein Versuch gelingt mit p = ' + pHTML(pf) + '.<br>Er wird ' + n
+      + '-mal unabhängig wiederholt.<br>Wie wahrscheinlich sind genau ' + k + ' Treffer?</span>',
+    wordy: true, fields: [Fnum('P =', P_PH)], check: checkNum(res.v), solHTML: 'P(X = ' + k + ') = ' + pHTML(res),
+    steps: [
+      st('Formel', 'P(X = k) = ' + binomHTML(n, k) + ' · p<sup>k</sup> · (1−p)<sup>n−k</sup>'),
+      st('Anzahl der Pfade', binomHTML(n, k) + ' = <b>' + binom(n, k) + '</b> — so viele Reihenfolgen gibt es.'),
+      st('Ein Pfad', pHTML(pf) + '<sup>' + k + '</sup> · ' + pHTML(qf) + '<sup>' + (n - k) + '</sup> = '
+        + pHTML(pf.pow(k).mul(qf.pow(n - k)))),
+      st('Ergebnis', binom(n, k) + ' · ' + pHTML(pf.pow(k).mul(qf.pow(n - k))) + ' = <b>' + pHTML(res) + '</b>')
+    ]
+  };
+}
+
+function wErwartung(d) {
+  const m = d <= 4 ? 3 : 4;
+  /* Gemeinsamer Nenner N, dann N in m positive Teile zerlegen — so ergibt die
+     Summe der Wahrscheinlichkeiten exakt 1 und alles bleibt rational. */
+  const N = pick(d <= 4 ? [6, 8, 10, 12] : [10, 12, 16, 20, 24]);
+  const parts = [];
+  let rest = N;
+  for (let i = 0; i < m - 1; i++) {
+    const max = rest - (m - 1 - i);          /* fuer jeden weiteren Teil bleibt mindestens 1 */
+    const z = ri(1, Math.max(1, max));
+    parts.push(z); rest -= z;
+  }
+  parts.push(rest);
+  const vals = [];
+  while (vals.length < m) {                 /* jeder Wert nur einmal */
+    const x = ri(0, d <= 4 ? 8 : 20) * (d >= 7 && coin(0.3) ? -1 : 1);
+    if (vals.indexOf(x) < 0) vals.push(x);
+  }
+  let E = new F(0, 1);
+  parts.forEach((z, i) => { E = E.add(new F(z * vals[i], N)); });
+  const rows = '<table class="vft"><tr><th>x<sub>i</sub></th>' + vals.map(x => '<td>' + num(x) + '</td>').join('') + '</tr>'
+    + '<tr><th>P</th>' + parts.map(z => '<td>' + new F(z, N).html() + '</td>').join('') + '</tr></table>';
+  return {
+    promptHTML: '<span class="big">' + rows + '</span><p class="qtext">Berechne den Erwartungswert E(X).</p>',
+    wordy: true,
+    fields: [Fnum('E(X) =', P_PH)], check: checkNum(E.v), solHTML: 'E(X) = ' + pHTML(E),
+    steps: [
+      st('Formel', 'E(X) = Σ x<sub>i</sub> · p<sub>i</sub> — jeden Wert mit seiner Wahrscheinlichkeit gewichten.'),
+      st('Einsetzen', parts.map((z, i) => (i ? addHTML(paren(vals[i]) + '·' + new F(z, N).html())
+        : num(vals[i]) + '·' + new F(z, N).html())).join('')),
+      st('Ergebnis', 'E(X) = <b>' + pHTML(E) + '</b>')
+    ]
+  };
+}
+
+/* ============================================================
+   KOMBINATORIK
+   ============================================================ */
+topic({
+  id: 'kombinatorik', group: 'Stochastik', name: 'Kombinatorik', icon: 'i-t-kombi',
+  sub: 'Zählen ohne Aufzählen: Anordnungen, Auswahlen, Binomialkoeffizient.',
+  variants: [
+    { id: 'produkt', name: 'Zählprinzip', desc: 'Stufen hintereinander — Möglichkeiten multiplizieren.' },
+    { id: 'permutation', name: 'Anordnungen', desc: 'n! und Anordnungen mit gleichen Elementen.' },
+    { id: 'binom', name: 'Binomialkoeffizient', desc: 'n über k ausrechnen.' },
+    { id: 'ziehen', name: 'Ziehen aus einer Urne', desc: 'Mit/ohne Zurücklegen, mit/ohne Reihenfolge.' },
+  ],
+  formulas: [
+    st('Zählprinzip', 'Stufen hintereinander: Möglichkeiten <b>multiplizieren</b>.'),
+    st('Anordnungen', 'n verschiedene Objekte: <b>n!</b> Reihenfolgen.'),
+    st('Mit Wiederholung', 'Sind Objekte gleich, wird durch die Fakultäten der Gruppen geteilt.'),
+    st('Binomialkoeffizient', binomHTML() + ' = ' + fracHTML('n!', 'k!·(n−k)!') + ' — Auswahl <b>ohne</b> Reihenfolge.'),
+    st('Übersicht', 'mit Reihenfolge & mit Zurücklegen: n<sup>k</sup> &nbsp;·&nbsp; ohne Zurücklegen: n·(n−1)·…'),
+  ],
+  gen: function (d, v) { return genKombi(d, v); }
+});
+
+function genKombi(d, v) {
+  if (v === 'permutation') return kPerm(d);
+  if (v === 'binom') return kBinom(d);
+  if (v === 'ziehen') return kZiehen(d);
+  return kProdukt(d);
+}
+
+function kProdukt(d) {
+  const m = d <= 3 ? 2 : (d <= 6 ? 3 : 4);
+  const szen = pick([
+    { t: 'Ein Menü besteht aus', teile: ['Vorspeisen', 'Hauptgerichten', 'Nachspeisen', 'Getränken'], f: 'Menüs' },
+    { t: 'Ein Code besteht aus', teile: ['Buchstaben', 'Ziffern', 'Sonderzeichen', 'Farben'], f: 'Codes' },
+    { t: 'Ein Outfit besteht aus', teile: ['Hosen', 'Hemden', 'Jacken', 'Paar Schuhen'], f: 'Outfits' },
+  ]);
+  const ns = []; for (let i = 0; i < m; i++) ns.push(ri(2, d <= 4 ? 8 : 12));
+  const res = ns.reduce((a, b) => a * b, 1);
+  return {
+    promptHTML: '<span class="big">' + szen.t + ' je einer Auswahl aus<br>'
+      + ns.map((n, i) => n + ' ' + szen.teile[i]).join(', ') + '.<br>Wie viele ' + szen.f + ' gibt es?</span>',
+    wordy: true, fields: [Fnum('Anzahl =', 'ganze Zahl')], check: checkNum(res), solHTML: '' + res,
+    steps: [
+      st('Zählprinzip', 'Für jede Wahl auf Stufe 1 gibt es alle Wahlen auf Stufe 2 usw. — also multiplizieren.'),
+      st('Rechnung', ns.join(' · ') + ' = <b>' + res + '</b>')
+    ]
+  };
+}
+
+function kPerm(d) {
+  if (d >= 3 && coin(0.3)) {
+    const n = ri(5, d <= 6 ? 10 : 16), k = ri(2, Math.min(4, n - 1));
+    let res = 1; for (let i = 0; i < k; i++) res *= (n - i);
+    const szen = pick([
+      ['Bei einem Rennen mit ' + n + ' Startern', 'die ersten ' + k + ' Plätze'],
+      ['In einem Verein mit ' + n + ' Mitgliedern', 'die ' + k + ' Ämter (jeweils verschieden)'],
+      ['Aus ' + n + ' Songs', 'die ersten ' + k + ' Plätze einer Playlist']
+    ]);
+    return {
+      promptHTML: '<span class="big">' + szen[0] + ':<br>Wie viele Möglichkeiten gibt es für ' + szen[1] + '?</span>',
+      wordy: true, fields: [Fnum('Anzahl =', 'ganze Zahl')], check: checkNum(res), solHTML: '' + res,
+      steps: [
+        st('Reihenfolge zählt', 'Platz 1 ist etwas anderes als Platz 2 — also nicht der Binomialkoeffizient.'),
+        st('Stufenweise', 'Für die erste Stelle ' + n + ' Möglichkeiten, dann ' + (n - 1) + ', dann ' + (n - 2) + ' …'),
+        st('Rechnung', Array.from({ length: k }, (_, i) => n - i).join(' · ') + ' = <b>' + res + '</b>')
+      ]
+    };
+  }
+  const DINGE = [['Bücher', 'nebeneinander ins Regal stellen'], ['Kinder', 'in einer Reihe aufstellen'],
+    ['Bilder', 'nebeneinander aufhängen'], ['Läufer', 'auf die Startbahnen verteilen'],
+    ['Karten', 'nebeneinander auslegen'], ['Gäste', 'auf die Stühle setzen'],
+    ['Pokale', 'im Schrank anordnen'], ['Songs', 'zu einer Playlist ordnen']];
+  if (d <= 4 || coin(0.45)) {
+    const n = d <= 2 ? ri(3, 6) : (d <= 4 ? ri(4, 8) : ri(5, 10));
+    const dg = pick(DINGE);
+    const res = fakt(n);
+    return {
+      promptHTML: '<span class="big">Auf wie viele Arten kann man ' + n + ' verschiedene ' + dg[0] + '<br>' + dg[1] + '?</span>',
+      wordy: true, fields: [Fnum('Anzahl =', 'ganze Zahl')], check: checkNum(res), solHTML: '' + res,
+      steps: [
+        st('Erste Position', 'Dafür gibt es ' + n + ' Möglichkeiten.'),
+        st('Weiter', 'Für die zweite bleiben ' + (n - 1) + ', für die dritte ' + (n - 2) + ' … '),
+        st('Ergebnis', n + '! = ' + Array.from({ length: n }, (_, i) => n - i).join(' · ') + ' = <b>' + res + '</b>')
+      ]
+    };
+  }
+  /* Anordnungen mit gleichen Buchstaben */
+  const w = pick(['MISSISSIPPI', 'BANANE', 'ANANAS', 'OTTO', 'ERBSE', 'STATISTIK', 'KAFFEE',
+    'ANNA', 'TOMATE', 'SESSEL', 'BROMBEERE', 'KOMMISSAR', 'PARALLELE', 'REGENSCHIRM',
+    'SOMMERFERIEN', 'ZITRONE', 'BALLETT', 'MITTAGESSEN', 'TREPPE', 'SCHIFFFAHRT']);
+  const cnt = {};
+  for (const ch of w) cnt[ch] = (cnt[ch] || 0) + 1;
+  let res = fakt(w.length);
+  const groups = [];
+  for (const ch in cnt) { res /= fakt(cnt[ch]); if (cnt[ch] > 1) groups.push(ch + ': ' + cnt[ch] + '×'); }
+  res = Math.round(res);
+  return {
+    promptHTML: '<span class="big">Wie viele verschiedene „Wörter" lassen sich<br>aus allen Buchstaben von <b>'
+      + w + '</b> bilden?</span>',
+    wordy: true, fields: [Fnum('Anzahl =', 'ganze Zahl')], check: checkNum(res), solHTML: '' + res,
+    steps: [
+      st('Alle Buchstaben verschieden?', 'Dann wären es ' + w.length + '! Anordnungen — gleiche Buchstaben zählen aber doppelt.'),
+      st('Gleiche Buchstaben', groups.join(' &nbsp;·&nbsp; ') || 'keine Wiederholung'),
+      st('Ergebnis', fracHTML(w.length + '!', Object.keys(cnt).filter(c => cnt[c] > 1).map(c => cnt[c] + '!').join('·') || '1')
+        + ' = <b>' + res + '</b>')
+    ]
+  };
+}
+
+function kBinom(d) {
+  const n = d <= 3 ? ri(4, 9) : (d <= 6 ? ri(6, 14) : ri(10, 22));
+  const k = ri(2, Math.max(2, n - 2));
+  const res = binom(n, k);
+  const EINKL = [
+    null,
+    'Wie viele ' + k + '-elementige Teilmengen hat eine Menge mit ' + n + ' Elementen?',
+    'Aus ' + n + ' Personen wird ein Team aus ' + k + ' Personen gewählt. Wie viele Teams sind möglich?',
+    'Aus ' + n + ' Kugeln werden ' + k + ' gezogen — ohne Zurücklegen, Reihenfolge egal. Wie viele Ergebnisse gibt es?',
+    'Auf wie viele Arten lassen sich ' + k + ' von ' + n + ' Aufgaben zum Bearbeiten auswählen?'
+  ];
+  const ein = pick(EINKL);
+  return {
+    promptHTML: ein ? '<span class="big">' + ein + '</span>' : '<span class="big">' + binomHTML(n, k) + '</span>',
+    wordy: !!ein,
+    qtext: ein ? '' : 'Berechne den Binomialkoeffizienten.',
+    fields: [Fnum('=', 'ganze Zahl')], check: checkNum(res), solHTML: '' + res,
+    steps: [
+      st('Formel', binomHTML(n, k) + ' = ' + fracHTML('n!', 'k!·(n−k)!')),
+      st('Kürzen', fracHTML(Array.from({ length: k }, (_, i) => n - i).join('·'), Array.from({ length: k }, (_, i) => i + 1).join('·'))),
+      st('Ergebnis', '<b>' + res + '</b>'),
+      st('Bedeutung', 'So viele ' + k + '-elementige Teilmengen hat eine Menge mit ' + n + ' Elementen.')
+    ]
+  };
+}
+
+function kZiehen(d) {
+  const n = d <= 4 ? ri(4, 10) : ri(8, 18);
+  const k = ri(2, Math.min(d <= 4 ? 4 : 5, n - 1));
+  const modus = pick(d <= 4 ? ['ordZurueck', 'ordOhne'] : ['ordZurueck', 'ordOhne', 'ohneOrd']);
+  let res, name, steps;
+  if (modus === 'ordZurueck') {
+    res = Math.pow(n, k);
+    name = 'mit Zurücklegen, mit Reihenfolge';
+    steps = [
+      st('Jeder Zug gleich', 'Vor jedem Zug liegen wieder alle ' + n + ' Kugeln in der Urne.'),
+      st('Rechnung', n + '<sup>' + k + '</sup> = <b>' + res + '</b>')
+    ];
+  } else if (modus === 'ordOhne') {
+    res = 1; for (let i = 0; i < k; i++) res *= (n - i);
+    name = 'ohne Zurücklegen, mit Reihenfolge';
+    steps = [
+      st('Auswahl schrumpft', 'Nach jedem Zug liegt eine Kugel weniger in der Urne.'),
+      st('Rechnung', Array.from({ length: k }, (_, i) => n - i).join(' · ') + ' = <b>' + res + '</b>')
+    ];
+  } else {
+    res = binom(n, k);
+    name = 'ohne Zurücklegen, ohne Reihenfolge';
+    steps = [
+      st('Reihenfolge egal', 'Jede Auswahl wird sonst ' + k + '! = ' + fakt(k) + '-mal gezählt.'),
+      st('Formel', binomHTML(n, k) + ' = ' + fracHTML(Array.from({ length: k }, (_, i) => n - i).join('·'), fakt(k))),
+      st('Ergebnis', '<b>' + res + '</b>')
+    ];
+  }
+  return {
+    promptHTML: '<span class="big">Aus einer Urne mit ' + n + ' unterscheidbaren Kugeln<br>werden ' + k
+      + ' Kugeln gezogen — <b>' + name + '</b>.<br>Wie viele Ergebnisse sind möglich?</span>',
+    wordy: true, fields: [Fnum('Anzahl =', 'ganze Zahl')], check: checkNum(res), solHTML: '' + res, steps: steps
+  };
+}
+
+/* ============================================================
+   FOLGEN & REIHEN
+   ============================================================ */
+topic({
+  id: 'folgen', group: 'Analysis', name: 'Folgen & Reihen', icon: 'i-t-folgen',
+  sub: 'Arithmetisch und geometrisch: Glieder bestimmen, Summen berechnen, Grenzwerte.',
+  variants: [
+    { id: 'arith', name: 'Arithmetische Folge', desc: 'Gleiche Differenz d — n-tes Glied bestimmen.' },
+    { id: 'geo', name: 'Geometrische Folge', desc: 'Gleicher Faktor q — n-tes Glied bestimmen.' },
+    { id: 'sumArith', name: 'Arithmetische Summe', desc: 'Gauß-Summe: die ersten n Glieder addieren.' },
+    { id: 'sumGeo', name: 'Geometrische Summe', desc: 'Summenformel für q ≠ 1.' },
+    { id: 'unendlich', name: 'Unendliche Reihe', desc: 'Grenzwert für |q| < 1.' },
+    { id: 'rekursiv', name: 'Rekursive Folge', desc: 'Aus der Vorschrift Glied für Glied berechnen.' },
+  ],
+  formulas: [
+    st('Arithmetisch', 'a<sub>n</sub> = a<sub>1</sub> + (n−1)·d'),
+    st('Geometrisch', 'a<sub>n</sub> = a<sub>1</sub> · q<sup>n−1</sup>'),
+    st('Summe arithmetisch', 'S<sub>n</sub> = ' + fracHTML('n', '2') + '·(a<sub>1</sub> + a<sub>n</sub>)'),
+    st('Summe geometrisch', 'S<sub>n</sub> = a<sub>1</sub>·' + fracHTML('q<sup>n</sup> − 1', 'q − 1') + ' &nbsp;(q ≠ 1)'),
+    st('Unendliche Reihe', 'S = ' + fracHTML('a<sub>1</sub>', '1 − q') + ' &nbsp;— nur für |q| &lt; 1'),
+  ],
+  gen: function (d, v) { return genFolgen(d, v); }
+});
+
+function genFolgen(d, v) {
+  if (v === 'geo') return fGeo(d);
+  if (v === 'sumArith') return fSumArith(d);
+  if (v === 'sumGeo') return fSumGeo(d);
+  if (v === 'unendlich') return fUnendlich(d);
+  if (v === 'rekursiv') return fRekursiv(d);
+  return fArith(d);
+}
+function folgeHTML(a1, dd, k) {
+  const arr = [];
+  for (let i = 0; i < k; i++) arr.push(num(a1 + i * dd));
+  return arr.join('; &nbsp;') + '; &nbsp;…';
+}
+
+function fArith(d) {
+  const a1 = rnz(-(d <= 4 ? 9 : 30), d <= 4 ? 9 : 30);
+  const dd = rnz(-(d <= 4 ? 6 : 12), d <= 4 ? 6 : 12);
+  const n = d <= 3 ? ri(5, 10) : (d <= 6 ? ri(8, 20) : ri(15, 60));
+  const res = a1 + (n - 1) * dd;
+  return {
+    promptHTML: '<span class="big">' + folgeHTML(a1, dd, 4) + '</span>',
+    qtext: 'Arithmetische Folge — bestimme a' + sub(n) + '.',
+    fields: [Fnum('a' + sub(n) + ' =', 'ganze Zahl')], check: checkNum(res), solHTML: 'a<sub>' + n + '</sub> = ' + num(res),
+    steps: [
+      st('Differenz ablesen', 'd = ' + num(a1 + dd) + ' − ' + paren(a1) + ' = <b>' + num(dd) + '</b>'),
+      st('Formel', 'a<sub>n</sub> = a<sub>1</sub> + (n−1)·d'),
+      st('Einsetzen', 'a<sub>' + n + '</sub> = ' + num(a1) + ' + ' + (n - 1) + '·' + paren(dd) + ' = <b>' + num(res) + '</b>')
+    ]
+  };
+}
+function sub(n) { return '<sub>' + n + '</sub>'; }
+
+function fGeo(d) {
+  const a1 = rnz(-(d <= 4 ? 5 : 12), d <= 4 ? 5 : 12);
+  const q = pick(d <= 4 ? [2, 3, -2] : [2, 3, -2, -3, 4, new F(1, 2), new F(1, 3), new F(-1, 2)]);
+  const qf = q instanceof F ? q : new F(q, 1);
+  const n = d <= 4 ? ri(4, 6) : ri(5, 9);
+  const res = qf.pow(n - 1).mul(a1);
+  const vier = [0, 1, 2, 3].map(i => qf.pow(i).mul(a1).html()).join('; &nbsp;') + '; &nbsp;…';
+  return {
+    promptHTML: '<span class="big">' + vier + '</span>',
+    qtext: 'Geometrische Folge — bestimme a' + sub(n) + '.',
+    fields: [Fnum('a' + sub(n) + ' =', P_PH)], check: checkNum(res.v), solHTML: 'a<sub>' + n + '</sub> = ' + pHTML(res),
+    steps: [
+      st('Faktor ablesen', 'q = ' + fracHTML('a<sub>2</sub>', 'a<sub>1</sub>') + ' = <b>' + pHTML(qf) + '</b>'),
+      st('Formel', 'a<sub>n</sub> = a<sub>1</sub> · q<sup>n−1</sup>'),
+      st('Einsetzen', 'a<sub>' + n + '</sub> = ' + num(a1) + ' · ' + parenH(pHTML(qf)) + '<sup>' + (n - 1) + '</sup> = <b>' + pHTML(res) + '</b>')
+    ]
+  };
+}
+
+function fSumArith(d) {
+  const a1 = d <= 4 ? ri(1, 9) : rnz(-20, 20);
+  const dd = rnz(-(d <= 4 ? 5 : 9), d <= 4 ? 5 : 9);
+  const n = d <= 3 ? ri(5, 12) : (d <= 6 ? ri(10, 30) : ri(20, 80));
+  const an = a1 + (n - 1) * dd;
+  const res = n * (a1 + an) / 2;
+  return {
+    promptHTML: '<span class="big">' + folgeHTML(a1, dd, 4) + '</span>',
+    qtext: 'Berechne die Summe der ersten ' + n + ' Glieder.',
+    fields: [Fnum('S' + sub(n) + ' =', P_PH)], check: checkNum(res), solHTML: 'S<sub>' + n + '</sub> = ' + valHTML(res),
+    steps: [
+      st('Letztes Glied', 'a<sub>' + n + '</sub> = ' + num(a1) + ' + ' + (n - 1) + '·' + paren(dd) + ' = <b>' + num(an) + '</b>'),
+      st('Formel', 'S<sub>n</sub> = ' + fracHTML('n', '2') + '·(a<sub>1</sub> + a<sub>n</sub>)'),
+      st('Einsetzen', 'S<sub>' + n + '</sub> = ' + fracHTML(n, 2) + '·(' + num(a1) + addHTML(an) + ') = <b>' + valHTML(res) + '</b>')
+    ]
+  };
+}
+
+function fSumGeo(d) {
+  const a1 = rnz(-(d <= 4 ? 9 : 15), d <= 4 ? 9 : 15);
+  const q = pick(d <= 4 ? [2, 3, 4, 5, -2, new F(1, 2)]
+    : [2, 3, -2, -3, 4, 5, -4, new F(1, 2), new F(1, 3), new F(2, 3), new F(-1, 2), new F(3, 2)]);
+  const qf = q instanceof F ? q : new F(q, 1);
+  const n = d <= 4 ? ri(3, 6) : ri(4, 8);
+  let res = new F(0, 1);
+  for (let i = 0; i < n; i++) res = res.add(qf.pow(i).mul(a1));
+  const glieder = [];
+  for (let i = 0; i < Math.min(n, 4); i++) glieder.push(qf.pow(i).mul(a1));
+  return {
+    promptHTML: '<span class="big">' + chainF(glieder)
+      + (n > 4 ? ' <span class="op">+</span> … ' : '') + '</span>',
+    qtext: 'Geometrische Summe der ersten ' + n + ' Glieder.',
+    fields: [Fnum('S' + sub(n) + ' =', P_PH)], check: checkNum(res.v), solHTML: 'S<sub>' + n + '</sub> = ' + pHTML(res),
+    steps: [
+      st('Werte ablesen', 'a<sub>1</sub> = ' + num(a1) + ' &nbsp;·&nbsp; q = ' + pHTML(qf) + ' &nbsp;·&nbsp; n = ' + n),
+      st('Formel', 'S<sub>n</sub> = a<sub>1</sub>·' + fracHTML('q<sup>n</sup> − 1', 'q − 1')),
+      st('Einsetzen', 'S<sub>' + n + '</sub> = ' + num(a1) + '·'
+        + fracHTML(parenH(pHTML(qf)) + '<sup>' + n + '</sup> − 1', parenH(pHTML(qf)) + ' − 1') + ' = <b>' + pHTML(res) + '</b>')
+    ]
+  };
+}
+
+function fUnendlich(d) {
+  const a1 = rnz(-(d <= 5 ? 12 : 24), d <= 5 ? 12 : 24);
+  const q = pick(d <= 5 ? [new F(1, 2), new F(1, 3), new F(1, 4), new F(1, 5), new F(2, 3), new F(3, 4), new F(2, 5)]
+    : [new F(1, 2), new F(1, 3), new F(2, 3), new F(-1, 2), new F(3, 4), new F(-1, 3), new F(1, 6),
+       new F(-2, 3), new F(4, 5), new F(-3, 4), new F(5, 6), new F(1, 10), new F(-1, 4)]);
+  const res = new F(a1, 1).div(new F(1, 1).sub(q));
+  const glieder = chainF([0, 1, 2, 3].map(i => q.pow(i).mul(a1)));
+  return {
+    promptHTML: '<span class="big">' + glieder + ' <span class="op">+</span> …</span>',
+    qtext: 'Unendliche geometrische Reihe — berechne den Grenzwert.',
+    fields: [Fnum('S =', P_PH)], check: checkNum(res.v), solHTML: 'S = ' + pHTML(res),
+    steps: [
+      st('Faktor', 'q = ' + pHTML(q) + ' — wegen |q| &lt; 1 hat die Reihe einen Grenzwert.'),
+      st('Formel', 'S = ' + fracHTML('a<sub>1</sub>', '1 − q')),
+      st('Einsetzen', 'S = ' + fracHTML(num(a1), '1 − ' + parenH(pHTML(q))) + ' = <b>' + pHTML(res) + '</b>')
+    ]
+  };
+}
+
+function fRekursiv(d) {
+  const a1 = rnz(-6, 9);
+  const a = pick(d <= 4 ? [2, 3, -1] : [2, 3, -2, -1, 4, new F(1, 2)]);
+  const af = a instanceof F ? a : new F(a, 1);
+  const b = rnz(-(d <= 4 ? 5 : 9), d <= 4 ? 5 : 9);
+  const n = d <= 4 ? 4 : ri(4, 6);
+  const seq = [new F(a1, 1)];
+  for (let i = 1; i < n; i++) seq.push(seq[i - 1].mul(af).add(b));
+  const res = seq[n - 1];
+  return {
+    promptHTML: '<span class="big">a' + sub(1) + ' = ' + num(a1) + '<br>a' + sub('n+1') + ' = '
+      + pHTML(af) + ' · a' + sub('n') + ' ' + (b > 0 ? '+ ' + b : MINUS + ' ' + Math.abs(b)) + '</span>',
+    qtext: 'Berechne a' + sub(n) + '.', wordy: true,
+    fields: [Fnum('a' + sub(n) + ' =', P_PH)], check: checkNum(res.v), solHTML: 'a<sub>' + n + '</sub> = ' + pHTML(res),
+    steps: seq.slice(1).map((x, i) => st('a' + (i + 2), pHTML(af) + '·' + parenH(pHTML(seq[i]))
+      + (b > 0 ? ' + ' + b : ' − ' + Math.abs(b)) + ' = <b>' + pHTML(x) + '</b>'))
+  };
+}
+
+/* ============================================================
+   VEKTORRECHNUNG
+   ============================================================ */
+topic({
+  id: 'vektor', group: 'Lineare Algebra', name: 'Vektorrechnung', icon: 'i-t-vektor',
+  sub: 'Rechnen mit Vektoren, Skalarprodukt, Betrag und Orthogonalität.',
+  variants: [
+    { id: 'rechnen', name: 'Addieren & strecken', desc: 'Komponentenweise rechnen.' },
+    { id: 'skalar', name: 'Skalarprodukt', desc: 'Komponenten multiplizieren und addieren.' },
+    { id: 'betrag', name: 'Betrag', desc: 'Länge über den Satz des Pythagoras.' },
+    { id: 'ortho', name: 'Orthogonalität', desc: 'Parameter so wählen, dass das Skalarprodukt 0 wird.' },
+    { id: 'kreuz', name: 'Kreuzprodukt', desc: 'Vektor, der auf beiden senkrecht steht.' },
+  ],
+  formulas: [
+    st('Rechnen', 'Vektoren werden <b>komponentenweise</b> addiert und mit Zahlen multipliziert.'),
+    st('Skalarprodukt', '' + VA + ' · ' + VB + ' = a<sub>1</sub>b<sub>1</sub> + a<sub>2</sub>b<sub>2</sub> + a<sub>3</sub>b<sub>3</sub> — Ergebnis ist eine <b>Zahl</b>.'),
+    st('Betrag', '|' + VA + '| = ' + sqrtHTML('a<sub>1</sub>² + a<sub>2</sub>² + a<sub>3</sub>²')),
+    st('Orthogonal', '' + VA + ' ⊥ ' + VB + ' &nbsp;⟺&nbsp; ' + VA + ' · ' + VB + ' = 0'),
+    st('Kreuzprodukt', '' + VA + ' × ' + VB + ' steht senkrecht auf beiden — nur im Raum (ℝ³).'),
+  ],
+  gen: function (d, v) { return genVektor(d, v); }
+});
+
+function genVektor(d, v) {
+  if (v === 'skalar') return vSkalar(d);
+  if (v === 'betrag') return vBetrag(d);
+  if (v === 'ortho') return vOrtho(d);
+  if (v === 'kreuz') return vKreuz(d);
+  return vRechnen(d);
+}
+
+function vRechnen(d) {
+  const n = d <= 4 ? 2 : 3;
+  const R = d <= 4 ? 8 : 12;
+  const a = [], b = [];
+  for (let i = 0; i < n; i++) { a.push(rnz(-R, R)); b.push(rnz(-R, R)); }
+  const s = rnz(-(d <= 5 ? 3 : 6), d <= 5 ? 3 : 6);
+  const t = d <= 3 ? 1 : rnz(-3, 3);
+  const res = a.map((x, i) => s * x + t * b[i]);
+  const lin = num(s) + '·' + VA + ' ' + (t > 0 ? '+ ' + t : MINUS + ' ' + Math.abs(t)) + '·' + VB + '';
+  return {
+    promptHTML: '<span class="big">' + VA + ' = ' + vec(a) + ' &nbsp; ' + VB + ' = ' + vec(b) + '</span>',
+    qtext: 'Berechne ' + lin + '.',
+    fields: [Fmat(n, 1, lin)], check: checkMat(res.map(x => [x])),
+    solHTML: vec(res),
+    steps: [
+      st('Komponentenweise', 'Jede Zeile wird für sich gerechnet.'),
+      st('Rechnung', res.map((r, i) => num(s) + '·' + paren(a[i]) + (t > 0 ? ' + ' + t : ' − ' + Math.abs(t))
+        + '·' + paren(b[i]) + ' = ' + num(r)).join('<br>')),
+      st('Ergebnis', '<b>' + vec(res) + '</b>')
+    ]
+  };
+}
+
+function vSkalar(d) {
+  const n = d <= 4 ? 2 : 3;
+  const R = d <= 4 ? 8 : 14;
+  const a = [], b = [];
+  for (let i = 0; i < n; i++) { a.push(rnz(-R, R)); b.push(rnz(-R, R)); }
+  const res = a.reduce((s, x, i) => s + x * b[i], 0);
+  return {
+    promptHTML: '<span class="big">' + VA + ' = ' + vec(a) + ' &nbsp; ' + VB + ' = ' + vec(b) + '</span>',
+    qtext: 'Berechne das Skalarprodukt ' + VA + ' · ' + VB + '.',
+    fields: [Fnum('' + VA + ' · ' + VB + ' =', 'ganze Zahl')], check: checkNum(res), solHTML: '' + VA + ' · ' + VB + ' = ' + num(res),
+    steps: [
+      st('Formel', 'Zeile für Zeile multiplizieren und alles addieren.'),
+      st('Rechnung', a.map((x, i) => (i ? addHTML(paren(x) + '·' + paren(b[i])) : paren(x) + '·' + paren(b[i]))).join('')
+        + ' = ' + a.map((x, i) => (i ? addHTML(x * b[i]) : num(x * b[i]))).join('')),
+      st('Ergebnis', '<b>' + num(res) + '</b>' + (res === 0 ? ' — die Vektoren stehen also senkrecht aufeinander.' : ''))
+    ]
+  };
+}
+
+function vBetrag(d) {
+  /* Tripel sorgen dafuer, dass die Wurzel aufgeht */
+  if (d <= 5) {
+    const t = scaleTrip(pick(TRIP2), d <= 3 ? ri(1, 3) : ri(1, 5));
+    const a = [t[0] * (coin() ? 1 : -1), t[1] * (coin() ? 1 : -1)];
+    if (coin()) { const h = a[0]; a[0] = a[1]; a[1] = h; }
+    const res = t[2];
+    return {
+      promptHTML: '<span class="big">' + VA + ' = ' + vec(a) + '</span>',
+      qtext: 'Berechne den Betrag |' + VA + '|.',
+      fields: [Fnum('|' + VA + '| =', 'ganze Zahl')], check: checkNum(res), solHTML: '|' + VA + '| = ' + res,
+      steps: [
+        st('Formel', '|' + VA + '| = ' + sqrtHTML('a<sub>1</sub>² + a<sub>2</sub>²')),
+        st('Einsetzen', sqrtHTML(paren(a[0]) + '² + ' + paren(a[1]) + '²') + ' = ' + sqrtHTML(a[0] * a[0] + ' + ' + a[1] * a[1])),
+        st('Ergebnis', sqrtHTML(a[0] * a[0] + a[1] * a[1]) + ' = <b>' + res + '</b>')
+      ]
+    };
+  }
+  const t0 = scaleTrip(pick(TRIP3), ri(1, 4));
+  const perm = [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]][ri(0, 5)];
+  const t = [t0[perm[0]], t0[perm[1]], t0[perm[2]], t0[3]];
+  const a = [t[0] * (coin() ? 1 : -1), t[1] * (coin() ? 1 : -1), t[2] * (coin() ? 1 : -1)];
+  const res = t[3];
+  return {
+    promptHTML: '<span class="big">' + VA + ' = ' + vec(a) + '</span>',
+    qtext: 'Berechne den Betrag |' + VA + '|.',
+    fields: [Fnum('|' + VA + '| =', 'ganze Zahl')], check: checkNum(res), solHTML: '|' + VA + '| = ' + res,
+    steps: [
+      st('Formel', '|' + VA + '| = ' + sqrtHTML('a<sub>1</sub>² + a<sub>2</sub>² + a<sub>3</sub>²')),
+      st('Quadrate', a.map(x => paren(x) + '² = ' + x * x).join(' &nbsp;·&nbsp; ')),
+      st('Ergebnis', sqrtHTML(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]) + ' = <b>' + res + '</b>')
+    ]
+  };
+}
+
+function vOrtho(d) {
+  const n = d <= 5 ? 2 : 3;
+  const R = d <= 5 ? 7 : 10;
+  const a = []; for (let i = 0; i < n; i++) a.push(rnz(-R, R));
+  const b = []; for (let i = 0; i < n - 1; i++) b.push(rnz(-R, R));
+  /* letzte Komponente von b ist gesucht: a·b = 0 */
+  let s = 0; for (let i = 0; i < n - 1; i++) s += a[i] * b[i];
+  const res = new F(-s, a[n - 1]);
+  const bShow = b.concat(['<i>t</i>']);
+  return {
+    promptHTML: '<span class="big">' + VA + ' = ' + vec(a) + ' &nbsp; ' + VB + ' = ' + vecHTML(bShow.map(x => typeof x === 'number' ? num(x) : x)) + '</span>',
+    qtext: 'Für welches t stehen ' + VA + ' und ' + VB + ' senkrecht aufeinander?',
+    fields: [Fnum('<i>t</i> =', P_PH)], check: checkNum(res.v), solHTML: '<i>t</i> = ' + pHTML(res),
+    steps: [
+      st('Bedingung', 'Senkrecht heißt: ' + VA + ' · ' + VB + ' = 0.'),
+      st('Skalarprodukt', b.map((x, i) => paren(a[i]) + '·' + paren(x)).join(' + ') + ' + ' + paren(a[n - 1]) + '·t = 0'),
+      st('Auflösen', num(s) + ' + ' + paren(a[n - 1]) + '·t = 0 → t = ' + fracHTML(num(-s), num(a[n - 1]))
+        + ' = <b>' + pHTML(res) + '</b>')
+    ]
+  };
+}
+
+function vKreuz(d) {
+  const R = d <= 6 ? 5 : 9;
+  const a = [], b = [];
+  for (let i = 0; i < 3; i++) { a.push(rnz(-R, R)); b.push(rnz(-R, R)); }
+  const c = [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  if (c[0] === 0 && c[1] === 0 && c[2] === 0) return vKreuz(d);
+  return {
+    promptHTML: '<span class="big">' + VA + ' = ' + vec(a) + ' &nbsp; ' + VB + ' = ' + vec(b) + '</span>',
+    qtext: 'Berechne das Kreuzprodukt ' + VA + ' × ' + VB + '.',
+    fields: [Fmat(3, 1, '' + VA + ' × ' + VB + '')], check: checkMat(c.map(x => [x])), solHTML: vec(c),
+    steps: [
+      st('Merkregel', 'Für die erste Zeile die erste streichen und über Kreuz rechnen: a<sub>2</sub>b<sub>3</sub> − a<sub>3</sub>b<sub>2</sub>. Dann zyklisch weiter.'),
+      st('Zeile 1', paren(a[1]) + '·' + paren(b[2]) + ' − ' + paren(a[2]) + '·' + paren(b[1]) + ' = ' + num(c[0])),
+      st('Zeile 2', paren(a[2]) + '·' + paren(b[0]) + ' − ' + paren(a[0]) + '·' + paren(b[2]) + ' = ' + num(c[1])),
+      st('Zeile 3', paren(a[0]) + '·' + paren(b[1]) + ' − ' + paren(a[1]) + '·' + paren(b[0]) + ' = ' + num(c[2])),
+      st('Probe', '' + VA + ' · (' + VA + ' × ' + VB + ') = 0 — das Ergebnis steht auf beiden Vektoren senkrecht.')
+    ]
+  };
+}
+
+</script>
+<script>
+/* ============================================================
+   TEIL 10 — Zusaetzliche Aufgabentypen in bestehenden Themen
+   ============================================================
+   Jeder Typ wird an ein vorhandenes Thema angehaengt. Alle Loesungen
+   sind ganze Zahlen oder Brueche — der Waechter in Teil 4 prueft das
+   fuer jede einzelne erzeugte Aufgabe nach.
+   ============================================================ */
+
+function addVar(id, vid, name, desc, fn, opts) {
+  const t = TOPICS.filter(x => x.id === id)[0];
+  if (!t || t.variants.some(v => v.id === vid)) return;
+  const base = t.gen;
+  t.gen = function (d, v) { return v === vid ? fn(d) : base.call(t, d, v); };
+  const entry = { id: vid, name: name, desc: desc };
+  if (opts && opts.at !== undefined) t.variants.splice(opts.at, 0, entry);
+  else t.variants.push(entry);
+}
+
+/* ---------- Kopfrechnen: ggT und kgV ---------- */
+addVar('kopf', 'teiler', 'ggT & kgV', 'Größter gemeinsamer Teiler und kleinstes gemeinsames Vielfaches.', function (d) {
+  const R = d <= 3 ? 30 : (d <= 6 ? 90 : 300);
+  const a = ri(6, R), b = ri(6, R);
+  const g = gcd(a, b), k = a / g * b;
+  const was = coin() ? 'ggT' : 'kgV';
+  const res = was === 'ggT' ? g : k;
+  /* Primfaktoren fuer den Loesungsweg */
+  const pf = n => { const out = []; let m = n; for (let p = 2; p * p <= m; p++) while (m % p === 0) { out.push(p); m /= p; } if (m > 1) out.push(m); return out; };
+  return {
+    promptHTML: '<span class="big">' + was + '(' + a + ', ' + b + ')</span>',
+    qtext: was === 'ggT' ? 'Bestimme den größten gemeinsamen Teiler.' : 'Bestimme das kleinste gemeinsame Vielfache.',
+    fields: [Fnum('=', 'ganze Zahl')], check: checkNum(res), solHTML: '' + res,
+    steps: [
+      st('Primfaktoren', a + ' = ' + pf(a).join('·') + '<br>' + b + ' = ' + pf(b).join('·')),
+      st(was === 'ggT' ? 'Gemeinsame Faktoren' : 'Alle Faktoren',
+        was === 'ggT' ? 'Nur was in <b>beiden</b> Zerlegungen steckt, zählt.'
+          : 'Jeder Primfaktor in der <b>höchsten</b> vorkommenden Potenz.'),
+      st('Ergebnis', was + '(' + a + ', ' + b + ') = <b>' + res + '</b>'),
+      st('Probe', 'ggT · kgV = a · b &nbsp;→&nbsp; ' + g + ' · ' + k + ' = ' + (a * b))
+    ]
+  };
+});
+
+/* ---------- Terme vereinfachen: Doppelbruch ---------- */
+addVar('vereinfachen', 'doppelbruch', 'Doppelbruch', 'Durch einen Bruch teilen heißt mit dem Kehrwert multiplizieren.', function (d) {
+  const a = rnz(-(d <= 4 ? 6 : 12), d <= 4 ? 6 : 12);
+  const m = d <= 4 ? 1 : ri(1, 3);
+  const b = rnz(-(d <= 4 ? 6 : 12), d <= 4 ? 6 : 12);
+  const n = d <= 4 ? 1 : ri(1, 3);
+  const k = new F(a, b);
+  const e = m - n;
+  const ref = x => (a * Math.pow(x, m)) / (b * Math.pow(x, n));
+  const oben = coefHTML(a, pw(V(), m), true), unten = coefHTML(b, pw(V(), n), true);
+  const sol = e === 0 ? k.html() : (e > 0 ? coefHTML(k, pw(V(), e), true) : fracHTML(k.n === 1 ? '1' : num(k.n), (k.d === 1 ? '' : k.d) + pw(V(), -e)));
+  return {
+    promptHTML: '<span class="big">' + fracHTML(fracHTML(oben, unten), '1') + '</span>',
+    qtext: 'Kürze so weit wie möglich.',
+    fields: [Fexpr('=', 'z. B. 3x^2  ·  2/x')], check: checkExpr(ref, { lo: 0.6, hi: 2.4 }),
+    solHTML: sol,
+    steps: [
+      st('Zahlen kürzen', fracHTML(num(a), num(b)) + ' = ' + k.html()),
+      st('Potenzen', 'x<sup>' + m + '</sup> : x<sup>' + n + '</sup> = x<sup>' + m + '−' + n + '</sup> = ' + pw(V(), e)),
+      st('Ergebnis', '<b>' + sol + '</b>')
+    ]
+  };
+});
+
+/* ---------- Quadratische Gleichungen: Scheitelpunkt ---------- */
+addVar('quadratisch', 'scheitel', 'Scheitelpunkt', 'Quadratische Ergänzung — Scheitel ablesen.', function (d) {
+  const a = d <= 4 ? 1 : rnz(-4, 4);
+  const xs = new F(rnz(-8, 8), d <= 5 ? 1 : 2);
+  const ys = rnz(-12, 12);
+  /* f(x) = a(x − xs)² + ys, ausmultipliziert */
+  const p = F.of(a).mul(xs).mul(-2), q = F.of(a).mul(xs).mul(xs).add(ys);
+  if (!p.isInt() || !q.isInt()) return null;
+  const f = x => a * (x - xs.v) * (x - xs.v) + ys;
+  return {
+    promptHTML: '<span class="big">f(' + V() + ') = ' + polyHTML([a, p.n, q.n]) + '</span>',
+    qtext: 'Bestimme den Scheitelpunkt S(x<sub>s</sub> | y<sub>s</sub>).',
+    fields: [Fnum('x<sub>s</sub> =', 'Zahl'), Fnum('y<sub>s</sub> =', 'Zahl')],
+    check: checkMulti([xs.v, ys]),
+    solHTML: 'S(' + xs.html() + ' | ' + num(ys) + ')',
+    plot: { fns: [{ f: f }], points: [{ x: xs.v, y: ys }] },
+    steps: [
+      st('Scheitelstelle', 'x<sub>s</sub> = ' + fracHTML('−b', '2a') + ' = ' + fracHTML(num(-p.n), '2·' + paren(a))
+        + ' = <b>' + xs.html() + '</b>'),
+      st('Wert einsetzen', 'y<sub>s</sub> = f(' + xs.html() + ') = <b>' + num(ys) + '</b>'),
+      st('Scheitelform', 'f(x) = ' + coefHTML(a, '', true) + '(' + polyHTML([1, -xs.v]) + ')²'
+        + addHTML(ys) + ' &nbsp;→&nbsp; S(' + xs.html() + ' | ' + num(ys) + ')')
+    ]
+  };
+});
+
+/* ---------- Quadratische Gleichungen: Satz von Vieta ---------- */
+addVar('quadratisch', 'vieta', 'Satz von Vieta', 'Summe und Produkt der Lösungen erraten statt rechnen.', function (d) {
+  const R = d <= 4 ? 8 : (d <= 7 ? 14 : 25);
+  const r1 = rnz(-R, R), r2 = rnz(-R, R);
+  const p = -(r1 + r2), q = r1 * r2;
+  const sol = uniqSorted([r1, r2], 1e-9);
+  return {
+    promptHTML: '<span class="big">' + polyHTML([1, p, q]) + ' <span class="rel">=</span> 0</span>',
+    qtext: 'Finde die Lösungen mit dem Satz von Vieta — ohne pq-Formel.',
+    fields: [Fset(2)], flags: FLAG_EMPTY, check: checkNums(sol), solHTML: setHTML(sol),
+    plot: { fns: [{ f: x => x * x + p * x + q }], hlines: [{ y: 0 }], points: sol.map(x => ({ x: x, y: 0 })) },
+    steps: [
+      st('Satz von Vieta', 'x<sub>1</sub> + x<sub>2</sub> = −p = ' + num(-p) + '<br>x<sub>1</sub> · x<sub>2</sub> = q = ' + num(q)),
+      st('Zahlenpaar suchen', 'Zwei Zahlen mit Produkt ' + num(q) + ' und Summe ' + num(-p) + '.'),
+      st('Ergebnis', setHTML(sol)),
+      st('Probe', num(r1) + ' + ' + paren(r2) + ' = ' + num(r1 + r2) + '<br>'
+        + num(r1) + ' · ' + paren(r2) + ' = ' + num(q))
+    ]
+  };
+});
+
+/* ---------- Ableitungen: Tangente ---------- */
+addVar('ableitung', 'tangente', 'Tangente', 'Steigung und Achsenabschnitt der Tangente an einer Stelle.', function (d) {
+  const a = rnz(-4, 4), b = rnz(-6, 6), c = rnz(-8, 8);
+  const x0 = rnz(-4, 4);
+  const m = 2 * a * x0 + b;                    /* f'(x0) */
+  const y0 = a * x0 * x0 + b * x0 + c;
+  const t = y0 - m * x0;                       /* Achsenabschnitt */
+  return {
+    promptHTML: '<span class="big">f(' + V() + ') = ' + polyHTML([a, b, c]) + '</span>',
+    qtext: 'Bestimme die Tangente an der Stelle x<sub>0</sub> = ' + num(x0) + ' in der Form y = m·x + t.',
+    fields: [Fnum('m =', 'Steigung'), Fnum('t =', 'Achsenabschnitt')],
+    check: checkMulti([m, t]),
+    solHTML: 'y = ' + polyHTML([m, t]),
+    plot: {
+      fns: [{ f: x => a * x * x + b * x + c, label: 'f' }, { f: x => m * x + t, label: 'Tangente', color: 2 }],
+      points: [{ x: x0, y: y0 }]
+    },
+    steps: [
+      st('Ableiten', 'f′(' + V() + ') = ' + polyHTML([2 * a, b])),
+      st('Steigung', 'm = f′(' + num(x0) + ') = ' + num(2 * a) + '·' + paren(x0) + addHTML(b) + ' = <b>' + num(m) + '</b>'),
+      st('Berührpunkt', 'f(' + num(x0) + ') = <b>' + num(y0) + '</b> → P(' + num(x0) + ' | ' + num(y0) + ')'),
+      st('t bestimmen', num(y0) + ' = ' + num(m) + '·' + paren(x0) + ' + t → t = <b>' + num(t) + '</b>'),
+      st('Tangente', '<b>y = ' + polyHTML([m, t]) + '</b>')
+    ]
+  };
+});
+
+/* ---------- Ungleichungen: Bruchungleichung ---------- */
+addVar('ungleichung', 'bruch', 'Bruchungleichung', 'Nenner-Vorzeichen beachten — es dreht das Zeichen um.', function (d) {
+  const p = rnz(-6, 6);              /* Nullstelle des Nenners: x = −p */
+  const c = rnz(-5, 5);
+  const a = rnz(1, d <= 5 ? 5 : 9);
+  /* a/(x+p) > c  →  Grenze dort, wo a/(x+p) = c  */
+  const g = new F(a, c).sub(p);      /* x = a/c − p */
+  if (c === 0) return null;
+  const op = pick(['>', '<']);
+  const pole = -p;
+  /* Loesung: Vorzeichenbereiche zwischen Pol und Schnittstelle */
+  const test = x => a / (x + p);
+  const grenzen = [pole, g.v].sort((x, y) => x - y);
+  const mitte = (grenzen[0] + grenzen[1]) / 2;
+  const links = grenzen[0] - 1, rechts = grenzen[1] + 1;
+  const erf = x => (op === '>' ? test(x) > c : test(x) < c);
+  const teile = [];
+  if (erf(links)) teile.push({ op: '<', b: grenzen[0] });
+  if (erf(mitte)) { teile.push({ op: '>', b: grenzen[0] }); teile.push({ op: '<', b: grenzen[1] }); }
+  if (erf(rechts)) teile.push({ op: '>', b: grenzen[1] });
+  if (!teile.length || teile.length > 2) return null;
+  const join = teile.length === 2 && teile[0].op === '>' ? 'UND' : 'ODER';
+  if (teile.length === 2 && join === 'ODER') return null;   /* zwei getrennte Bereiche: hier ausgelassen */
+  return {
+    promptHTML: '<span class="big">' + fracHTML(num(a), polyHTML([1, p])) + ' <span class="rel">'
+      + (op === '>' ? '&gt;' : '&lt;') + '</span> ' + num(c) + '</span>',
+    fields: [Fcond(teile.length)], check: checkCond(teile),
+    solHTML: teile.map(t => V() + ' ' + (t.op === '>' ? '&gt;' : '&lt;') + ' ' + valHTML(t.b)).join(' und '),
+    plot: { fns: [{ f: test, label: 'linke Seite' }], hlines: [{ y: c }] },
+    steps: [
+      st('Definitionslücke', 'Der Nenner darf nicht 0 werden: ' + V() + ' ≠ ' + num(pole)),
+      st('Gleichheit suchen', fracHTML(num(a), polyHTML([1, p])) + ' = ' + num(c) + ' → ' + V() + ' = ' + g.html()),
+      st('Vorzeichen prüfen', 'Die beiden Stellen ' + num(pole) + ' und ' + g.html()
+        + ' zerlegen die Zahlengerade. In jedem Abschnitt einen Wert einsetzen.'),
+      st('Lösung', '<b>' + teile.map(t => V() + ' ' + (t.op === '>' ? '&gt;' : '&lt;') + ' ' + valHTML(t.b)).join(' und ') + '</b>')
+    ]
+  };
+});
+
+/* ---------- Matrizen: Quadrat einer Matrix ---------- */
+addVar('matrix', 'quadrat', 'Matrix quadrieren', 'A·A — dieselbe Regel, nur mit sich selbst.', function (d) {
+  const R = d <= 5 ? 4 : 7;
+  const A = [[rnz(-R, R), rnz(-R, R)], [rnz(-R, R), rnz(-R, R)]];
+  const P = matMul(A, A);
+  return {
+    promptHTML: '<span class="big">A = ' + matHTML(numMat(A)) + '</span>',
+    qtext: 'Berechne A².',
+    fields: [Fmat(2, 2, 'A²')], check: checkMat(P), solHTML: 'A² = ' + matHTML(numMat(P)),
+    steps: [
+      st('A² bedeutet A·A', 'Nicht jeden Eintrag quadrieren — es gilt die normale Matrixmultiplikation.'),
+      st('Oben links', paren(A[0][0]) + '·' + paren(A[0][0]) + ' + ' + paren(A[0][1]) + '·' + paren(A[1][0]) + ' = ' + num(P[0][0])),
+      st('Oben rechts', paren(A[0][0]) + '·' + paren(A[0][1]) + ' + ' + paren(A[0][1]) + '·' + paren(A[1][1]) + ' = ' + num(P[0][1])),
+      st('Ergebnis', '<b>' + matHTML(numMat(P)) + '</b>')
+    ]
+  };
+});
+
+/* ---------- Determinante: Cramersche Regel ---------- */
+addVar('determinante', 'cramer', 'Cramersche Regel', 'Lineares 2×2-System über Determinanten lösen.', function (d) {
+  const R = d <= 5 ? 5 : 9;
+  const a = rnz(-R, R), b = rnz(-R, R), c = rnz(-R, R), e = rnz(-R, R);
+  const D = a * e - b * c;
+  if (D === 0) return null;
+  const x = new F(rnz(-6, 6), d <= 6 ? 1 : pick([1, 1, 2])), y = new F(rnz(-6, 6), d <= 6 ? 1 : pick([1, 1, 2]));
+  const r1 = F.of(a).mul(x).add(F.of(b).mul(y));
+  const r2 = F.of(c).mul(x).add(F.of(e).mul(y));
+  if (!r1.isInt() || !r2.isInt()) return null;
+  const Dx = r1.n * e - b * r2.n, Dy = a * r2.n - r1.n * c;
+  return {
+    promptHTML: '<span class="big">' + polyHTML([a, 0]) + addHTML(coefHTML(b, Y(), true)) + ' <span class="rel">=</span> ' + num(r1.n)
+      + '<br>' + polyHTML([c, 0]) + addHTML(coefHTML(e, Y(), true)) + ' <span class="rel">=</span> ' + num(r2.n) + '</span>',
+    qtext: 'Löse das System mit der Cramerschen Regel.',
+    fields: [Fnum('<i>x</i> =', 'Zahl'), Fnum('<i>y</i> =', 'Zahl')],
+    check: checkMulti([x.v, y.v]),
+    solHTML: '<i>x</i> = ' + x.html() + ' &nbsp;·&nbsp; <i>y</i> = ' + y.html(),
+    steps: [
+      st('Koeffizientendeterminante', 'D = ' + num(a) + '·' + paren(e) + ' − ' + paren(b) + '·' + paren(c) + ' = <b>' + num(D) + '</b>'),
+      st('D<sub>x</sub>', 'Erste Spalte durch die rechte Seite ersetzen: ' + num(r1.n) + '·' + paren(e)
+        + ' − ' + paren(b) + '·' + paren(r2.n) + ' = ' + num(Dx)),
+      st('D<sub>y</sub>', 'Zweite Spalte ersetzen: ' + num(a) + '·' + paren(r2.n) + ' − ' + paren(r1.n) + '·' + paren(c) + ' = ' + num(Dy)),
+      st('Ergebnis', '<i>x</i> = ' + fracHTML('D<sub>x</sub>', 'D') + ' = ' + fracHTML(num(Dx), num(D)) + ' = <b>' + x.html()
+        + '</b> &nbsp;·&nbsp; <i>y</i> = ' + fracHTML(num(Dy), num(D)) + ' = <b>' + y.html() + '</b>')
+    ]
+  };
+});
+
+/* ---------- Grenzwerte: Folgen ---------- */
+addVar('grenzwert', 'folge', 'Grenzwert einer Folge', 'Höchste Potenz von n ausklammern.', function (d) {
+  const a = rnz(-6, 6), b = rnz(-9, 9), c = rnz(1, 6), e = rnz(-9, 9);
+  const k = d <= 5 ? 1 : ri(1, 2);
+  const res = new F(a, c);
+  const zaehler = k === 1 ? polyHTML([a, b], 'n') : polyHTML([a, b, e], 'n');
+  const nenner = k === 1 ? polyHTML([c, e], 'n') : polyHTML([c, 0, b], 'n');
+  const f = k === 1 ? (n => (a * n + b) / (c * n + e)) : (n => (a * n * n + b * n + e) / (c * n * n + b));
+  return {
+    promptHTML: '<span class="big">a<sub>n</sub> = ' + fracHTML(zaehler, nenner) + '</span>',
+    qtext: 'Bestimme den Grenzwert für n → ∞.',
+    fields: [Fnum('lim =', 'Zahl oder Bruch')], check: checkNum(res.v), solHTML: 'lim a<sub>n</sub> = ' + res.html(),
+    plot: { fns: [{ f: f, label: 'a(n)' }], hlines: [{ y: res.v }] },
+    steps: [
+      st('Höchste Potenz', 'Zähler und Nenner durch n' + (k === 1 ? '' : '²') + ' teilen.'),
+      st('Was übrig bleibt', 'Alle Terme mit ' + fracHTML(1, 'n') + ' gehen gegen 0.'),
+      st('Ergebnis', 'Es bleiben die Leitkoeffizienten: ' + fracHTML(num(a), num(c)) + ' = <b>' + res.html() + '</b>')
+    ]
+  };
+});
+
+/* ---------- Partielle Ableitungen: Wert an einer Stelle ---------- */
+addVar('partiell', 'stelle', 'Wert an einer Stelle', 'Erst ableiten, dann den Punkt einsetzen.', function (d) {
+  const terms = [[rnz(-5, 5), 2, 0], [rnz(-5, 5), 1, 1], [rnz(-5, 5), 0, 2]];
+  if (d >= 6) terms.push([rnz(-4, 4), 1, 0]);
+  const wrt = coin() ? 1 : 2;
+  const dd = dXY(terms, wrt);
+  const x0 = rnz(-4, 4), y0 = rnz(-4, 4);
+  const val = fxyF(dd)(x0, y0);
+  const lab = wrt === 1 ? 'f<sub>x</sub>' : 'f<sub>y</sub>';
+  return {
+    promptHTML: '<span class="big">f(x, y) = ' + fxyHTML(terms) + '</span>',
+    qtext: 'Berechne ' + lab + '(' + num(x0) + ', ' + num(y0) + ').',
+    fields: [Fnum(lab + ' =', 'Zahl')], check: checkNum(val), solHTML: lab + '(' + num(x0) + ', ' + num(y0) + ') = ' + num(val),
+    steps: [
+      st('Ableiten', lab + ' = ' + fxyHTML(dd)),
+      st('Einsetzen', 'x = ' + num(x0) + ', y = ' + num(y0)),
+      st('Ergebnis', '<b>' + num(val) + '</b>')
+    ]
+  };
+});
 
 </script>
 <script>
@@ -6133,9 +7232,14 @@ function pickByDifficulty(list, d) {
   return list[n - 1];
 }
 
+/* ---------- Zuletzt gezeigte Aufgaben kurz merken ----------
+   Damit direkt hintereinander nicht zweimal dieselbe Aufgabe erscheint. Das
+   Gedaechtnis haengt an Thema, Aufgabentyp und Stufe. */
+const RECENT = {}, RECENT_MAX = 8;
+
 /* ---------- Kopfrechen-taugliche Lösungen erzwingen ---------- */
 /* Themen, in denen Brüche das Lernziel sind, bleiben ausgenommen. */
-const NICE_SKIP = { kopf: true };
+const NICE_SKIP = { kopf: true, wahrsch: true, kombinatorik: true, folgen: true };
 function taskSols(task) {
   const c = task && task.check;
   if (!c || !c.__sol) return [];
@@ -6147,18 +7251,99 @@ function taskNice(task, id) {
   return taskSols(task).every(x => isNice(x));
 }
 
+/* ---------- Zwei Zusagen, die fuer jede Aufgabe gelten ----------
+   1. Jede Zahl in der Loesung ist rational — nichts wie Wurzel 2 oder ln 3.
+      Geprueft ueber einen Kettenbruch: gibt es p/q mit kleinem q, das die Zahl
+      auf 1e-9 genau trifft? Unendlich ist bei Grenzwerten ausdruecklich erlaubt.
+   2. Die hinterlegte Loesung besteht die eigene Pruefung. Damit kann eine
+      Aufgabe gar nicht erst erscheinen, deren Loesung zur Pruefung nicht passt. */
+function isRational(x) {
+  if (!isFinite(x)) return true;                 /* ±∞ ist eine gueltige Antwort bei Grenzwerten */
+  if (Math.abs(x) > 1e12) return false;
+  let h0 = 0, h1 = 1, k0 = 1, k1 = 0, y = x;
+  for (let i = 0; i < 40; i++) {
+    const a = Math.floor(y);
+    const h2 = a * h1 + h0, k2 = a * k1 + k0;
+    h0 = h1; h1 = h2; k0 = k1; k1 = k2;
+    if (k1 > 1e6) return false;
+    if (Math.abs(x - h1 / k1) < 1e-9) return true;
+    const fr = y - a;
+    if (fr < 1e-13) return false;
+    y = 1 / fr;
+  }
+  return false;
+}
+function taskRational(task) { return taskSols(task).every(isRational); }
+
+/* Die gespeicherte Loesung in die Form bringen, die die Pruefung erwartet. */
+function solveSelf(task) {
+  const c = task && task.check;
+  if (!c || !c.__k) return true;
+  /* Unendlich wird so geschrieben, wie es auch eingetippt wird. */
+  const S = x => (x === Infinity ? 'inf' : (x === -Infinity ? '-inf' : String(x)));
+  try {
+    switch (c.__k) {
+      case 'num': return c([S(c.__sol[0])], {});
+      case 'nums':
+        return c.__sol.length ? c([c.__sol.map(S)], {}) : c([[]], { empty: true });
+      case 'multi': return c(c.__sol.map(S), {});
+      case 'mat': return c([c.__sol.map(S)], {});
+      case 'mc': return c([c.__sol[0]], {});
+      case 'cond':
+        return c.__sol.length ? c([c.__sol.map(r => ({ op: r.op, v: S(r.b) }))], {})
+          : c([[]], { empty: true });
+      case 'parts':
+        return c(c.__parts.map(p => (p.k === 'mc' ? p.v : S(p.v))), {});
+      /* Bei Term-Antworten ist die Loesung eine Funktion — dort wird geprueft,
+         dass sie im Pruefbereich ueberhaupt auswertbar ist. */
+      case 'expr': case 'anti': return refUsable(c.__ref, c.__opts || { lo: c.__lo, hi: c.__hi });
+      case 'expr2': return refUsable2(c.__ref);
+      case 'exprs2': return (c.__refs || []).every(refUsable2);
+      default: return true;
+    }
+  } catch (e) { return false; }
+}
+function refUsable(f, o) {
+  if (typeof f !== 'function') return false;
+  const lo = (o && o.lo !== undefined) ? o.lo : 0.4, hi = (o && o.hi !== undefined) ? o.hi : 2.4;
+  let ok = 0;
+  for (let i = 0; i <= 8; i++) {
+    const y = f(lo + (hi - lo) * i / 8);
+    if (typeof y === 'number' && isFinite(y)) ok++;
+  }
+  return ok >= 6;
+}
+function refUsable2(f) {
+  if (typeof f !== 'function') return false;
+  let ok = 0;
+  for (let i = 1; i <= 3; i++) for (let j = 1; j <= 3; j++) {
+    const y = f(0.5 * i + 0.4, 0.5 * j + 0.4);
+    if (typeof y === 'number' && isFinite(y)) ok++;
+  }
+  return ok >= 7;
+}
+function taskValid(task) { return taskRational(task) && solveSelf(task); }
+
 /* ---------- Aufgabentypen thematisch ordnen ----------
    Vom Einstieg bis zur Vertiefung — in der Reihenfolge, in der der Stoff
    ueblicherweise drankommt. Davon haengt auch ab, welchen Typ der
    Zufallsmodus bei welcher Stufe zieht. */
 const VARIANT_ORDER = {
-  kopf: ['grund', 'bruch', 'prozent', 'term', 'potenz'],
   wurzelgl: ['grund', 'zwei', 'nte', 'linear'],
   ungleichung: ['linear', 'quadratisch', 'betrag'],
   grenzwert: ['unendlich', 'polstelle', 'null', 'wurzel', 'speziell'],
   partiell: ['monom', 'summe', 'expln', 'zweite'],
   lagrange: ['cobb', 'kosten', 'lambda'],
-  determinante: ['det2', 'det3', 'regulaer', 'inv'],
+  determinante: ['det2', 'det3', 'regulaer', 'inv', 'cramer'],
+  quadratisch: ['rein', 'faktor', 'pq', 'abc', 'vieta', 'scheitel', 'bi', 'kombi'],
+  ableitung: ['potenz', 'stelle', 'tangente', 'zweite', 'produkt', 'quotient', 'kette', 'kombi'],
+  wahrsch: ['laplace', 'gegen', 'pfad', 'bedingt', 'bernoulli', 'erwartung'],
+  kombinatorik: ['produkt', 'permutation', 'binom', 'ziehen'],
+  folgen: ['arith', 'geo', 'sumArith', 'sumGeo', 'unendlich', 'rekursiv'],
+  vektor: ['rechnen', 'skalar', 'betrag', 'ortho', 'kreuz'],
+  matrix: ['add', 'skalar', 'transp', 'mult', 'quadrat'],
+  partiell: ['monom', 'summe', 'stelle', 'expln', 'zweite'],
+  kopf: ['grund', 'bruch', 'prozent', 'teiler', 'term', 'potenz'],
 };
 TOPICS.forEach(t => {
   const ord = VARIANT_ORDER[t.id];
@@ -6174,12 +7359,25 @@ TOPICS.forEach(t => {
   const base = t.gen;
   t.gen = function (d, v) {
     const vv = (v === 'mix') ? (t.pickVar ? t.pickVar(d, real) : pickByDifficulty(real, d)) : v;
-    let task = null;
-    for (let i = 0; i < 45; i++) {
+    const key = t.id + '|' + vv + '|' + d;
+    const seen = RECENT[key] || (RECENT[key] = []);
+    let task = null, fallback = null, notNice = null;
+    for (let i = 0; i < 60; i++) {
       const cand = base.call(t, d, vv);
       if (!cand) continue;
+      if (!fallback) fallback = cand;
+      if (!taskValid(cand)) continue;          /* irrational oder Loesung passt nicht zur Pruefung */
+      if (!notNice) notNice = cand;
+      if (!taskNice(cand, t.id)) continue;
       task = cand;
-      if (taskNice(cand, t.id)) break;
+      if (seen.indexOf(cand.promptHTML) < 0) break;   /* moeglichst nicht dieselbe wie zuletzt */
+    }
+    if (!task) task = notNice || fallback;
+    if (task && task.promptHTML) {
+      seen.push(task.promptHTML);
+      /* Das Gedaechtnis bleibt klein — bei kleinen Vorraeten waere es sonst
+         schnell leer und die Suche liefe ins Leere. */
+      if (seen.length > RECENT_MAX) seen.shift();
     }
     /* Wo ein Term die Antwort ist, kann der Graph dieses Terms gezeigt werden. */
     if (task && !task.plot && task.check && task.check.__k === 'expr' && task.check.__ref) {
@@ -6188,6 +7386,12 @@ TOPICS.forEach(t => {
       if (o.lo !== undefined && o.hi !== undefined) task.plot.points = [];
     }
     if (task) {
+      /* Steht die eigentliche Frage nicht schon im Aufgabentext, wird sie
+         darunter gesetzt — der Untertitel wird in der Oberflaeche nicht mehr
+         angezeigt, die Frage darf also nicht dort haengen bleiben. */
+      if (task.qtext && task.promptHTML.indexOf('qtext') < 0) {
+        task.promptHTML += '<p class="qtext">' + task.qtext + '</p>';
+      }
       task.variantId = vv;
       const found = t.variants.filter(x => x.id === vv)[0];
       task.variantName = found ? found.name : '';
@@ -6209,7 +7413,8 @@ function ico(id, w) { return '<svg style="width:' + (w || 17) + 'px;height:' + (
 const DIFF_TXT = ['Sehr Leicht', 'Leicht', 'Einfach', 'Mittel', 'Solide', 'Fortgeschritten', 'Schwer', 'Sehr Schwer', 'Profi', 'Meister'];
 const SCOPES = [{ id: 'alle', name: 'Alle Themen' }, { id: 'Grundlagen', name: 'Grundlagen' },
 { id: 'Gleichungen', name: 'Gleichungen' }, { id: 'Analysis', name: 'Analysis' },
-{ id: 'Mehrdim. Analysis', name: 'Mehrdim. Analysis' }, { id: 'Lineare Algebra', name: 'Lineare Algebra' }];
+{ id: 'Mehrdim. Analysis', name: 'Mehrdim. Analysis' }, { id: 'Lineare Algebra', name: 'Lineare Algebra' },
+{ id: 'Stochastik', name: 'Stochastik' }];
 const MODES = [
   { k: 'frei', t: 'Freies Üben', s: 'Ohne Zeit- oder Aufgabenlimit' },
   { k: 'serie', n: 10, t: 'Serie · 10 Aufgaben', s: 'Auswertung am Ende' },
@@ -6257,13 +7462,14 @@ function totals() {
 }
 function topicById(id) { return TOPICS.filter(t => t.id === id)[0]; }
 /* Feste Reihenfolge — sonst haengt sie davon ab, in welcher Datei ein Thema steht. */
-const GROUP_ORDER = ['Grundlagen', 'Gleichungen', 'Analysis', 'Mehrdim. Analysis', 'Lineare Algebra'];
+const GROUP_ORDER = ['Grundlagen', 'Gleichungen', 'Analysis', 'Mehrdim. Analysis', 'Lineare Algebra', 'Stochastik'];
 const TOPIC_ORDER = [
   'kopf', 'vereinfachen', 'summen', 'defmenge', 'oekonomie',
   'linear', 'quadratisch', 'kubisch', 'bruchgl', 'betrag', 'potenz', 'wurzelgl', 'expo', 'logar', 'ungleichung',
-  'grenzwert', 'ableitung', 'implizit', 'extremwert', 'integral', 'elastizitaet',
+  'grenzwert', 'folgen', 'ableitung', 'implizit', 'extremwert', 'integral', 'elastizitaet',
   'partiell', 'gradient', 'extrem2d', 'lagrange',
-  'matrix', 'determinante', 'gauss'
+  'matrix', 'determinante', 'gauss', 'vektor',
+  'kombinatorik', 'wahrsch'
 ];
 function groups() {
   const g = [];
@@ -6368,7 +7574,7 @@ function renderNav(filter) {
 
 const GROUP_ICON = {
   'Grundlagen': 'i-grid', 'Gleichungen': 'i-scale', 'Analysis': 'i-chart',
-  'Mehrdim. Analysis': 'i-g-multi', 'Lineare Algebra': 'i-g-lin'
+  'Mehrdim. Analysis': 'i-g-multi', 'Lineare Algebra': 'i-g-lin', 'Stochastik': 'i-g-stoch'
 };
 /* Jedes Thema bekommt ein Strichsymbol im Stil der Ueberthemen — keine Emojis. */
 const TOPIC_ICON = {
@@ -6380,7 +7586,8 @@ const TOPIC_ICON = {
   extremwert: 'i-t-extremwert', integral: 'i-t-integral',
   partiell: 'i-t-partiell', gradient: 'i-t-gradient', extrem2d: 'i-t-extrem2d', lagrange: 'i-t-lagrange',
   matrix: 'i-t-matrix', determinante: 'i-t-det', gauss: 'i-t-gauss',
-  summen: 'i-t-summe', oekonomie: 'i-t-oeko', implizit: 'i-t-implizit', elastizitaet: 'i-t-elast'
+  summen: 'i-t-summe', oekonomie: 'i-t-oeko', implizit: 'i-t-implizit', elastizitaet: 'i-t-elast',
+  wahrsch: 'i-t-wahrsch', kombinatorik: 'i-t-kombi', folgen: 'i-t-folgen', vektor: 'i-t-vektor'
 };
 function topicIco(t, w) { return ico(TOPIC_ICON[t && t.id] || 'i-grid', w || 19); }
 
@@ -6670,11 +7877,15 @@ function buildAnswer() {
       box.appendChild(wrap);
       state.getters.push(() => rows.map(r => ({ op: r.obj.op, v: r.inp.value })));
     } else {
-      const row = el('div', 'frow');
-      row.appendChild(el('span', 'flab', f.label || '='));
+      /* Die Beschriftung steht ueber dem Feld — so beginnt das Feld an derselben
+         Kante wie "Antwort", die Tasten und die Rueckmeldung. Ein blosses "="
+         braucht keine Zeile: das Feld sagt mit "Ergebnis" schon, was hinein soll. */
+      const wrap = el('div', 'fwrap');
+      const lab = f.label || '=';
+      if (lab !== '=') wrap.appendChild(el('div', 'setlab', lab));
       const inp = track(el('input', 'inp'));
       inp.placeholder = f.ph || ''; inp.autocomplete = 'off'; inp.spellcheck = false;
-      row.appendChild(inp); box.appendChild(row);
+      wrap.appendChild(inp); box.appendChild(wrap);
       state.getters.push(() => inp.value);
     }
   });
